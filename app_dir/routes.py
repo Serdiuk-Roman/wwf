@@ -5,8 +5,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
-from app_dir.models import User
-from app_dir.forms import LoginForm, RegistrationForm
+from app_dir.models import User, BaseDecor, SecondDecor
+from app_dir.forms import LoginForm, RegistrationForm, \
+    BaseDecorForm, SecondDecorForm
 
 
 @app.route('/')
@@ -78,3 +79,52 @@ def user(username):
         {'author': user, 'body': 'Test post #2'}
     ]
     return render_template('user.html', user=user, posts=posts)
+
+
+@app.route('/laminate', methods=['get', 'post'])
+@login_required
+def laminate():
+    form = BaseDecorForm()
+    if form.validate_on_submit():
+        basedecor = BaseDecor(
+            indexname=form.indexname.data,
+            decorname=form.decorname.data
+        )
+        db.session.add(basedecor)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новую пленку.')
+        return redirect(url_for('laminate'))
+    laminates = BaseDecor.query.all()
+    if not laminates:
+        flash('В базе еще нет пленок')
+    return render_template('laminate.html', laminates=laminates, form=form)
+
+
+@app.route('/glass', methods=['get', 'post'])
+@login_required
+def glass():
+    form = SecondDecorForm()
+    if form.validate_on_submit():
+        seconddecor = SecondDecor(
+            indexname=form.indexname.data,
+            decorname=form.decorname.data
+        )
+        db.session.add(seconddecor)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новое стекло.')
+        return redirect(url_for('glass'))
+    glasses = SecondDecor.query.all()
+    print("glass === ", glasses)
+    if not glasses:
+        flash('В базе еще нет стекла')
+    # glasses = [
+    #     {
+    #         'imdexname': '1',
+    #         'decorname': 'Крашеное Черное'
+    #     },
+    #     {
+    #         'imdexname': '2',
+    #         'decorname': 'Крашеное Белое'
+    #     }
+    # ]
+    return render_template('glass.html', glasses=glasses, form=form)

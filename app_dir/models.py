@@ -6,11 +6,6 @@ from flask_login import UserMixin
 from app_dir import db, login
 
 
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
-
-
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -28,6 +23,11 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
@@ -38,47 +38,37 @@ class Post(db.Model):
         return '<Post {}>'.format(self.body)
 
 
-class Zakaz(db.Model):
+class BaseDecor(db.Model):
+    __tablename__ = 'base_decors'
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    positions = db.relationship('Position', backref='dvery', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Zakaz№{}>'.format(self.body)
-
-
-# class CategoryDecor(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     category_name = db.Column(db.String(64), index=True, unique=True)
-
-#     def __repr__(self):
-#         return '<Вид:{}>'.format(self.category_name)
-
-
-class Decor(db.Model):
-    __tablename__ = 'decors'
-    id = db.Column(db.Integer, primary_key=True)
-    decorname = db.Column(db.String(64), index=True, unique=True)
-    door_models = db.relationship('DoorModel', backref='decor')
-    # category_id = db.Column(db.Integer, db.ForeignKey('categorydecor.id'))
+    indexname = db.Column(db.String(16), index=True, unique=True)
+    decorname = db.Column(db.String(128), index=True, unique=True)
+    door_models = db.relationship('DoorModel', backref='base_decor')
 
     def __repr__(self):
         return '<L:{}>'.format(self.decorname)
 
 
-class DoorModel(db.Model):
+class SecondDecor(db.Model):
+    __tablename__ = 'second_decors'
     id = db.Column(db.Integer, primary_key=True)
-    modelname = db.Column(db.String(64), index=True, unique=True)
-    osnovapolotna_id = db.Column(db.Integer, db.ForeignKey('decors.id'))
-    # decorpolotna_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
-    # decorcomplektacii_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
+    indexname = db.Column(db.String(16), index=True, unique=True)
+    decorname = db.Column(db.String(64), index=True, unique=True)
+    door_models = db.relationship('DoorModel', backref='second_decor')
+
+    def __repr__(self):
+        return '<L:{}>'.format(self.decorname)
 
 
 class LutkaVar(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    lutkaname = db.Column(db.String(64), index=True)
+    lutkaname = db.Column(db.String(64))
     thickness = db.Column(db.Integer)
-    paz = db.Column(db.String(64), index=True)
+    paz = db.Column(db.String(64))
+    position_id = db.Column(
+        db.Integer,
+        db.ForeignKey('positions.id')
+    )
 
 
 class Block(db.Model):
@@ -86,24 +76,56 @@ class Block(db.Model):
     height = db.Column(db.Integer)
     width = db.Column(db.Integer)
     thickness = db.Column(db.Integer)
+    position_id = db.Column(
+        db.Integer,
+        db.ForeignKey('positions.id')
+    )
+
+
+class Zakaz(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    positions = db.relationship('Position', backref='zakaz')
+
+    def __repr__(self):
+        return '<Zakaz_№{}>'.format(self.id)
 
 
 class Position(db.Model):
+    __tablename__ = 'positions'
     id = db.Column(db.Integer, primary_key=True)
     zakaz_id = db.Column(db.Integer, db.ForeignKey('zakaz.id'))
     room = db.Column(db.String(140))
     doormodel = db.relationship(
         'DoorModel',
-        backref='door_model',
-        lazy='dynamic'
+        backref='position',
+        uselist=False
     )
     lutkavar = db.relationship(
         'LutkaVar',
-        backref='typ_lutky',
-        lazy='dynamic'
+        backref='position',
+        uselist=False
     )
     block_id = db.relationship(
         'Block',
-        backref='gabaryt',
-        lazy='dynamic'
+        backref='position',
+        uselist=False
+    )
+
+
+class DoorModel(db.Model):
+    __tablename__ = 'door_models'
+    id = db.Column(db.Integer, primary_key=True)
+    modelname = db.Column(db.String(64), index=True, unique=True)
+    position_id = db.Column(
+        db.Integer,
+        db.ForeignKey('positions.id')
+    )
+    basedecor_id = db.Column(
+        db.Integer,
+        db.ForeignKey('base_decors.id')
+    )
+    seconddecor_id = db.Column(
+        db.Integer,
+        db.ForeignKey('second_decors.id')
     )

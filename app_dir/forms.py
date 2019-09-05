@@ -33,7 +33,19 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 
-class PozuciiaForm(FlaskForm):
+class PositionForm(FlaskForm):
     room = StringField('Комната', validators=[DataRequired()])
     model_ID = StringField('Модель', validators=[DataRequired()])
     lytka_ID = StringField('Тип лутки', validators=[DataRequired()])
+
+
+class BaseDecorForm(FlaskForm):
+    indexname = StringField('Индекс', validators=[DataRequired()])
+    decorname = StringField('Назва', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+class SecondDecorForm(FlaskForm):
+    indexname = StringField('Индекс', validators=[DataRequired()])
+    decorname = StringField('Назва', validators=[DataRequired()])
+    submit = SubmitField('Submit')
