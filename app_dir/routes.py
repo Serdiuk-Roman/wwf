@@ -5,9 +5,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
-from app_dir.models import User, BaseDecor, SecondDecor
+from app_dir.models import User, Laminate, CasedGlass
 from app_dir.forms import LoginForm, RegistrationForm, \
-    BaseDecorForm, SecondDecorForm
+    LaminateForm, CasedGlassForm
 
 
 @app.route('/')
@@ -84,9 +84,9 @@ def user(username):
 @app.route('/laminate', methods=['get', 'post'])
 @login_required
 def laminate():
-    form = BaseDecorForm()
+    form = LaminateForm()
     if form.validate_on_submit():
-        basedecor = BaseDecor(
+        basedecor = Laminate(
             indexname=form.indexname.data,
             decorname=form.decorname.data
         )
@@ -94,7 +94,7 @@ def laminate():
         db.session.commit()
         flash('Поздравляю, Вы добавили новую пленку.')
         return redirect(url_for('laminate'))
-    laminates = BaseDecor.query.all()
+    laminates = Laminate.query.all()
     if not laminates:
         flash('В базе еще нет пленок')
     return render_template('laminate.html', laminates=laminates, form=form)
@@ -103,9 +103,9 @@ def laminate():
 @app.route('/glass', methods=['get', 'post'])
 @login_required
 def glass():
-    form = SecondDecorForm()
+    form = CasedGlassForm()
     if form.validate_on_submit():
-        seconddecor = SecondDecor(
+        seconddecor = CasedGlass(
             indexname=form.indexname.data,
             decorname=form.decorname.data
         )
@@ -113,18 +113,7 @@ def glass():
         db.session.commit()
         flash('Поздравляю, Вы добавили новое стекло.')
         return redirect(url_for('glass'))
-    glasses = SecondDecor.query.all()
-    print("glass === ", glasses)
+    glasses = CasedGlass.query.all()
     if not glasses:
         flash('В базе еще нет стекла')
-    # glasses = [
-    #     {
-    #         'imdexname': '1',
-    #         'decorname': 'Крашеное Черное'
-    #     },
-    #     {
-    #         'imdexname': '2',
-    #         'decorname': 'Крашеное Белое'
-    #     }
-    # ]
     return render_template('glass.html', glasses=glasses, form=form)

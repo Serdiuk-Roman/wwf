@@ -1,0 +1,17 @@
+cd fla/
+source wf/bin/activate
+export FLASK_APP=constr.py
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+flask run
+
+
+flask db init
+flask db migrate -m "users table"
+flask db upgrade
+
+
+git status
+git add -A
+git commit -m 'add dirty sketch forte 10'
+git push --set-upstream wwf master

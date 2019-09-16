@@ -39,13 +39,13 @@ class PositionForm(FlaskForm):
     lytka_ID = StringField('Тип лутки', validators=[DataRequired()])
 
 
-class BaseDecorForm(FlaskForm):
+class LaminateForm(FlaskForm):
     indexname = StringField('Индекс', validators=[DataRequired()])
     decorname = StringField('Назва', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 
-class SecondDecorForm(FlaskForm):
+class CasedGlassForm(FlaskForm):
     indexname = StringField('Индекс', validators=[DataRequired()])
     decorname = StringField('Назва', validators=[DataRequired()])
     submit = SubmitField('Submit')
