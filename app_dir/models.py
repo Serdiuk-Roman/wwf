@@ -66,34 +66,23 @@ class DoorModel(db.Model):
         uselist=False
     )
     modelname = db.Column(db.String(64), index=True, unique=True)
+
     laminate = db.Column(db.Boolean, default=True, nullable=False)
-    cased_glass = db.Column(db.Boolean, default=False, nullable=False)
-    glass_plus = db.Column(db.Boolean, default=False, nullable=False)
+    cased_glass = db.Column(db.Boolean, default=True, nullable=False)
+    glass_cleare = db.Column(db.Boolean, default=True, nullable=False)
+    glass_plus = db.Column(db.Boolean, default=True, nullable=False)
 
 
-class Laminate(db.Model):
-    __tablename__ = 'laminates'
+class Decor(db.Model):
+    __tablename__ = 'decor'
     id = db.Column(db.Integer, primary_key=True)
     indexname = db.Column(db.String(16), index=True, unique=True)
     decorname = db.Column(db.String(128), index=True, unique=True)
 
-    def __repr__(self):
-        return '<L:{}>'.format(self.decorname)
-
-
-class CasedGlass(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    indexname = db.Column(db.String(16), index=True, unique=True)
-    decorname = db.Column(db.String(64), index=True, unique=True)
-
-    def __repr__(self):
-        return '<L:{}>'.format(self.decorname)
-
-
-class GlassPlus(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    indexname = db.Column(db.String(16), index=True, unique=True)
-    decorname = db.Column(db.String(64), index=True, unique=True)
+    laminate = db.Column(db.Boolean, default=True, nullable=False)
+    cased_glass = db.Column(db.Boolean, default=True, nullable=False)
+    glass_cleare = db.Column(db.Boolean, default=True, nullable=False)
+    glass_plus = db.Column(db.Boolean, default=True, nullable=False)
 
     def __repr__(self):
         return '<L:{}>'.format(self.decorname)

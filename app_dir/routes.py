@@ -5,9 +5,9 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
-from app_dir.models import User, Laminate, CasedGlass
+from app_dir.models import User, Decor
 from app_dir.forms import LoginForm, RegistrationForm, \
-    LaminateForm, CasedGlassForm
+    DecorForm
 
 
 @app.route('/')
@@ -81,39 +81,20 @@ def user(username):
     return render_template('user.html', user=user, posts=posts)
 
 
-@app.route('/laminate', methods=['get', 'post'])
+@app.route('/decor', methods=['get', 'post'])
 @login_required
-def laminate():
-    form = LaminateForm()
+def decor():
+    form = DecorForm()
     if form.validate_on_submit():
-        basedecor = Laminate(
+        decor = Decor(
             indexname=form.indexname.data,
             decorname=form.decorname.data
         )
-        db.session.add(basedecor)
+        db.session.add(decor)
         db.session.commit()
         flash('Поздравляю, Вы добавили новую пленку.')
         return redirect(url_for('laminate'))
-    laminates = Laminate.query.all()
-    if not laminates:
-        flash('В базе еще нет пленок')
-    return render_template('laminate.html', laminates=laminates, form=form)
-
-
-@app.route('/glass', methods=['get', 'post'])
-@login_required
-def glass():
-    form = CasedGlassForm()
-    if form.validate_on_submit():
-        seconddecor = CasedGlass(
-            indexname=form.indexname.data,
-            decorname=form.decorname.data
-        )
-        db.session.add(seconddecor)
-        db.session.commit()
-        flash('Поздравляю, Вы добавили новое стекло.')
-        return redirect(url_for('glass'))
-    glasses = CasedGlass.query.all()
-    if not glasses:
-        flash('В базе еще нет стекла')
-    return render_template('glass.html', glasses=glasses, form=form)
+    decors = Decor.query.all()
+    if not decors:
+        flash('В базе еще нет декора')
+    return render_template('decor.html', decors=decors, form=form)
