@@ -88,13 +88,20 @@ def decor():
     if form.validate_on_submit():
         decor = Decor(
             indexname=form.indexname.data,
-            decorname=form.decorname.data
+            decorname=form.decorname.data,
+            # laminate=form.laminate.data or False,
+            # cased_glass=form.laminate.data or False,
+            # glass_cleare=form.laminate.data or False,
+            # glass_plus=form.laminate.data or False
+
         )
+        print(form.decor.data)
+        print("form")
         db.session.add(decor)
         db.session.commit()
-        flash('Поздравляю, Вы добавили новую пленку.')
-        return redirect(url_for('laminate'))
+        flash('Поздравляю, Вы добавили новый декор.')
+        return redirect(url_for('decor'))
     decors = Decor.query.all()
     if not decors:
         flash('В базе еще нет декора')
-    return render_template('decor.html', decors=decors, form=form)
+    return render_template('decor.html', decors=decors, forms=form)

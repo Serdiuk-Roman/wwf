@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, \
+    SubmitField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from app_dir.models import User
@@ -42,4 +43,15 @@ class PositionForm(FlaskForm):
 class DecorForm(FlaskForm):
     indexname = StringField('Индекс', validators=[DataRequired()])
     decorname = StringField('Назва', validators=[DataRequired()])
+
+    decor = RadioField(
+        'Тип',
+        choices=[
+            ('laminate', 'Пленка'),
+            ('cased_glass', 'Накладное'),
+            ('glass_cleare', 'Для Cleare'),
+            ('glass_plus', 'Для Plus')
+        ]
+    )
+
     submit = SubmitField('Submit')

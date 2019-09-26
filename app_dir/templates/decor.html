@@ -1,24 +1,17 @@
 {% extends "base.html" %}
 
+{% from "_formhelpers.html" import render_field %}
+
 {% block content %}
     <h1>Новый декор</h1>
     <form action="" method="post">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.indexname.label }}<br>
-            {{ form.indexname(size=32) }}<br>
-            {% for error in form.indexname.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.decorname.label }}<br>
-            {{ form.decorname(size=32) }}<br>
-            {% for error in form.decorname.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
+        {{ forms.hidden_tag() }}
+        <dl>
+            {{ render_field(forms.indexname) }}
+            {{ render_field(forms.decorname) }}
+            {{ render_field(forms.decor) }}
+        </dl>
+        <p><input type=submit value=Register>
     </form>
     <hr>
     <div>
