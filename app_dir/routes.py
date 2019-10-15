@@ -5,9 +5,10 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
-from app_dir.models import User, Decor
+from app_dir.models import User, Decor, DoorModel, Position
 from app_dir.forms import LoginForm, RegistrationForm, \
-    DecorForm
+    DecorForm, DoorModelForm, PositionForm
+from app_dir.utils import set_decor_type
 
 
 @app.route('/')
@@ -89,14 +90,14 @@ def decor():
         decor = Decor(
             indexname=form.indexname.data,
             decorname=form.decorname.data,
+            decor_type=set_decor_type(form.decor_type.data)
+
             # laminate=form.laminate.data or False,
             # cased_glass=form.laminate.data or False,
             # glass_cleare=form.laminate.data or False,
             # glass_plus=form.laminate.data or False
 
         )
-        print(form.decor.data)
-        print("form")
         db.session.add(decor)
         db.session.commit()
         flash('Поздравляю, Вы добавили новый декор.')
@@ -105,3 +106,58 @@ def decor():
     if not decors:
         flash('В базе еще нет декора')
     return render_template('decor.html', decors=decors, forms=form)
+
+
+@app.route('/door_model', methods=['get', 'post'])
+@login_required
+def door_model():
+    form = DoorModelForm()
+    if form.validate_on_submit():
+
+        door_model = DoorModel(
+            modelname=form.modelname.data,
+            laminate=form.laminate.data,
+            cased_glass=form.cased_glass.data,
+            glass_cleare=form.glass_cleare.data,
+            glass_plus=form.glass_plus.data
+
+        )
+        db.session.add(door_model)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новую модель двери.')
+        return redirect(url_for('door_model'))
+    door_models = DoorModel.query.all()
+    if not door_models:
+        flash('В базе еще пусто')
+    return render_template(
+        'door_model.html',
+        door_models=door_models,
+        forms=form
+    )
+
+
+@app.route('/position', methods=['get', 'post'])
+@login_required
+def position():
+    form = PositionForm()
+    if form.validate_on_submit():
+
+        position = Position(
+            room=form.room.data,
+            doormodel_id=form.doormodel_id.data,
+            base_decor_id=form.base_decor_id.data,
+            # second_decor_id=form.glass_cleare.data,
+            other_decor_id=form.other_decor_id.data
+        )
+        db.session.add(position)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новую позицию.')
+        return redirect(url_for('position'))
+    positions = Position.query.all()
+    if not positions:
+        flash('В базе еще пусто')
+    return render_template(
+        'position.html',
+        positions=positions,
+        forms=form
+    )

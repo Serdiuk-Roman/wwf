@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+    <h1>Позиция</h1>
+    <form action="" method="post">
+        {{ forms.hidden_tag() }}
+        <dl>
+            {{ render_field(forms.room) }}
+            {{ render_field(forms.doormodel_id) }}
+            {{ render_field(forms.base_decor_id) }}
+            {{ forms.submit }}
+        </dl>
+    </form>
+    <hr>
+    <div>
+        <table border="1">
+            <caption>Таблица позиций</caption>
+{#             <tr>
+                <th>Название</th>
+                <th>Пленка</th>
+                <th>Накладное</th>
+                <th>Cleare</th>
+                <th>Plus</th>
+            </tr> #}
+            {% for position in positions %}
+            <tr>
+                <td>
+                    {{ position.id }}
+                </td>
+                <td>
+                    {{ position.room }}
+                </td>
+                <td>
+                    {{ position.doormodel_id }}
+                </td>
+                <td>
+                    {{ position.base_decor_id }}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

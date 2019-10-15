@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block content %}
+    <h1>Новая модель</h1>
+    <form action="" method="post">
+        {{ forms.hidden_tag() }}
+        <dl>
+            {{ render_field(forms.modelname) }}
+            {{ render_field(forms.laminate) }}
+            {{ render_field(forms.cased_glass) }}
+            {{ render_field(forms.glass_cleare) }}
+            {{ render_field(forms.glass_plus) }}
+            {{ forms.submit }}
+        </dl>
+    </form>
+    <hr>
+    <div>
+        <table border="1">
+            <caption>Таблица Моделей</caption>
+            <tr>
+                <th>Название</th>
+                <th>Пленка</th>
+                <th>Накладное</th>
+                <th>Cleare</th>
+                <th>Plus</th>
+            </tr>
+            {% for model in door_models %}
+            <tr>
+                <td>
+                    <strong>{{ model.modelname }}</strong>
+                </td>
+                <td>
+                    {{ 'Да' if model.laminate else 'Нет' }}
+                </td>
+                <td>
+                    {{ 'Да' if model.cased_glass else 'Нет' }}
+                </td>
+                <td>
+                    {{ 'Да' if model.glass_cleare else 'Нет' }}
+                </td>
+                <td>
+                    {{ 'Да' if model.glass_plus else 'Нет' }}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

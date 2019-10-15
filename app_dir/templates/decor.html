@@ -9,14 +9,40 @@
         <dl>
             {{ render_field(forms.indexname) }}
             {{ render_field(forms.decorname) }}
-            {{ render_field(forms.decor) }}
+            {{ render_field(forms.decor_type) }}
+            {{ forms.submit }}
         </dl>
-        <p><input type=submit value=Register>
     </form>
     <hr>
     <div>
-        {% for decor in decors %}
-            <p><strong>{{ decor.indexname|center(width=5) }}</strong>:- {{ decor.decorname }}</p>
-        {% endfor %}
+        <table border="1">
+            <caption>Таблица декора</caption>
+            <tr>
+                <th>Индекс</th>
+                <th>Тип</th>
+                <th>Название</th>
+            </tr>
+            {% for decor in decors %}
+            <tr>
+                <td>
+                    <strong>{{ decor.indexname }}</strong>
+                </td>
+                <td>
+                    {% if decor.decor_type == '1000' %}
+                        Плёнка
+                    {% elif decor.decor_type == '0100' %}
+                        Накладное
+                    {% elif decor.decor_type == '0010' %}
+                        Для Cleare
+                    {% elif decor.decor_type == '0001' %}
+                        Для Plus
+                    {% endif %}
+                </td>
+                <td>
+                    {{ decor.decorname }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 {% endblock %}

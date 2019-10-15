@@ -2,10 +2,10 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, \
-    SubmitField, RadioField
+    SubmitField, RadioField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
-from app_dir.models import User
+from app_dir.models import User, DoorModel, Decor
 
 
 class LoginForm(FlaskForm):
@@ -34,24 +34,51 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 
-class PositionForm(FlaskForm):
-    room = StringField('Комната', validators=[DataRequired()])
-    model_ID = StringField('Модель', validators=[DataRequired()])
-    lytka_ID = StringField('Тип лутки', validators=[DataRequired()])
-
-
 class DecorForm(FlaskForm):
     indexname = StringField('Индекс', validators=[DataRequired()])
     decorname = StringField('Назва', validators=[DataRequired()])
 
-    decor = RadioField(
+    decor_type = RadioField(
         'Тип',
         choices=[
-            ('laminate', 'Пленка'),
-            ('cased_glass', 'Накладное'),
-            ('glass_cleare', 'Для Cleare'),
-            ('glass_plus', 'Для Plus')
+            ('0', 'Пленка'),
+            ('1', 'Накладное'),
+            ('2', 'Для Cleare'),
+            ('3', 'Для Plus')
         ]
     )
 
-    submit = SubmitField('Submit')
+    submit = SubmitField('Добавить')
+
+
+class DoorModelForm(FlaskForm):
+    modelname = StringField('Модель', validators=[DataRequired()])
+    laminate = BooleanField('Плёнка', validators=[DataRequired()])
+    cased_glass = BooleanField('Накладное стекло')
+    glass_cleare = BooleanField('Cleare')
+    glass_plus = BooleanField('Plus')
+
+    submit = SubmitField('Добавить')
+
+
+class PositionForm(FlaskForm):
+    room = StringField('Комната', validators=[DataRequired()])
+    doormodel_id = SelectField(
+        'Модель', choices=[
+            (dm.id, dm.modelname) for dm in DoorModel.query.all()
+        ]
+    )
+    base_decor_id = SelectField(
+        'Декор полотна', choices=[
+            (d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '1000'
+            )
+        ]
+    )
+    other_decor_id = SelectField(
+        'Дополнительный декор', choices=[
+            (d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '0100'
+            )
+        ]
+    )

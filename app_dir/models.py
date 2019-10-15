@@ -47,16 +47,6 @@ class Zakaz(db.Model):
         return '<Zakaz_№{}>'.format(self.id)
 
 
-class Position(db.Model):
-    __tablename__ = 'positions'
-    id = db.Column(db.Integer, primary_key=True)
-    zakaz_id = db.Column(db.Integer, db.ForeignKey('zakaz.id'))
-    room = db.Column(db.String(128))
-    doormodel_id = db.Column(db.Integer, db.ForeignKey('door_models.id'))
-    doors_decor = db.Column(db.String(128))
-    dl = db.relationship('Block', backref='position', uselist=False)
-
-
 class DoorModel(db.Model):
     __tablename__ = 'door_models'
     id = db.Column(db.Integer, primary_key=True)
@@ -67,10 +57,10 @@ class DoorModel(db.Model):
     )
     modelname = db.Column(db.String(64), index=True, unique=True)
 
-    laminate = db.Column(db.Boolean, default=True, nullable=False)
-    cased_glass = db.Column(db.Boolean, default=True, nullable=False)
-    glass_cleare = db.Column(db.Boolean, default=True, nullable=False)
-    glass_plus = db.Column(db.Boolean, default=True, nullable=False)
+    laminate = db.Column(db.Boolean, default=False, nullable=False)
+    cased_glass = db.Column(db.Boolean, default=False, nullable=False)
+    glass_cleare = db.Column(db.Boolean, default=False, nullable=False)
+    glass_plus = db.Column(db.Boolean, default=False, nullable=False)
 
 
 class Decor(db.Model):
@@ -78,25 +68,34 @@ class Decor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     indexname = db.Column(db.String(16), index=True, unique=True)
     decorname = db.Column(db.String(128), index=True, unique=True)
-
-    laminate = db.Column(db.Boolean, default=True, nullable=False)
-    cased_glass = db.Column(db.Boolean, default=True, nullable=False)
-    glass_cleare = db.Column(db.Boolean, default=True, nullable=False)
-    glass_plus = db.Column(db.Boolean, default=True, nullable=False)
+    # 0 - laminate, 1 - cased_glass, 2 - glass_cleare, 3 - glass_plus
+    decor_type = db.Column(db.String(4), index=True, unique=False)
 
     def __repr__(self):
         return '<L:{}>'.format(self.decorname)
 
 
-class Block(db.Model):
+class Position(db.Model):
+    __tablename__ = 'positions'
     id = db.Column(db.Integer, primary_key=True)
-    height = db.Column(db.Integer)
-    width = db.Column(db.Integer)
-    thickness = db.Column(db.Integer)
-    position_id = db.Column(
-        db.Integer,
-        db.ForeignKey('positions.id')
-    )
+    zakaz_id = db.Column(db.Integer, db.ForeignKey('zakaz.id'))
+    room = db.Column(db.String(32))
+    doormodel_id = db.Column(db.Integer, db.ForeignKey('door_models.id'))
+    base_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
+    second_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
+    other_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
+    # dl = db.relationship('Block', backref='position', uselist=False)
+
+
+# class Block(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     height = db.Column(db.Integer)
+#     width = db.Column(db.Integer)
+#     thickness = db.Column(db.Integer)
+#     position_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey('positions.id')
+#     )
 
 
 """

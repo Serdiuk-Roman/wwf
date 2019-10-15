@@ -11,6 +11,8 @@
             Microblog:
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('decor') }}">Добавить декор</a>
+            <a href="{{ url_for('door_model') }}">Добавить модель</a>
+            <a href="{{ url_for('position') }}">Добавить позицию</a>
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">Login</a>
             {% else %}
