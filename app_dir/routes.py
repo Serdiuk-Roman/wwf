@@ -146,7 +146,7 @@ def position():
             room=form.room.data,
             doormodel_id=form.doormodel_id.data,
             base_decor_id=form.base_decor_id.data,
-            # second_decor_id=form.glass_cleare.data,
+            second_decor_id=form.second_decor_id.data,
             other_decor_id=form.other_decor_id.data
         )
         db.session.add(position)

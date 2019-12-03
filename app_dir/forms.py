@@ -75,10 +75,21 @@ class PositionForm(FlaskForm):
             )
         ]
     )
+    second_decor_id = SelectField(
+        'Дополнительный декор', choices=[
+            (d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '0100',
+                Decor.decor_type == '0010',
+                Decor.decor_type == '0001'
+            )
+        ]
+    )
     other_decor_id = SelectField(
         'Дополнительный декор', choices=[
             (d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '0100'
+                Decor.decor_type == '1000',
+                Decor.decor_type == '0010',
+                Decor.decor_type == '0001'
             )
         ]
     )

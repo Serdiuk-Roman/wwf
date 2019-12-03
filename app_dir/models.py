@@ -38,13 +38,13 @@ class Post(db.Model):
         return '<Post {}>'.format(self.body)
 
 
-class Zakaz(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    positions = db.relationship('Position', backref='zakaz')
+# class Zakaz(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     positions = db.relationship('Position', backref='zakaz')
 
-    def __repr__(self):
-        return '<Zakaz_№{}>'.format(self.id)
+#     def __repr__(self):
+#         return '<Zakaz_№{}>'.format(self.id)
 
 
 class DoorModel(db.Model):
@@ -52,8 +52,7 @@ class DoorModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     positions = db.relationship(
         'Position',
-        backref='DoorModel',
-        uselist=False
+        backref='doormodel'
     )
     modelname = db.Column(db.String(64), index=True, unique=True)
 
@@ -78,74 +77,11 @@ class Decor(db.Model):
 class Position(db.Model):
     __tablename__ = 'positions'
     id = db.Column(db.Integer, primary_key=True)
-    zakaz_id = db.Column(db.Integer, db.ForeignKey('zakaz.id'))
+    # zakaz_id = db.Column(db.Integer, db.ForeignKey('zakaz.id'))
     room = db.Column(db.String(32))
     doormodel_id = db.Column(db.Integer, db.ForeignKey('door_models.id'))
     base_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     second_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     other_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
-    # dl = db.relationship('Block', backref='position', uselist=False)
+#     # dl = db.relationship('Block', backref='position', uselist=False)
 
-
-# class Block(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     height = db.Column(db.Integer)
-#     width = db.Column(db.Integer)
-#     thickness = db.Column(db.Integer)
-#     position_id = db.Column(
-#         db.Integer,
-#         db.ForeignKey('positions.id')
-#     )
-
-
-"""
-    class Forte_10(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        basedecor_id = db.Column(
-            db.Integer,
-            db.ForeignKey('base_decors.id')
-        )
-
-
-    class Forte_12(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        basedecor_id = db.Column(
-            db.Integer,
-            db.ForeignKey('base_decors.id')
-        )
-        seconddecor_id = db.Column(
-            db.Integer,
-            db.ForeignKey('second_decors.id')
-        )
-
-
-    class Forte_plus_12(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        basedecor_id = db.Column(
-            db.Integer,
-            db.ForeignKey('base_decors.id')
-        )
-        seconddecor_id = db.Column(
-            db.Integer,
-            db.ForeignKey('second_decors.id')
-        )
-
-
-    class DoorModel(db.Model):
-        __tablename__ = 'door_models'
-        id = db.Column(db.Integer, primary_key=True)
-        modelname = db.Column(db.String(64), index=True, unique=True)
-        position_id = db.Column(
-            db.Integer,
-            db.ForeignKey('positions.id')
-        )
-        basedecor_id = db.Column(
-            db.Integer,
-            db.ForeignKey('base_decors.id')
-        )
-        seconddecor_id = db.Column(
-            db.Integer,
-            db.ForeignKey('second_decors.id')
-        )
-
-"""

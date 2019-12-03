@@ -10,6 +10,8 @@
             {{ render_field(forms.room) }}
             {{ render_field(forms.doormodel_id) }}
             {{ render_field(forms.base_decor_id) }}
+            {{ render_field(forms.second_decor_id) }}
+            {{ render_field(forms.other_decor_id) }}
             {{ forms.submit }}
         </dl>
     </form>
@@ -37,6 +39,12 @@
                 </td>
                 <td>
                     {{ position.base_decor_id }}
+                </td>
+                <td>
+                    {{ position.second_decor_id }}
+                </td>
+                <td>
+                    {{ position.other_decor_id }}
                 </td>
 
             </tr>
