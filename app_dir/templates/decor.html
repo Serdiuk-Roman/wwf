@@ -2,26 +2,31 @@
 
 {% from "_formhelpers.html" import render_field %}
 
-{% block content %}
-    <h1>Новый декор</h1>
-    <form action="" method="post">
-        {{ forms.hidden_tag() }}
-        <dl>
-            {{ render_field(forms.indexname) }}
-            {{ render_field(forms.decorname) }}
-            {{ render_field(forms.decor_type) }}
-            {{ forms.submit }}
-        </dl>
-    </form>
-    <hr>
-    <div>
-        <table border="1">
+{% block app_content %}
+<div class="row" >
+    <div class="col-sm-3 bg-success">
+        <h3>Новый декор</h3>
+        <form action="" method="post">
+                {{ forms.hidden_tag() }}
+                <dl>
+                    {{ render_field(forms.indexname) }}
+                    {{ render_field(forms.decorname) }}
+                    {{ render_field(forms.decor_type) }}
+                    {{ forms.submit(class_="btn btn-default") }}
+                </dl>
+        </form>
+    </div>
+    <div class="col-sm-9">
+        <table class="table table-bordered table-striped text-center" id="same_table">
             <caption>Таблица декора</caption>
-            <tr>
-                <th>Индекс</th>
-                <th>Тип</th>
-                <th>Название</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th class="text-center">Индекс</th>
+                    <th class="text-center">Тип</th>
+                    <th class="text-center">Название</th>
+                </tr>
+            </thead>
+            <tbody>
             {% for decor in decors %}
             <tr>
                 <td>
@@ -43,6 +48,9 @@
                 </td>
             </tr>
             {% endfor %}
+            </tbody>
         </table>
     </div>
+</div>
+
 {% endblock %}

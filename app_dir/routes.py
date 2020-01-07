@@ -140,19 +140,33 @@ def door_model():
 @login_required
 def position():
     form = PositionForm()
+    # print("---------------------------------------------")
+    # print("")
+    # print(form)
+    # print(dir(form))
+    # for i in dir(form):
+    #     print(i, ' =:= ', request.form.get(i))
     if form.validate_on_submit():
+        print("+++++++++++++++++++++++++++++++++++++++++++++")
+        print(form.doormodel_id.data)
 
         position = Position(
             room=form.room.data,
             doormodel_id=form.doormodel_id.data,
             base_decor_id=form.base_decor_id.data,
             second_decor_id=form.second_decor_id.data,
-            other_decor_id=form.other_decor_id.data
+            frame_id=form.frame_id.data,
+            height_block=form.height_block.data,
+            width_block=form.width_block.data,
+            expander_id=form.expander_id.data,
+            # other_decor_id=form.other_decor_id.data
         )
         db.session.add(position)
         db.session.commit()
         flash('Поздравляю, Вы добавили новую позицию.')
         return redirect(url_for('position'))
+    if form.errors:
+        print(form.errors)
     positions = Position.query.all()
     if not positions:
         flash('В базе еще пусто')

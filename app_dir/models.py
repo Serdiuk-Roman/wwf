@@ -40,11 +40,24 @@ class Post(db.Model):
 
 # class Zakaz(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
-#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     zakaz_number = db.Column(db.Integer)
+#     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 #     positions = db.relationship('Position', backref='zakaz')
 
 #     def __repr__(self):
-#         return '<Zakaz_№{}>'.format(self.id)
+#         return '<Zakaz_№{}>'.format(self.zakaz_number)
+
+
+class Decor(db.Model):
+    __tablename__ = 'decor'
+    id = db.Column(db.Integer, primary_key=True)
+    indexname = db.Column(db.String(16), index=True, unique=True)
+    decorname = db.Column(db.String(128), index=True, unique=True)
+    # 0 - laminate, 1 - cased_glass, 2 - glass_cleare, 3 - glass_plus
+    decor_type = db.Column(db.String(4), index=True, unique=False)
+
+    def __repr__(self):
+        return '<L:{}>'.format(self.decorname)
 
 
 class DoorModel(db.Model):
@@ -62,18 +75,6 @@ class DoorModel(db.Model):
     glass_plus = db.Column(db.Boolean, default=False, nullable=False)
 
 
-class Decor(db.Model):
-    __tablename__ = 'decor'
-    id = db.Column(db.Integer, primary_key=True)
-    indexname = db.Column(db.String(16), index=True, unique=True)
-    decorname = db.Column(db.String(128), index=True, unique=True)
-    # 0 - laminate, 1 - cased_glass, 2 - glass_cleare, 3 - glass_plus
-    decor_type = db.Column(db.String(4), index=True, unique=False)
-
-    def __repr__(self):
-        return '<L:{}>'.format(self.decorname)
-
-
 class Position(db.Model):
     __tablename__ = 'positions'
     id = db.Column(db.Integer, primary_key=True)
@@ -82,6 +83,21 @@ class Position(db.Model):
     doormodel_id = db.Column(db.Integer, db.ForeignKey('door_models.id'))
     base_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     second_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
-    other_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
-#     # dl = db.relationship('Block', backref='position', uselist=False)
+    frame_id = db.Column(db.Integer, db.ForeignKey('frame_type.id'))
+    height_block = db.Column(db.Integer)
+    width_block = db.Column(db.Integer)
+    expander_id = db.Column(db.Integer, db.ForeignKey('expanders.id'))
 
+    # other_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
+    # dl = db.relationship('Block', backref='position', uselist=False)
+
+
+class FrameType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    frame_name = db.Column(db.String(16))
+
+
+class Expander(db.Model):
+    __tablename__ = 'expanders'
+    id = db.Column(db.Integer, primary_key=True)
+    expander_width = db.Column(db.Integer)

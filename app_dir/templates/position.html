@@ -2,30 +2,21 @@
 
 {% from "_formhelpers.html" import render_field %}
 
-{% block content %}
-    <h1>Позиция</h1>
-    <form action="" method="post">
-        {{ forms.hidden_tag() }}
-        <dl>
-            {{ render_field(forms.room) }}
-            {{ render_field(forms.doormodel_id) }}
-            {{ render_field(forms.base_decor_id) }}
-            {{ render_field(forms.second_decor_id) }}
-            {{ render_field(forms.other_decor_id) }}
-            {{ forms.submit }}
-        </dl>
-    </form>
-    <hr>
-    <div>
-        <table border="1">
-            <caption>Таблица позиций</caption>
-{#             <tr>
-                <th>Название</th>
-                <th>Пленка</th>
-                <th>Накладное</th>
-                <th>Cleare</th>
-                <th>Plus</th>
-            </tr> #}
+{% block app_content %}
+
+    <table class="table table-bordered table-striped text-center" id="same_table">
+        <caption>Заказ №</caption>
+        <thead>
+            <tr>
+                <th class="text-center">№ п/п</th>
+                <th class="text-center">Комната</th>
+                <th class="text-center">Модель</th>
+                <th class="text-center">Декор</th>
+                <th class="text-center">Тип лутки</th>
+                <th class="text-center">Размер блока</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for position in positions %}
             <tr>
                 <td>
@@ -44,11 +35,28 @@
                     {{ position.second_decor_id }}
                 </td>
                 <td>
-                    {{ position.other_decor_id }}
+                    {{ position.frame_id }}
                 </td>
-
             </tr>
             {% endfor %}
-        </table>
-    </div>
+        </tbody>
+    </table>
+
+<div>
+    <h3>Позиция</h3>
+    <form action="" method="post">
+        {{ forms.hidden_tag() }}
+        <dl>
+            {{ render_field(forms.room) }}
+            {{ render_field(forms.doormodel_id) }}
+            {{ render_field(forms.base_decor_id) }}
+            {{ render_field(forms.second_decor_id) }}
+            {{ render_field(forms.frame_id) }}
+            {{ render_field(forms.height_block) }}
+            {{ render_field(forms.width_block) }}
+            {{ render_field(forms.expander_id) }}
+            {{ forms.submit(class_="btn btn-default") }}
+        </dl>
+    </form>
+</div>
 {% endblock %}
