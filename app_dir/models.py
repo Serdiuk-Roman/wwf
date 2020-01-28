@@ -63,6 +63,7 @@ class Decor(db.Model):
 class DoorModel(db.Model):
     __tablename__ = 'door_models'
     id = db.Column(db.Integer, primary_key=True)
+    # position_id = db.Column(db.Integer, db.ForeignKey('positions.id'))
     positions = db.relationship(
         'Position',
         backref='doormodel'

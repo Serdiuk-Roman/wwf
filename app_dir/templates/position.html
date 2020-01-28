@@ -11,16 +11,16 @@
                 <th class="text-center">№ п/п</th>
                 <th class="text-center">Комната</th>
                 <th class="text-center">Модель</th>
+                <th class="text-center">Основа</th>
                 <th class="text-center">Декор</th>
                 <th class="text-center">Тип лутки</th>
-                <th class="text-center">Размер блока</th>
             </tr>
         </thead>
         <tbody>
             {% for position in positions %}
             <tr>
                 <td>
-                    {{ position.id }}
+                    {{ loop.index }}
                 </td>
                 <td>
                     {{ position.room }}
@@ -39,6 +39,7 @@
                 </td>
             </tr>
             {% endfor %}
+            {% print(pos) %}
         </tbody>
     </table>
 

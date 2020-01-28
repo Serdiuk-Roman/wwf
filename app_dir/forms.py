@@ -70,37 +70,39 @@ class PositionForm(FlaskForm):
 
     doormodel_id = SelectField(
         'Модель',
-        validators=[DataRequired()],
         coerce=int,
-        choices=[
-            (dm.id, dm.modelname) for dm in DoorModel.query.all()
-        ]
+        validators=[DataRequired()]
+        # choices=[
+        #     (dm.id, dm.modelname) for dm in DoorModel.query.all()
+        # ]
     )
     base_decor_id = SelectField(
         'Декор полотна',
         coerce=int,
-        choices=[
-            (d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '1000'
-            )
-        ],
         validators=[DataRequired()]
+        # choices=[
+        #     (d.id, d.decorname) for d in Decor.query.filter(
+        #         Decor.decor_type == '1000'
+        #     )
+        # ]
     )
     second_decor_id = SelectField(
         'Дополнительный декор',
         coerce=int,
-        choices=[
-            (d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '0100'
-            )
-        ]
+        validators=[DataRequired()]
+        # choices=[
+        #     (d.id, d.decorname) for d in Decor.query.filter(
+        #         Decor.decor_type == '0100'
+        #     )
+        # ]
     )
     frame_id = SelectField(
         'Тип лутки',
         coerce=int,
-        choices=[
-            (ft.id, ft.frame_name) for ft in FrameType.query.all()
-        ]
+        validators=[DataRequired()]
+        # choices=[
+        #     (ft.id, ft.frame_name) for ft in FrameType.query.all()
+        # ]
     )
     height_block = IntegerField(
         'Высота блока',
@@ -125,13 +127,53 @@ class PositionForm(FlaskForm):
     )
     expander_id = SelectField(
         'Добор',
-        coerce=int,
-        choices=[
-            (er.id, er.expander_width) for er in Expander.query.all()
-        ]
+        coerce=int
+        # choices=[
+        #     (er.id, er.expander_width) for er in Expander.query.all()
+        # ]
     )
 
     submit = SubmitField('Добавить')
+
+    def __init__(self, *args, **kwargs):
+        super(PositionForm, self).__init__(*args, **kwargs)
+
+        self.doormodel_id.choices = \
+            [(dm.id, dm.modelname) for dm in DoorModel.query.all()]
+        self.doormodel_id.choices.insert(0, (0, "Не выбрана"))
+
+        self.base_decor_id.choices = \
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '1000'
+            )]
+        self.base_decor_id.choices.insert(0, (0, "Не выбран"))
+
+        self.second_decor_id.choices = \
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '0100'
+            )]
+        self.second_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '0010'
+            )]
+        )
+        self.second_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '0001'
+            )]
+        )
+        self.second_decor_id.choices.insert(0, (0, "Не выбран"))
+
+        self.frame_id.choices = \
+            [(ft.id, ft.frame_name) for ft in FrameType.query.all()]
+        self.frame_id.choices.insert(0, (0, "Не выбрана"))
+
+        self.expander_id.choices = \
+            [(er.id, er.expander_width) for er in Expander.query.all()]
+        self.expander_id.choices.insert(0, (0, "Не выбран"))
+
+
+
 
 
 class FrameTypeForm(FlaskForm):
