@@ -48,7 +48,6 @@ share/python-wheels/
 MANIFEST
 
 wf/
-app.db
 migrations/
 
 # PyInstaller

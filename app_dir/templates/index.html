@@ -1,8 +1,19 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
+
     <h1>Hi, {{ current_user.username }}!</h1>
-    {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
-    {% endfor %}
+
+    <hr>
+    <h3>Пример 1</h3>
+    <img src="{{ url_for('static', filename='img/zrazok_1.png') }}" class="img-responsive" >
+
+    <hr>
+    <h3>Пример 2</h3>
+    <img src="{{ url_for('static', filename='img/zrazok_2.png') }}" class="img-responsive" >
+
+    <hr>
+    <h3>Пример 3</h3>
+    <img src="{{ url_for('static', filename='img/zrazok_3.png') }}" class="img-responsive" >
+
 {% endblock %}
