@@ -77,12 +77,6 @@ def decor():
             indexname=form.indexname.data,
             decorname=form.decorname.data,
             decor_type=set_decor_type(form.decor_type.data)
-
-            # laminate=form.laminate.data or False,
-            # cased_glass=form.laminate.data or False,
-            # glass_cleare=form.laminate.data or False,
-            # glass_plus=form.laminate.data or False
-
         )
         db.session.add(decor)
         db.session.commit()
@@ -126,16 +120,7 @@ def door_model():
 @login_required
 def position():
     form = PositionForm()
-    # print("---------------------------------------------")
-    # print("")
-    # print(form)
-    # print(dir(form))
-    # for i in dir(form):
-    #     print(i, ' =:= ', request.form.get(i))
     if form.validate_on_submit():
-        print("+++++++++++++++++++++++++++++++++++++++++++++")
-        print(form.doormodel_id.data)
-
         position = Position(
             room=form.room.data,
             doormodel_id=form.doormodel_id.data,
