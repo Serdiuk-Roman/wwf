@@ -85,7 +85,7 @@ def decor():
     decors = Decor.query.all()
     if not decors:
         flash('В базе еще нет декора')
-    return render_template('decor.html', decors=decors, forms=form)
+    return render_template('decor.html', title='Decor', decors=decors, forms=form)
 
 
 @app.route('/door_model', methods=['get', 'post'])
@@ -111,6 +111,7 @@ def door_model():
         flash('В базе еще пусто')
     return render_template(
         'door_model.html',
+        title='Model',
         door_models=door_models,
         forms=form
     )
@@ -143,6 +144,7 @@ def position():
         flash('В базе еще пусто')
     return render_template(
         'position.html',
+        title='Position',
         positions=positions,
         forms=form
     )

@@ -14,7 +14,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return 'User {}'.format(self.username)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -35,7 +35,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return 'Post {}'.format(self.body)
 
 
 # class Zakaz(db.Model):
@@ -45,7 +45,7 @@ class Post(db.Model):
 #     positions = db.relationship('Position', backref='zakaz')
 
 #     def __repr__(self):
-#         return '<Zakaz_№{}>'.format(self.zakaz_number)
+#         return 'Zakaz_№{}'.format(self.zakaz_number)
 
 
 class Decor(db.Model):
@@ -57,7 +57,7 @@ class Decor(db.Model):
     decor_type = db.Column(db.String(4), index=True, unique=False)
 
     def __repr__(self):
-        return '<L:{}>'.format(self.decorname)
+        return 'Decor:{}'.format(self.decorname)
 
 
 class DoorModel(db.Model):
@@ -74,6 +74,9 @@ class DoorModel(db.Model):
     cased_glass = db.Column(db.Boolean, default=False, nullable=False)
     glass_cleare = db.Column(db.Boolean, default=False, nullable=False)
     glass_plus = db.Column(db.Boolean, default=False, nullable=False)
+
+    def __repr__(self):
+        return 'Model {}'.format(self.modelname)
 
 
 class Position(db.Model):
