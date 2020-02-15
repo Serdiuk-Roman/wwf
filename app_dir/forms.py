@@ -176,10 +176,3 @@ class PositionForm(FlaskForm):
 
 
 
-class FrameTypeForm(FlaskForm):
-    pass
-#     frame_name = SelectField(
-#         'Тип лутки', choices=[
-#             (ft.id, ft.frame_name) for ft in Frame_type.query.all()
-#         ]
-#     )

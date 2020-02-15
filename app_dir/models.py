@@ -12,6 +12,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    about_me = db.Column(db.String(140))
+    # last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return 'User {}'.format(self.username)
@@ -79,6 +81,17 @@ class DoorModel(db.Model):
         return 'Model {}'.format(self.modelname)
 
 
+class FrameType(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    frame_name = db.Column(db.String(16))
+
+
+class Expander(db.Model):
+    __tablename__ = 'expanders'
+    id = db.Column(db.Integer, primary_key=True)
+    expander_width = db.Column(db.Integer)
+
+
 class Position(db.Model):
     __tablename__ = 'positions'
     id = db.Column(db.Integer, primary_key=True)
@@ -94,14 +107,3 @@ class Position(db.Model):
 
     # other_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     # dl = db.relationship('Block', backref='position', uselist=False)
-
-
-class FrameType(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    frame_name = db.Column(db.String(16))
-
-
-class Expander(db.Model):
-    __tablename__ = 'expanders'
-    id = db.Column(db.Integer, primary_key=True)
-    expander_width = db.Column(db.Integer)
