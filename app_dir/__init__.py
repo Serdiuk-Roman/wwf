@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
-from config import Config
+from config import DevelopmentConfig as Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -11,8 +11,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 
 app = Flask(__name__)
-
-app.debug = True
 
 app.config.from_object(Config)
 
