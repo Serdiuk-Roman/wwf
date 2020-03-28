@@ -56,9 +56,9 @@
 
 База даних
 ~~~python3
-    flask db init
-    flask db migrate -m "First migrate"
-    flask db upgrade
+flask db init
+flask db migrate -m "First migrate"
+flask db upgrade
 ~~~
 
 Перший запуск
