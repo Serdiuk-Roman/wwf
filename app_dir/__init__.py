@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask
-from config import DevelopmentConfig as Config
+from config import DevelopmentConfig
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -12,7 +12,11 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 
-app.config.from_object(Config)
+# for i in app.config:
+#     print(str(i).rjust(32), ' : ', app.config[i])
+
+app.config.from_object(DevelopmentConfig())
+
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)

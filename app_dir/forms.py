@@ -104,25 +104,25 @@ class PositionForm(FlaskForm):
         #     (ft.id, ft.frame_name) for ft in FrameType.query.all()
         # ]
     )
-    height_block = IntegerField(
-        'Высота блока',
-        widget=NumberInput(min='1844', max='2294', step='10'),
+    doors_height = IntegerField(
+        'Высота полотна',
+        widget=NumberInput(min='1800', max='2240', step='10'),
         validators=[
             DataRequired(),
             NumberRange(
-                min=1844,
-                max=2294,
-                message='Некоректная высота блока'
+                min=1800,
+                max=2240,
+                message='Некоректная высота полотна'
             )
         ]
     )
-    width_block = IntegerField(
-        'Ширина блока',
-        widget=NumberInput(min='370', max='970', step='10'),
+    doors_width = IntegerField(
+        'Ширина полотна',
+        widget=NumberInput(min='550', max='900', step='10'),
         validators=[NumberRange(
-            min=370,
-            max=970,
-            message='Некоректная ширина блока'
+            min=550,
+            max=900,
+            message='Некоректная ширина полотна'
         )]
     )
     expander_id = SelectField(
@@ -171,8 +171,3 @@ class PositionForm(FlaskForm):
         self.expander_id.choices = \
             [(er.id, er.expander_width) for er in Expander.query.all()]
         self.expander_id.choices.insert(0, (0, "Не выбран"))
-
-
-
-
-

@@ -8,7 +8,7 @@ from app_dir import app, db
 from app_dir.models import User, Decor, DoorModel, Position
 from app_dir.forms import LoginForm, RegistrationForm, \
     DecorForm, DoorModelForm, PositionForm
-from app_dir.utils import set_decor_type
+from app_dir.utils import set_decor_type, decor_list
 
 
 @app.route('/')
@@ -128,8 +128,8 @@ def position():
             base_decor_id=form.base_decor_id.data,
             second_decor_id=form.second_decor_id.data,
             frame_id=form.frame_id.data,
-            height_block=form.height_block.data,
-            width_block=form.width_block.data,
+            doors_height=form.doors_height.data,
+            doors_width=form.doors_width.data,
             expander_id=form.expander_id.data,
             # other_decor_id=form.other_decor_id.data
         )
@@ -148,3 +148,41 @@ def position():
         positions=positions,
         forms=form
     )
+
+
+@app.route('/first_data')
+@login_required
+def first_data():
+    pass
+
+    if len(Decor.query.all()) is 0:
+
+        for element in decor_list:
+            decor = Decor(
+                indexname=element[0],
+                decorname=element[1],
+                decor_type=element[2]
+            )
+            db.session.add(decor)
+        db.session.commit()
+
+    # decor = Decor()
+    # if form.validate_on_submit():
+    #     position = Position(
+    #         room=form.room.data
+    #     )
+    #     db.session.add(position)
+    #     db.session.commit()
+    #     flash('Поздравляю, Вы добавили новую позицию.')
+    #     return redirect(url_for('position'))
+    # if form.errors:
+    #     print(form.errors)
+    # positions = Position.query.all()
+    # if not positions:
+    #     flash('В базе еще пусто')
+    # return render_template(
+    #     'position.html',
+    #     title='Position',
+    #     positions=positions,
+    #     forms=form
+    # )

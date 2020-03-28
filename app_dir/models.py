@@ -78,18 +78,32 @@ class DoorModel(db.Model):
     glass_plus = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
-        return 'Model {}'.format(self.modelname)
+        return self.modelname
 
 
 class FrameType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     frame_name = db.Column(db.String(16))
+    expanders = db.relationship(
+        'Position',
+        backref='frame_type'
+    )
+
+    def __repr__(self):
+        return self.frame_name
 
 
 class Expander(db.Model):
     __tablename__ = 'expanders'
     id = db.Column(db.Integer, primary_key=True)
     expander_width = db.Column(db.Integer)
+    expanders = db.relationship(
+        'Position',
+        backref='expander'
+    )
+
+    def __repr__(self):
+        return '{} мм'.format(self.expander_width)
 
 
 class Position(db.Model):
@@ -101,8 +115,8 @@ class Position(db.Model):
     base_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     second_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     frame_id = db.Column(db.Integer, db.ForeignKey('frame_type.id'))
-    height_block = db.Column(db.Integer)
-    width_block = db.Column(db.Integer)
+    doors_height = db.Column(db.Integer)
+    doors_width = db.Column(db.Integer)
     expander_id = db.Column(db.Integer, db.ForeignKey('expanders.id'))
 
     # other_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))

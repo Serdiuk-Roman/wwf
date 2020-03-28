@@ -14,6 +14,9 @@
                 <th class="text-center">Основа</th>
                 <th class="text-center">Декор</th>
                 <th class="text-center">Тип лутки</th>
+                <th class="text-center">Высота полотна</th>
+                <th class="text-center">Ширина полотна</th>
+                <th class="text-center">Добор</th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +29,7 @@
                     {{ position.room }}
                 </td>
                 <td>
-                    {{ position.doormodel_id }}
+                    {{ position.doormodel }}
                 </td>
                 <td>
                     {{ position.base_decor_id }}
@@ -35,7 +38,16 @@
                     {{ position.second_decor_id }}
                 </td>
                 <td>
-                    {{ position.frame_id }}
+                    {{ position.frame_type }}
+                </td>
+                <td>
+                    {{ position.doors_height }}
+                </td>
+                <td>
+                    {{ position.doors_width }}
+                </td>
+                <td>
+                    {{ position.expander }}
                 </td>
             </tr>
             {% endfor %}
@@ -53,8 +65,8 @@
             {{ render_field(forms.base_decor_id) }}
             {{ render_field(forms.second_decor_id) }}
             {{ render_field(forms.frame_id) }}
-            {{ render_field(forms.height_block) }}
-            {{ render_field(forms.width_block) }}
+            {{ render_field(forms.doors_height) }}
+            {{ render_field(forms.doors_width) }}
             {{ render_field(forms.expander_id) }}
             {{ forms.submit(class_="btn btn-default") }}
         </dl>
