@@ -153,7 +153,6 @@ def position():
 
 @app.route('/first_data')
 def first_data():
-    pass
 
     if len(Decor.query.all()) is 0:
 
