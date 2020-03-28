@@ -15,12 +15,50 @@ decor_list = [
 ]
 
 door_model_list = [
-    {sss},
+    {
+        'modelname': 'Пустая',
+        'laminate': 0,
+        'cased_glass': 0,
+        'glass_cleare': 0,
+        'glass_plus': 0,
+    },
+    {
+        'modelname': 'Forte 10',
+        'laminate': 1,
+        'cased_glass': 0,
+        'glass_cleare': 0,
+        'glass_plus': 0,
+    },
+    {
+        'modelname': 'Forte 12',
+        'laminate': 1,
+        'cased_glass': 1,
+        'glass_cleare': 0,
+        'glass_plus': 0,
+    },
+    {
+        'modelname': 'Forte cleare 12',
+        'laminate': 1,
+        'cased_glass': 0,
+        'glass_cleare': 1,
+        'glass_plus': 0,
+    }
 ]
 
-
-id,modelname,laminate,cased_glass,glass_cleare,glass_plus
-1,Forte 12,1,1,0,0
-2,Forte 10,1,0,0,0
-3,Forte cleare 12,1,0,1,0
-4,Forte plus 12,1,0,0,1
+expander_list = [
+    {
+        'expander_width': 0
+    },
+    {
+        'expander_width': 50
+    },
+    {
+        'expander_width': 100
+    },
+    {
+        'expander_width': 150
+    },
+    {
+        'expander_width': 200
+    }
+]

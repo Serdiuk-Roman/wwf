@@ -65,7 +65,6 @@ class Decor(db.Model):
 class DoorModel(db.Model):
     __tablename__ = 'door_models'
     id = db.Column(db.Integer, primary_key=True)
-    # position_id = db.Column(db.Integer, db.ForeignKey('positions.id'))
     positions = db.relationship(
         'Position',
         backref='doormodel'
@@ -109,7 +108,6 @@ class Expander(db.Model):
 class Position(db.Model):
     __tablename__ = 'positions'
     id = db.Column(db.Integer, primary_key=True)
-    # zakaz_id = db.Column(db.Integer, db.ForeignKey('zakaz.id'))
     room = db.Column(db.String(32))
     doormodel_id = db.Column(db.Integer, db.ForeignKey('door_models.id'))
     base_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))

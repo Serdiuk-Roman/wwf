@@ -5,10 +5,11 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
-from app_dir.models import User, Decor, DoorModel, Position
+from app_dir.models import User, Decor, DoorModel, Position, Expander
 from app_dir.forms import LoginForm, RegistrationForm, \
     DecorForm, DoorModelForm, PositionForm
-from app_dir.utils import set_decor_type, decor_list
+from app_dir.utils import set_decor_type, decor_list,  \
+    door_model_list, expander_list
 
 
 @app.route('/')
@@ -151,7 +152,6 @@ def position():
 
 
 @app.route('/first_data')
-@login_required
 def first_data():
     pass
 
@@ -159,30 +159,36 @@ def first_data():
 
         for element in decor_list:
             decor = Decor(
-                indexname=element[0],
-                decorname=element[1],
-                decor_type=element[2]
+                indexname=element['indexname'],
+                decorname=element['decorname'],
+                decor_type=element['decor_type']
             )
             db.session.add(decor)
         db.session.commit()
+        flash('Поздравляю, Вы внесли первоначальный декор в базу!!!')
 
-    # decor = Decor()
-    # if form.validate_on_submit():
-    #     position = Position(
-    #         room=form.room.data
-    #     )
-    #     db.session.add(position)
-    #     db.session.commit()
-    #     flash('Поздравляю, Вы добавили новую позицию.')
-    #     return redirect(url_for('position'))
-    # if form.errors:
-    #     print(form.errors)
-    # positions = Position.query.all()
-    # if not positions:
-    #     flash('В базе еще пусто')
-    # return render_template(
-    #     'position.html',
-    #     title='Position',
-    #     positions=positions,
-    #     forms=form
-    # )
+    if len(DoorModel.query.all()) is 0:
+
+        for element in door_model_list:
+            dm = DoorModel(
+                modelname=element['modelname'],
+                laminate=element['laminate'],
+                cased_glass=element['cased_glass'],
+                glass_cleare=element['glass_plus'],
+                glass_plus=element['glass_cleare']
+            )
+            db.session.add(dm)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли первоначальные модели в базу!!!')
+
+    if len(Expander.query.all()) is 0:
+
+        for element in expander_list:
+            ex = Expander(
+                expander_width=element['expander_width']
+            )
+            db.session.add(ex)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли первоначальные доборы в базу!!!')
+
+    return redirect(url_for('register'))
