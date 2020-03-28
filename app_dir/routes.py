@@ -5,11 +5,11 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
-from app_dir.models import User, Decor, DoorModel, Position, Expander
+from app_dir.models import User, Decor, DoorModel, Position, Expander, FrameType
 from app_dir.forms import LoginForm, RegistrationForm, \
     DecorForm, DoorModelForm, PositionForm
 from app_dir.utils import set_decor_type, decor_list,  \
-    door_model_list, expander_list
+    door_model_list, expander_list, frame_type_list
 
 
 @app.route('/')
@@ -190,5 +190,15 @@ def first_data():
             db.session.add(ex)
         db.session.commit()
         flash('Поздравляю, Вы внесли первоначальные доборы в базу!!!')
+
+    if len(FrameType.query.all()) is 0:
+
+        for element in frame_type_list:
+            ft = FrameType(
+                frame_name=element['frame_name']
+            )
+            db.session.add(ft)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли типы луток в базу!!!')
 
     return redirect(url_for('register'))

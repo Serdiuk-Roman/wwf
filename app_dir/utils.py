@@ -62,3 +62,12 @@ expander_list = [
         'expander_width': 200
     }
 ]
+
+frame_type_list = [
+    {
+        'frame_name': "Форте"
+    },
+    {
+        'frame_name': "Француз"
+    }
+]
