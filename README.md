@@ -65,7 +65,9 @@ flask db upgrade
 
     flask run
 
-Занесення початкових даних в базу, для цього перейти по силці [http://127.0.0.1:5000/first_data](http://127.0.0.1:5000/first_data)
+Занесення початкових даних в базу, для цього перейти по силці
+
+[http://127.0.0.1:5000/first_data](http://127.0.0.1:5000/first_data)
 
 або [http://localhost:5000/first_data](http://localhost:5000/first_data)
 
