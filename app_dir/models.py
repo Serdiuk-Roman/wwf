@@ -65,16 +65,17 @@ class Decor(db.Model):
 class DoorModel(db.Model):
     __tablename__ = 'door_models'
     id = db.Column(db.Integer, primary_key=True)
-    positions = db.relationship(
-        'Position',
-        backref='doormodel'
-    )
     modelname = db.Column(db.String(64), index=True, unique=True)
 
     laminate = db.Column(db.Boolean, default=False, nullable=False)
     cased_glass = db.Column(db.Boolean, default=False, nullable=False)
     glass_cleare = db.Column(db.Boolean, default=False, nullable=False)
     glass_plus = db.Column(db.Boolean, default=False, nullable=False)
+
+    positions = db.relationship(
+        'Position',
+        backref='doormodel'
+    )
 
     def __repr__(self):
         return self.modelname
@@ -83,7 +84,7 @@ class DoorModel(db.Model):
 class FrameType(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     frame_name = db.Column(db.String(16))
-    expanders = db.relationship(
+    frames = db.relationship(
         'Position',
         backref='frame_type'
     )

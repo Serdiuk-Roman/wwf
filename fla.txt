@@ -28,3 +28,123 @@ Flask-Login
         свойство, которое вернет False для обычных пользователей, и True, если пользователь анонимный.
     get_id():
         метод, который возвращает уникальный идентификатор пользователя в виде строки (unicode, если используется Python 2).
+
+
+
+https://ondras.zarovi.cz/sql/demo/
+
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: https://ondras.zarovi.cz/sql/demo/ -->
+<sql>
+<datatypes db="sqlite">
+    <group label="Affinity">
+        <type label="Text" default="" length="1" sql="TEXT" quote="'" color="rgb(255,200,200)"/>
+        <type label="Numeric" default="0" length="0" sql="NUMERIC" quote="" color="rgb(238,238,170)"/>
+        <type label="Integer" default="0" length="0" sql="INTEGER" quote="" color="rgb(238,238,170)"/>
+        <type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
+        <type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
+    </group>
+</datatypes><table x="320" y="255" name="positions">
+<row name="id" null="1" autoincrement="1">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="room" null="0" autoincrement="0">
+<datatype>TEXT(32)</datatype>
+<default>'NULL'</default></row>
+<row name="doormodel_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="door_models" row="id" />
+</row>
+<row name="base_decor_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="decor" row="id" />
+</row>
+<row name="second_decor_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="decor" row="id" />
+</row>
+<row name="frame_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="frame_type" row="id" />
+</row>
+<row name="doors_height" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="doors_width" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="expander_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="expanders" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<key type="INDEX" name="">
+<part>doormodel_id</part>
+</key>
+</table>
+<table x="498" y="251" name="decor">
+<row name="id" null="1" autoincrement="1">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="indexname" null="0" autoincrement="0">
+<datatype>TEXT(16)</datatype>
+<default>'NULL'</default></row>
+<row name="decorname" null="0" autoincrement="0">
+<datatype>TEXT(128)</datatype>
+<default>'NULL'</default></row>
+<row name="decor_type" null="0" autoincrement="0">
+<datatype>TEXT(3)</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="103" y="250" name="door_models">
+<row name="id" null="1" autoincrement="1">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="modelname" null="0" autoincrement="0">
+<datatype>TEXT(64)</datatype>
+<default>'NULL'</default></row>
+<row name="laminate" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="cased_glass" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="glass_cleare" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="glass_plus" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="499" y="402" name="frame_type">
+<row name="id" null="1" autoincrement="1">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="frame_name" null="0" autoincrement="0">
+<datatype>TEXT(16)</datatype>
+<default>'NULL'</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="111" y="431" name="expanders">
+<row name="id" null="1" autoincrement="1">
+<datatype>TEXT</datatype>
+<default>NULL</default></row>
+<row name="expander_width" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+</sql>

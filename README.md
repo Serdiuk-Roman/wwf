@@ -50,10 +50,10 @@
     pip install -r requirements.txt
 
 Змінні в оточення
-
-    export FLASK_APP=runner.py
-    export FLASK_ENV=development
-
+~~~python3
+export FLASK_APP=runner.py
+export FLASK_ENV=development
+~~~
 База даних
 ~~~python3
 flask db init
