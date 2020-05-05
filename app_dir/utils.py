@@ -5,23 +5,18 @@ def set_decor_type(index):
 
 
 decor_list = [
-    {'indexname': '0', 'decorname': 'Не определен', 'decor_type': '0000'},
-    {'indexname': 'L3', 'decorname': 'Дуб Ценамон', 'decor_type': '1000'},
+    {'indexname': '0', 'decorname': 'Не выбран', 'decor_type': '0000'},
+    {'indexname': 'G', 'decorname': 'Стекло/Зеркало', 'decor_type': '0111'},
+    {'indexname': 'empty', 'decorname': 'Отсутствует', 'decor_type': '0000'},
     {'indexname': 'L11', 'decorname': 'Белый Матовый', 'decor_type': '1000'},
     {'indexname': 'L1', 'decorname': 'Дуб Сантана', 'decor_type': '1000'},
     {'indexname': '4', 'decorname': 'Зеркало Серебро', 'decor_type': '0100'},
     {'indexname': '7', 'decorname': 'Стекло прозрачное Сатин', 'decor_type': '0010'},
-    {'indexname': '1', 'decorname': 'крашеное черное', 'decor_type': '0100'}
+    {'indexname': '1', 'decorname': 'крашеное черное', 'decor_type': '0100'},
+    {'indexname': 'L3', 'decorname': 'Дуб Ценамон', 'decor_type': '1000'}
 ]
 
 door_model_list = [
-    {
-        'modelname': 'Пустая',
-        'laminate': 0,
-        'cased_glass': 0,
-        'glass_cleare': 0,
-        'glass_plus': 0,
-    },
     {
         'modelname': 'Forte 10',
         'laminate': 1,

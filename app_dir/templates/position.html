@@ -13,7 +13,7 @@
                 <th class="text-center">Модель</th>
                 <th class="text-center">Основа</th>
                 <th class="text-center">Декор</th>
-                <th class="text-center">Тип лутки</th>
+                <th class="text-center">Лутка</th>
                 <th class="text-center">Высота полотна</th>
                 <th class="text-center">Ширина полотна</th>
                 <th class="text-center">Добор</th>
@@ -32,10 +32,10 @@
                     {{ position.doormodel }}
                 </td>
                 <td>
-                    {{ position.base_decor_id }}
+                    {{ position.base_decor }}
                 </td>
                 <td>
-                    {{ position.second_decor_id }}
+                    {{ position.second_decor }}
                 </td>
                 <td>
                     {{ position.frame_type }}
@@ -51,7 +51,6 @@
                 </td>
             </tr>
             {% endfor %}
-            {% print(pos) %}
         </tbody>
     </table>
 

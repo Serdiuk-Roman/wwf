@@ -141,6 +141,8 @@ def position():
     if form.errors:
         print(form.errors)
     positions = Position.query.all()
+    # print(positions.__dict__)
+    # print(dir(positions))
     if not positions:
         flash('В базе еще пусто')
     return render_template(

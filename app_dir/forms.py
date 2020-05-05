@@ -54,6 +54,8 @@ class DecorForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
+
+
 class DoorModelForm(FlaskForm):
     modelname = StringField('Название', validators=[DataRequired()])
     laminate = BooleanField('Плёнка', validators=[DataRequired()])
@@ -64,6 +66,8 @@ class DoorModelForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
+
+
 class PositionForm(FlaskForm):
     # pass
     room = StringField('Комната', validators=[DataRequired()])
@@ -72,37 +76,21 @@ class PositionForm(FlaskForm):
         'Модель',
         coerce=int,
         validators=[DataRequired()]
-        # choices=[
-        #     (dm.id, dm.modelname) for dm in DoorModel.query.all()
-        # ]
     )
     base_decor_id = SelectField(
         'Декор полотна',
         coerce=int,
         validators=[DataRequired()]
-        # choices=[
-        #     (d.id, d.decorname) for d in Decor.query.filter(
-        #         Decor.decor_type == '1000'
-        #     )
-        # ]
     )
     second_decor_id = SelectField(
         'Дополнительный декор',
         coerce=int,
         validators=[DataRequired()]
-        # choices=[
-        #     (d.id, d.decorname) for d in Decor.query.filter(
-        #         Decor.decor_type == '0100'
-        #     )
-        # ]
     )
     frame_id = SelectField(
         'Тип лутки',
         coerce=int,
         validators=[DataRequired()]
-        # choices=[
-        #     (ft.id, ft.frame_name) for ft in FrameType.query.all()
-        # ]
     )
     doors_height = IntegerField(
         'Высота полотна',
@@ -128,9 +116,6 @@ class PositionForm(FlaskForm):
     expander_id = SelectField(
         'Добор',
         coerce=int
-        # choices=[
-        #     (er.id, er.expander_width) for er in Expander.query.all()
-        # ]
     )
 
     submit = SubmitField('Добавить')
@@ -140,13 +125,18 @@ class PositionForm(FlaskForm):
 
         self.doormodel_id.choices = \
             [(dm.id, dm.modelname) for dm in DoorModel.query.all()]
-        self.doormodel_id.choices.insert(0, (0, "Не выбрана"))
 
         self.base_decor_id.choices = \
             [(d.id, d.decorname) for d in Decor.query.filter(
                 Decor.decor_type == '1000'
             )]
-        self.base_decor_id.choices.insert(0, (0, "Не выбран"))
+        without_decor = Decor.query.get_or_404(1)
+        self.base_decor_id.choices.insert(
+            0, (
+                without_decor.id,
+                without_decor.decorname
+            )
+        )
 
         self.second_decor_id.choices = \
             [(d.id, d.decorname) for d in Decor.query.filter(
@@ -162,12 +152,18 @@ class PositionForm(FlaskForm):
                 Decor.decor_type == '0001'
             )]
         )
-        self.second_decor_id.choices.insert(0, (0, "Не выбран"))
+        empty = Decor.query.get_or_404(2)
+        self.second_decor_id.choices.insert(
+            0, (
+                empty.id,
+                empty.decorname
+            )
+        )
 
         self.frame_id.choices = \
             [(ft.id, ft.frame_name) for ft in FrameType.query.all()]
-        self.frame_id.choices.insert(0, (0, "Не выбрана"))
+        # self.frame_id.choices.insert(0, (0, "Не выбрана"))
 
         self.expander_id.choices = \
             [(er.id, er.expander_width) for er in Expander.query.all()]
-        self.expander_id.choices.insert(0, (0, "Не выбран"))
+        # self.expander_id.choices.insert(0, (0, "Не выбран"))

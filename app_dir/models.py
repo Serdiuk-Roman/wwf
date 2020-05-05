@@ -59,7 +59,7 @@ class Decor(db.Model):
     decor_type = db.Column(db.String(4), index=True, unique=False)
 
     def __repr__(self):
-        return 'Decor:{}'.format(self.decorname)
+        return self.decorname
 
 
 class DoorModel(db.Model):
@@ -111,8 +111,13 @@ class Position(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room = db.Column(db.String(32))
     doormodel_id = db.Column(db.Integer, db.ForeignKey('door_models.id'))
+
     base_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     second_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
+
+    base_decor = db.relationship('Decor', foreign_keys=[base_decor_id])
+    second_decor = db.relationship('Decor', foreign_keys=[second_decor_id])
+
     frame_id = db.Column(db.Integer, db.ForeignKey('frame_type.id'))
     doors_height = db.Column(db.Integer)
     doors_width = db.Column(db.Integer)
