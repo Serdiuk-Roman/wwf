@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block app_content %}
+
+    <table class="table table-bordered table-striped text-center" id="same_table">
+        <caption>Заказ № {{ order.order_id }}</caption>
+        <thead>
+            <tr>
+                <th class="text-center">Заказ №</th>
+                <th class="text-center">Дата создания</th>
+                <th class="text-center">Оформил</th>
+                <th class="text-center">Менеджер</th>
+                <th class="text-center">Город</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {{ order.order_number }}
+                </td>
+                <td>
+                    {{ order.timestamp }}
+                </td>
+                <td>
+                    {{ order.creator }}
+                </td>
+                <td>
+                    {{ order.customer_manager }}
+                </td>
+                <td>
+                    {{ order.customer_city }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% include position.html %}
+
+{% endblock %}

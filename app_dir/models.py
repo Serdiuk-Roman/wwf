@@ -12,11 +12,12 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    orders = db.relationship('Order', backref='creator', lazy='dynamic')
     about_me = db.Column(db.String(140))
     # last_seen = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
-        return 'User {}'.format(self.username)
+        return self.username
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -38,16 +39,6 @@ class Post(db.Model):
 
     def __repr__(self):
         return 'Post {}'.format(self.body)
-
-
-# class Zakaz(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     zakaz_number = db.Column(db.Integer)
-#     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-#     positions = db.relationship('Position', backref='zakaz')
-
-#     def __repr__(self):
-#         return 'Zakaz_№{}'.format(self.zakaz_number)
 
 
 class Decor(db.Model):
@@ -106,9 +97,25 @@ class Expander(db.Model):
         return '{} мм'.format(self.expander_width)
 
 
-class Position(db.Model):
-    __tablename__ = 'positions'
+class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    positions = db.relationship('Position', backref='order')
+    order_number = db.Column(db.Integer, unique=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    positions = db.relationship('Position', backref='order')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    customer_manager = db.Column(db.String(64))
+    customer_city = db.Column(db.String(64))
+
+    def __repr__(self):
+        return 'Заказ № {}'.format(self.order_number)
+
+
+class Position(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+
     room = db.Column(db.String(32))
     doormodel_id = db.Column(db.Integer, db.ForeignKey('door_models.id'))
 

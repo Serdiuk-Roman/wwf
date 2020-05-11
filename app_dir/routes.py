@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
-from app_dir.models import User, Decor, DoorModel, Position, Expander, FrameType
-from app_dir.forms import LoginForm, RegistrationForm, \
-    DecorForm, DoorModelForm, PositionForm
-from app_dir.utils import set_decor_type, decor_list,  \
-    door_model_list, expander_list, frame_type_list
+
+from app_dir.models import User, Decor, DoorModel, Position, Expander, \
+    FrameType, Order
+
+from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
+    DoorModelForm, PositionForm, OrderForm
+
+from app_dir.utils import set_decor_type, decor_list, door_model_list, \
+    expander_list, frame_type_list
 
 
 @app.route('/')
@@ -86,7 +92,12 @@ def decor():
     decors = Decor.query.all()
     if not decors:
         flash('В базе еще нет декора')
-    return render_template('decor.html', title='Decor', decors=decors, forms=form)
+    return render_template(
+        'decor.html',
+        title='Decor',
+        decors=decors,
+        forms=form
+    )
 
 
 @app.route('/door_model', methods=['get', 'post'])
@@ -131,8 +142,7 @@ def position():
             frame_id=form.frame_id.data,
             doors_height=form.doors_height.data,
             doors_width=form.doors_width.data,
-            expander_id=form.expander_id.data,
-            # other_decor_id=form.other_decor_id.data
+            expander_id=form.expander_id.data
         )
         db.session.add(position)
         db.session.commit()
@@ -141,8 +151,6 @@ def position():
     if form.errors:
         print(form.errors)
     positions = Position.query.all()
-    # print(positions.__dict__)
-    # print(dir(positions))
     if not positions:
         flash('В базе еще пусто')
     return render_template(
@@ -203,3 +211,73 @@ def first_data():
         flash('Поздравляю, Вы внесли типы луток в базу!!!')
 
     return redirect(url_for('register'))
+
+
+@app.route('/orders', methods=['get'])
+@login_required
+def orders():
+    orders = Order.query.all()
+    return render_template(
+        'orders.html',
+        title='Ваши Заказы',
+        orders=orders
+    )
+
+
+@app.route('/new_order', methods=['get', 'post'])
+@login_required
+def new_order():
+    form = OrderForm()
+    if form.validate_on_submit():
+        order = Order(
+            order_number=form.order_number.data,
+            timestamp=datetime.utcnow(),
+            creator=current_user,
+            customer_manager=form.customer_manager.data,
+            customer_city=form.customer_city.data
+        )
+        db.session.add(order)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новый заказ.')
+        return redirect(url_for('order', order_number=order.order_number))
+    return render_template(
+        'new_order.html',
+        title='Новый заказ',
+        forms=form
+    )
+
+
+@app.route('/order/<int:order_number>', methods=['get', 'post'])
+@login_required
+def order(order_number):
+    order = Order.query.filter_by(order_number=order_number).first()
+
+    form = PositionForm()
+    if form.validate_on_submit():
+        position = Position(
+            # position=order,
+            room=form.room.data,
+            doormodel_id=form.doormodel_id.data,
+            base_decor_id=form.base_decor_id.data,
+            second_decor_id=form.second_decor_id.data,
+            frame_id=form.frame_id.data,
+            doors_height=form.doors_height.data,
+            doors_width=form.doors_width.data,
+            expander_id=form.expander_id.data
+        )
+        db.session.add(position)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новую позицию.')
+        return redirect(url_for('order', order_id=order.order_number))
+    if form.errors:
+        print(form.errors)
+    positions = Position.query.filter_by(order=order_number).all()
+    if not positions:
+        flash('В базе еще пусто')
+    return render_template(
+        'order.html',
+        title='Заказ № {}'.format(order_number),
+        order=order,
+        positions=positions,
+        forms=form
+    )

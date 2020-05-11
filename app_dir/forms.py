@@ -2,8 +2,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, \
-    SubmitField, RadioField, SelectField, IntegerField, \
-    DecimalField
+    SubmitField, RadioField, SelectField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, \
     EqualTo, NumberRange
 from wtforms.widgets.html5 import NumberInput
@@ -54,8 +53,6 @@ class DecorForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
-
-
 class DoorModelForm(FlaskForm):
     modelname = StringField('Название', validators=[DataRequired()])
     laminate = BooleanField('Плёнка', validators=[DataRequired()])
@@ -66,10 +63,8 @@ class DoorModelForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
-
-
 class PositionForm(FlaskForm):
-    # pass
+
     room = StringField('Комната', validators=[DataRequired()])
 
     doormodel_id = SelectField(
@@ -167,3 +162,15 @@ class PositionForm(FlaskForm):
         self.expander_id.choices = \
             [(er.id, er.expander_width) for er in Expander.query.all()]
         # self.expander_id.choices.insert(0, (0, "Не выбран"))
+
+
+class OrderForm(FlaskForm):
+    order_number = IntegerField(
+        'Заказ №',
+        widget=NumberInput(min='17000', step='1'),
+        validators=[DataRequired()]
+    )
+    customer_manager = StringField('Менеджер', validators=[DataRequired()])
+    customer_city = StringField('Город', validators=[DataRequired()])
+
+    submit = SubmitField('Добавить')
