@@ -30,7 +30,7 @@
                     </a>
                 </td>
                 <td>
-                    {{ order.timestamp }}
+                    {{ moment(order.timestamp).format('LLL') }}
                 </td>
                 <td>
                     {{ order.creator }}

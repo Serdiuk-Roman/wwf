@@ -36,7 +36,6 @@
                     <li><a href="{{ url_for('decor') }}">Добавить декор</a></li>
                     <li><a href="{{ url_for('door_model') }}">Добавить модель</a></li>
                     <li><a href="{{ url_for('orders') }}">Заказы</a></li>
-                    <li><a href="{{ url_for('position') }}">Добавить позицию</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
@@ -67,27 +66,22 @@
 
 
 {% block scripts %}
-{{ super() }}
+    {{ super() }}
 
-<div class="well well-sm footer-copyright text-center">
-    © 2020 Copyright
-</div>
-
-
-<!-- <div class="panel panel-default">
-    <div class="panel-footer badge footer-copyright text-center">
-        <h4>© 2020 Copyright:</h4>
+    <div class="well well-sm footer-copyright text-center">
         © 2020 Copyright
     </div>
-</div> -->
+
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.js">
+    </script>
+    <script type="text/javascript" charset="utf8">
+        $(document).ready(function() {
+            $('#same_table').DataTable();
+        } );
+    </script>
+
+    {{ moment.include_moment() }}
+    {{ moment.locale("ru") }}
 
 
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8">
-    $(document).ready(function() {
-        $('#same_table').DataTable();
-    } );
-</script>
 {% endblock %}
-
-

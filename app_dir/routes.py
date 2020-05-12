@@ -250,12 +250,13 @@ def new_order():
 @app.route('/order/<int:order_number>', methods=['get', 'post'])
 @login_required
 def order(order_number):
-    order = Order.query.filter_by(order_number=order_number).first()
+
+    order = Order.query.filter_by(order_number=order_number).first_or_404()
 
     form = PositionForm()
     if form.validate_on_submit():
         position = Position(
-            # position=order,
+            order_id=order.id,
             room=form.room.data,
             doormodel_id=form.doormodel_id.data,
             base_decor_id=form.base_decor_id.data,
@@ -268,12 +269,12 @@ def order(order_number):
         db.session.add(position)
         db.session.commit()
         flash('Поздравляю, Вы добавили новую позицию.')
-        return redirect(url_for('order', order_id=order.order_number))
+        return redirect(url_for('order', order_number=order_number))
     if form.errors:
         print(form.errors)
-    positions = Position.query.filter_by(order=order_number).all()
+    positions = Position.query.filter_by(order=order).all()
     if not positions:
-        flash('В базе еще пусто')
+        flash('Добавьте позиции')
     return render_template(
         'order.html',
         title='Заказ № {}'.format(order_number),

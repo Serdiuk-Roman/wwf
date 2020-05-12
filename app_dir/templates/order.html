@@ -4,8 +4,7 @@
 
 {% block app_content %}
 
-    <table class="table table-bordered table-striped text-center" id="same_table">
-        <caption>Заказ № {{ order.order_id }}</caption>
+    <table class="table table-bordered table-striped text-center" >
         <thead>
             <tr>
                 <th class="text-center">Заказ №</th>
@@ -21,7 +20,7 @@
                     {{ order.order_number }}
                 </td>
                 <td>
-                    {{ order.timestamp }}
+                    {{ moment(order.timestamp).format('LLL') }}
                 </td>
                 <td>
                     {{ order.creator }}
@@ -36,6 +35,6 @@
         </tbody>
     </table>
 
-    {% include position.html %}
+    {% include 'position.html' %}
 
 {% endblock %}

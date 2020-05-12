@@ -1,15 +1,13 @@
-{% extends "base.html" %}
-
 {% from "_formhelpers.html" import render_field %}
 
 {% block app_content %}
 
     <table class="table table-bordered table-striped text-center" id="same_table">
-        <caption>Заказ №</caption>
+        {# <caption>Заказ № {{ order.id }}</caption> #}
         <thead>
             <tr>
                 <th class="text-center">№ п/п</th>
-                <th class="text-center">Комната</th>
+                <th class="text-center">Помещение</th>
                 <th class="text-center">Модель</th>
                 <th class="text-center">Основа</th>
                 <th class="text-center">Декор</th>
