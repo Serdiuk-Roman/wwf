@@ -11,7 +11,11 @@ decor_list = [
     {'indexname': 'L11', 'decorname': 'Белый Матовый', 'decor_type': '1000'},
     {'indexname': 'L1', 'decorname': 'Дуб Сантана', 'decor_type': '1000'},
     {'indexname': '4', 'decorname': 'Зеркало Серебро', 'decor_type': '0100'},
-    {'indexname': '7', 'decorname': 'Стекло прозрачное Сатин', 'decor_type': '0010'},
+    {
+        'indexname': '7',
+        'decorname': 'Стекло прозрачное Сатин',
+        'decor_type': '0010'
+    },
     {'indexname': '1', 'decorname': 'крашеное черное', 'decor_type': '0100'},
     {'indexname': 'L3', 'decorname': 'Дуб Ценамон', 'decor_type': '1000'}
 ]
@@ -59,10 +63,27 @@ expander_list = [
 ]
 
 frame_type_list = [
-    {
-        'frame_name': "Форте"
-    },
-    {
-        'frame_name': "Француз"
-    }
+    {'frame_name': "Форте"},
+    {'frame_name': "Француз"}
+]
+
+locks_purpose_list = [
+    {'purpose': "BAD"},
+    {'purpose': "WC"},
+    {'purpose': "PZ"}
+]
+
+locks_type_list = [
+    {'kind': "AGB Evolution"},
+    {'kind': "AGB Polaris"},
+    {'kind': "Замок Заказчика"}
+]
+
+locks_color_list = [
+    {'color': "Мат.Хром"},
+    {'color': "Никель"},
+    {'color': "Хром"},
+    {'color': "Старая бронза"},
+    {'color': "Бронза"},
+    {'color': "Черніьй"}
 ]

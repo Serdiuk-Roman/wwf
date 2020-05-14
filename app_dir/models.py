@@ -94,13 +94,55 @@ class Expander(db.Model):
     )
 
     def __repr__(self):
-        return '{} мм'.format(self.expander_width)
+        return str(self.expander_width)
+
+
+class LocksPurpose(db.Model):
+    """docstring for LocksPurpose"""
+    __tablename__ = 'lock_purpose'
+    id = db.Column(db.Integer, primary_key=True)
+    purpose_name = db.Column(db.String(16))
+    purposes = db.relationship(
+        'Position',
+        backref='purpose'
+    )
+
+    def __repr__(self):
+        return str(self.purpose)
+
+
+class LocksType(db.Model):
+    """docstring for LocksType"""
+    __tablename__ = 'lock_type'
+    id = db.Column(db.Integer, primary_key=True)
+    kind = db.Column(db.String(140))
+    kinds = db.relationship(
+        'Position',
+        backref='kind'
+    )
+
+    def __repr__(self):
+        return str(self.kind)
+
+
+class LocksColor(db.Model):
+    """docstring for LocksColor"""
+    __tablename__ = 'lock_color'
+    id = db.Column(db.Integer, primary_key=True)
+    color = db.Column(db.String(32))
+    colors = db.relationship(
+        'Position',
+        backref='color'
+    )
+
+    def __repr__(self):
+        return str(self.color)
 
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     positions = db.relationship('Position', backref='order')
-    order_number = db.Column(db.Integer, unique=True)
+    order_number = db.Column(db.Integer, unique=True, index=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     positions = db.relationship('Position', backref='order')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -121,14 +163,32 @@ class Position(db.Model):
 
     base_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     second_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
-
     base_decor = db.relationship('Decor', foreign_keys=[base_decor_id])
     second_decor = db.relationship('Decor', foreign_keys=[second_decor_id])
 
     frame_id = db.Column(db.Integer, db.ForeignKey('frame_type.id'))
     doors_height = db.Column(db.Integer)
     doors_width = db.Column(db.Integer)
+
     expander_id = db.Column(db.Integer, db.ForeignKey('expanders.id'))
 
-    # other_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
-    # dl = db.relationship('Block', backref='position', uselist=False)
+    lock_purpose_id = db.Column(db.Integer, db.ForeignKey('lock_purpose.id'))
+
+    lock_type_id = db.Column(db.Integer, db.ForeignKey('lock_type.id'))
+
+    lock_color_id = db.Column(db.Integer, db.ForeignKey('lock_color.id'))
+
+
+
+
+# class Lock(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+
+#     locks_purpose_id = db.Column(
+#         db.Integer,
+#         db.ForeignKey('locks_purpose.id')
+#     )
+#     locks_purpose = db.relationship(
+#         'LocksPurpose',
+#         foreign_keys=[locks_purpose_id]
+#     )

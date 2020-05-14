@@ -7,7 +7,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, \
     EqualTo, NumberRange
 from wtforms.widgets.html5 import NumberInput
 
-from app_dir.models import User, DoorModel, Decor, FrameType, Expander
+from app_dir.models import User, DoorModel, Decor, FrameType, Expander, \
+    LocksPurpose, LocksType, LocksColor
 
 
 class LoginForm(FlaskForm):
@@ -65,7 +66,7 @@ class DoorModelForm(FlaskForm):
 
 class PositionForm(FlaskForm):
 
-    room = StringField('Комната', validators=[DataRequired()])
+    room = StringField('Помещение', validators=[DataRequired()])
 
     doormodel_id = SelectField(
         'Модель',
@@ -110,6 +111,21 @@ class PositionForm(FlaskForm):
     )
     expander_id = SelectField(
         'Добор',
+        coerce=int
+    )
+
+    lock_purpose_id = SelectField(
+        'Назначение замка',
+        coerce=int
+    )
+
+    lock_type_id = SelectField(
+        'Тип замка',
+        coerce=int
+    )
+
+    lock_color_id = SelectField(
+        'Цвет замка',
         coerce=int
     )
 
@@ -162,6 +178,15 @@ class PositionForm(FlaskForm):
         self.expander_id.choices = \
             [(er.id, er.expander_width) for er in Expander.query.all()]
         # self.expander_id.choices.insert(0, (0, "Не выбран"))
+
+        self.lock_purpose_id.choices = \
+            [(lp.id, lp.purpose_name) for lp in LocksPurpose.query.all()]
+
+        self.lock_type_id.choices = \
+            [(lt.id, lt.kind) for lt in LocksType.query.all()]
+
+        self.lock_color_id.choices = \
+            [(lc.id, lc.color) for lc in LocksColor.query.all()]
 
 
 class OrderForm(FlaskForm):

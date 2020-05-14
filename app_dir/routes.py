@@ -9,13 +9,14 @@ from werkzeug.urls import url_parse
 from app_dir import app, db
 
 from app_dir.models import User, Decor, DoorModel, Position, Expander, \
-    FrameType, Order
+    FrameType, Order, LocksPurpose, LocksType, LocksColor
 
 from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
     DoorModelForm, PositionForm, OrderForm
 
 from app_dir.utils import set_decor_type, decor_list, door_model_list, \
-    expander_list, frame_type_list
+    expander_list, frame_type_list, locks_purpose_list, locks_type_list, \
+    locks_color_list
 
 
 @app.route('/')
@@ -129,38 +130,6 @@ def door_model():
     )
 
 
-@app.route('/position', methods=['get', 'post'])
-@login_required
-def position():
-    form = PositionForm()
-    if form.validate_on_submit():
-        position = Position(
-            room=form.room.data,
-            doormodel_id=form.doormodel_id.data,
-            base_decor_id=form.base_decor_id.data,
-            second_decor_id=form.second_decor_id.data,
-            frame_id=form.frame_id.data,
-            doors_height=form.doors_height.data,
-            doors_width=form.doors_width.data,
-            expander_id=form.expander_id.data
-        )
-        db.session.add(position)
-        db.session.commit()
-        flash('Поздравляю, Вы добавили новую позицию.')
-        return redirect(url_for('position'))
-    if form.errors:
-        print(form.errors)
-    positions = Position.query.all()
-    if not positions:
-        flash('В базе еще пусто')
-    return render_template(
-        'position.html',
-        title='Position',
-        positions=positions,
-        forms=form
-    )
-
-
 @app.route('/first_data')
 def first_data():
 
@@ -209,6 +178,36 @@ def first_data():
             db.session.add(ft)
         db.session.commit()
         flash('Поздравляю, Вы внесли типы луток в базу!!!')
+
+    if len(LocksPurpose.query.all()) is 0:
+
+        for element in locks_purpose_list:
+            lp = LocksPurpose(
+                purposesssssss=element['purpose']
+            )
+            db.session.add(lp)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли назначение замков!!!')
+
+    if len(LocksType.query.all()) is 0:
+
+        for element in locks_type_list:
+            lt = LocksType(
+                kind=element['kind']
+            )
+            db.session.add(lt)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли тип замков!!!')
+
+    if len(LocksColor.query.all()) is 0:
+
+        for element in locks_color_list:
+            lc = LocksColor(
+                color=element['color']
+            )
+            db.session.add(lc)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли цвет замков!!!')
 
     return redirect(url_for('register'))
 
@@ -264,7 +263,10 @@ def order(order_number):
             frame_id=form.frame_id.data,
             doors_height=form.doors_height.data,
             doors_width=form.doors_width.data,
-            expander_id=form.expander_id.data
+            expander_id=form.expander_id.data,
+            lock_purpose_id=form.lock_purpose_id.data,
+            lock_type_id=form.lock_type_id.data,
+            lock_color_id=form.lock_color_id.data
         )
         db.session.add(position)
         db.session.commit()
@@ -275,6 +277,10 @@ def order(order_number):
     positions = Position.query.filter_by(order=order).all()
     if not positions:
         flash('Добавьте позиции')
+    print()
+    for i in dir(positions[0]):
+        print(i)
+    print()
     return render_template(
         'order.html',
         title='Заказ № {}'.format(order_number),

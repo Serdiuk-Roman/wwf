@@ -14,7 +14,10 @@
                 <th class="text-center">Лутка</th>
                 <th class="text-center">Высота полотна</th>
                 <th class="text-center">Ширина полотна</th>
-                <th class="text-center">Добор</th>
+                <th class="text-center">Добор, мм</th>
+                <th class="text-center">Назнач.</th>
+                <th class="text-center">Тип</th>
+                <th class="text-center">Цвет</th>
             </tr>
         </thead>
         <tbody>
@@ -47,6 +50,16 @@
                 <td>
                     {{ position.expander }}
                 </td>
+                <td>
+                    {{ position.lock_purpose_id }}
+                </td>
+                <td>
+                    {{ position.lock_type }}
+                </td>
+            </tr>
+                <td>
+                    {{ position.lock_color }}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -65,6 +78,9 @@
             {{ render_field(forms.doors_height) }}
             {{ render_field(forms.doors_width) }}
             {{ render_field(forms.expander_id) }}
+            {{ render_field(forms.lock_purpose_id) }}
+            {{ render_field(forms.lock_type_id) }}
+            {{ render_field(forms.lock_color_id) }}
             {{ forms.submit(class_="btn btn-default") }}
         </dl>
     </form>
