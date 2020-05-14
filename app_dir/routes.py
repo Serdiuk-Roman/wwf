@@ -278,8 +278,9 @@ def order(order_number):
     if not positions:
         flash('Добавьте позиции')
     print()
-    for i in dir(positions[0]):
+    for i in positions[0].__dict__:
         print(i)
+    # , '<+++>', dir(i)
     print()
     return render_template(
         'order.html',

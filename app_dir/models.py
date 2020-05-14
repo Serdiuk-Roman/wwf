@@ -108,7 +108,7 @@ class LocksPurpose(db.Model):
     )
 
     def __repr__(self):
-        return str(self.purpose)
+        return str(self.purpose_name)
 
 
 class LocksType(db.Model):
