@@ -30,45 +30,19 @@
         <tbody>
             {% for position in positions %}
             <tr>
-                <td>
-                    {{ loop.index }}
-                </td>
-                <td>
-                    {{ position.room }}
-                </td>
-                <td>
-                    {{ position.doormodel }}
-                </td>
-                <td>
-                    {{ position.base_decor }}
-                </td>
-                <td>
-                    {{ position.second_decor }}
-                </td>
-                <td>
-                    {{ position.frame_type }}
-                </td>
-                <td>
-                    {{ position.doors_height }}
-                </td>
-                <td>
-                    {{ position.doors_width }}
-                </td>
-                <td>
-                    {{ render_if_none(position.casings_count) }}
-                </td>
-                <td>
-                    {{ render_if_none(position.expander) }}
-                </td>
-                <td>
-                    {{ render_if_none(position.purpose) }}
-                </td>
-                <td>
-                    {{ render_if_none(position.kind) }}
-                </td>
-                <td>
-                    {{ render_if_none(position.color) }}
-                </td>
+                <td>{{ loop.index }}</td>
+                <td>{{ position.room }}</td>
+                <td>{{ position.doormodel }}</td>
+                <td>{{ position.base_decor }}</td>
+                <td>{{ position.second_decor }}</td>
+                <td>{{ position.frame_type }}</td>
+                <td>{{ position.doors_height }}</td>
+                <td>{{ position.doors_width }}</td>
+                <td>{{ render_if_none(position.casings_count) }}</td>
+                <td>{{ render_if_none(position.expander) }}</td>
+                <td>{{ render_if_none(position.lock_purpose) }}</td>
+                <td>{{ render_if_none(position.lock_kind) }}</td>
+                <td>{{ render_if_none(position.lock_color) }}</td>
             </tr>
             {% endfor %}
         </tbody>

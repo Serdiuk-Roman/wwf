@@ -8,7 +8,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, \
 from wtforms.widgets.html5 import NumberInput
 
 from app_dir.models import User, DoorModel, Decor, FrameType, Casing, \
-    Expander, LocksPurpose, LocksType, LocksColor
+    Expander, LocksPurpose, LocksType, LocksColor, HingesSide
 
 
 class LoginForm(FlaskForm):
@@ -135,6 +135,11 @@ class PositionForm(FlaskForm):
         coerce=int
     )
 
+    hinge_side_id = SelectField(
+        'Сторона петель',
+        coerce=int
+    )
+
     submit = SubmitField('Добавить')
 
     def __init__(self, *args, **kwargs):
@@ -182,6 +187,9 @@ class PositionForm(FlaskForm):
 
         self.casing_id.choices = \
             [(cas.id, cas.casing_count or 'Нет') for cas in Casing.query.all()]
+
+        self.hinge_side_id.choices = \
+            [(hs.id, hs.side or 'Нет') for hs in HingesSide.query.all()]
 
         self.expander_id.choices = \
             [

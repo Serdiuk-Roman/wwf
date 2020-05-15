@@ -117,7 +117,7 @@ class LocksPurpose(db.Model):
     purpose_name = db.Column(db.String(16))
     purposes = db.relationship(
         'Position',
-        backref='purpose'
+        backref='lock_purpose'
     )
 
     def __repr__(self):
@@ -131,7 +131,7 @@ class LocksType(db.Model):
     kind = db.Column(db.String(140))
     kinds = db.relationship(
         'Position',
-        backref='kind'
+        backref='lock_kind'
     )
 
     def __repr__(self):
@@ -145,11 +145,25 @@ class LocksColor(db.Model):
     color = db.Column(db.String(32))
     colors = db.relationship(
         'Position',
-        backref='color'
+        backref='lock_color'
     )
 
     def __repr__(self):
         return str(self.color)
+
+
+class HingesSide(db.Model):
+    """docstring for HingesSide"""
+    __tablename__ = 'hinge_sides'
+    id = db.Column(db.Integer, primary_key=True)
+    side = db.Column(db.String(8))
+    sides = db.relationship(
+        'Position',
+        backref='hinge_side'
+    )
+
+    def __repr__(self):
+        return str(self.side)
 
 
 class Order(db.Model):
@@ -191,6 +205,8 @@ class Position(db.Model):
     lock_type_id = db.Column(db.Integer, db.ForeignKey('lock_type.id'))
 
     lock_color_id = db.Column(db.Integer, db.ForeignKey('lock_color.id'))
+
+    hinge_side_id = db.Column(db.Integer, db.ForeignKey('hinge_sides.id'))
 
 
 

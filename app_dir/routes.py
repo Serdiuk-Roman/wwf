@@ -9,14 +9,15 @@ from werkzeug.urls import url_parse
 from app_dir import app, db
 
 from app_dir.models import User, Decor, DoorModel, Position, Casing, \
-    Expander, FrameType, Order, LocksPurpose, LocksType, LocksColor
+    Expander, FrameType, Order, LocksPurpose, LocksType, LocksColor, \
+    HingesSide
 
 from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
     DoorModelForm, PositionForm, OrderForm
 
 from app_dir.utils import set_decor_type, decor_list, door_model_list, \
     casings_list, expander_list, frame_type_list, locks_purpose_list, \
-    locks_type_list, locks_color_list
+    locks_type_list, locks_color_list, hinge_sides_list
 
 
 @app.route('/')
@@ -190,7 +191,6 @@ def first_data():
         flash('Поздравляю, Вы внесли типы луток в базу!!!')
 
     if len(LocksPurpose.query.all()) is 0:
-
         for element in locks_purpose_list:
             lp = LocksPurpose(
                 purpose_name=element['purpose']
@@ -200,7 +200,6 @@ def first_data():
         flash('Поздравляю, Вы внесли назначение замков!!!')
 
     if len(LocksType.query.all()) is 0:
-
         for element in locks_type_list:
             lt = LocksType(
                 kind=element['kind']
@@ -210,7 +209,6 @@ def first_data():
         flash('Поздравляю, Вы внесли тип замков!!!')
 
     if len(LocksColor.query.all()) is 0:
-
         for element in locks_color_list:
             lc = LocksColor(
                 color=element['color']
@@ -218,6 +216,15 @@ def first_data():
             db.session.add(lc)
         db.session.commit()
         flash('Поздравляю, Вы внесли цвет замков!!!')
+
+    if len(HingesSide.query.all()) is 0:
+        for element in hinge_sides_list:
+            hs = HingesSide(
+                side=element['side']
+            )
+            db.session.add(hs)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли стороніь петель!!!')
 
     return redirect(url_for('register'))
 
@@ -286,12 +293,6 @@ def order(order_number):
     if form.errors:
         print(form.errors)
     positions = Position.query.filter_by(order=order).all()
-    print()
-    print(type(positions[0].expander))
-    print(positions[0].expander)
-    print(positions[0].expander.expander_width)
-    print(dir(positions[0].expander))
-    print()
     if not positions:
         flash('Добавьте позиции')
     return render_template(

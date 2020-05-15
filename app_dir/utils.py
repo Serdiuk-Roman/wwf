@@ -105,3 +105,9 @@ locks_color_list = [
     {'color': "Бронза"},
     {'color': "Черніьй"}
 ]
+
+hinge_sides_list = [
+    {'side': None},
+    {'side': "Правая"},
+    {'side': "Левая"}
+]
