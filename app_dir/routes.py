@@ -8,15 +8,15 @@ from werkzeug.urls import url_parse
 
 from app_dir import app, db
 
-from app_dir.models import User, Decor, DoorModel, Position, Expander, \
-    FrameType, Order, LocksPurpose, LocksType, LocksColor
+from app_dir.models import User, Decor, DoorModel, Position, Casing, \
+    Expander, FrameType, Order, LocksPurpose, LocksType, LocksColor
 
 from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
     DoorModelForm, PositionForm, OrderForm
 
 from app_dir.utils import set_decor_type, decor_list, door_model_list, \
-    expander_list, frame_type_list, locks_purpose_list, locks_type_list, \
-    locks_color_list
+    casings_list, expander_list, frame_type_list, locks_purpose_list, \
+    locks_type_list, locks_color_list
 
 
 @app.route('/')
@@ -159,6 +159,16 @@ def first_data():
         db.session.commit()
         flash('Поздравляю, Вы внесли первоначальные модели в базу!!!')
 
+    if len(Casing.query.all()) is 0:
+
+        for element in casings_list:
+            cas = Casing(
+                casing_count=element['casing_count']
+            )
+            db.session.add(cas)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли количество наличников в базу!!!')
+
     if len(Expander.query.all()) is 0:
 
         for element in expander_list:
@@ -183,7 +193,7 @@ def first_data():
 
         for element in locks_purpose_list:
             lp = LocksPurpose(
-                purposesssssss=element['purpose']
+                purpose_name=element['purpose']
             )
             db.session.add(lp)
         db.session.commit()
@@ -263,6 +273,7 @@ def order(order_number):
             frame_id=form.frame_id.data,
             doors_height=form.doors_height.data,
             doors_width=form.doors_width.data,
+            casing_id=form.casing_id.data,
             expander_id=form.expander_id.data,
             lock_purpose_id=form.lock_purpose_id.data,
             lock_type_id=form.lock_type_id.data,
@@ -275,13 +286,14 @@ def order(order_number):
     if form.errors:
         print(form.errors)
     positions = Position.query.filter_by(order=order).all()
+    print()
+    print(type(positions[0].expander))
+    print(positions[0].expander)
+    print(positions[0].expander.expander_width)
+    print(dir(positions[0].expander))
+    print()
     if not positions:
         flash('Добавьте позиции')
-    print()
-    for i in positions[0].__dict__:
-        print(i)
-    # , '<+++>', dir(i)
-    print()
     return render_template(
         'order.html',
         title='Заказ № {}'.format(order_number),

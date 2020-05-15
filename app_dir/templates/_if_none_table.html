@@ -1,0 +1,11 @@
+{% macro render_if_none(field) %}
+
+    {% if field|title == 'None' %}
+        Нет
+    {% else %}
+        {{ field }}
+    {% endif %}
+
+{% endmacro %}
+
+

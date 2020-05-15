@@ -31,12 +31,14 @@
                 <a class="navbar-brand" href="{{ url_for('index') }}">WakeWood</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <!-- <li><a href="{{ url_for('index') }}">Home</a></li> -->
-                    <li><a href="{{ url_for('decor') }}">Добавить декор</a></li>
-                    <li><a href="{{ url_for('door_model') }}">Добавить модель</a></li>
-                    <li><a href="{{ url_for('orders') }}">Заказы</a></li>
-                </ul>
+                {% if current_user.is_authenticated %}
+                    <ul class="nav navbar-nav">
+
+                        <li><a href="{{ url_for('decor') }}">Добавить декор</a></li>
+                        <li><a href="{{ url_for('door_model') }}">Добавить модель</a></li>
+                        <li><a href="{{ url_for('orders') }}">Заказы</a></li>
+                    </ul>
+                {% endif %}
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>

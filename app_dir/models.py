@@ -84,6 +84,19 @@ class FrameType(db.Model):
         return self.frame_name
 
 
+class Casing(db.Model):
+    __tablename__ = 'casings'
+    id = db.Column(db.Integer, primary_key=True)
+    casing_count = db.Column(db.Integer)
+    casings = db.relationship(
+        'Position',
+        backref='casings_count'
+    )
+
+    def __repr__(self):
+        return str(self.casing_count)
+
+
 class Expander(db.Model):
     __tablename__ = 'expanders'
     id = db.Column(db.Integer, primary_key=True)
@@ -170,6 +183,7 @@ class Position(db.Model):
     doors_height = db.Column(db.Integer)
     doors_width = db.Column(db.Integer)
 
+    casing_id = db.Column(db.Integer, db.ForeignKey('casings.id'))
     expander_id = db.Column(db.Integer, db.ForeignKey('expanders.id'))
 
     lock_purpose_id = db.Column(db.Integer, db.ForeignKey('lock_purpose.id'))

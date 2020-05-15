@@ -7,8 +7,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, \
     EqualTo, NumberRange
 from wtforms.widgets.html5 import NumberInput
 
-from app_dir.models import User, DoorModel, Decor, FrameType, Expander, \
-    LocksPurpose, LocksType, LocksColor
+from app_dir.models import User, DoorModel, Decor, FrameType, Casing, \
+    Expander, LocksPurpose, LocksType, LocksColor
 
 
 class LoginForm(FlaskForm):
@@ -109,6 +109,12 @@ class PositionForm(FlaskForm):
             message='Некоректная ширина полотна'
         )]
     )
+
+    casing_id = SelectField(
+        'Наличник',
+        coerce=int
+    )
+
     expander_id = SelectField(
         'Добор',
         coerce=int
@@ -172,21 +178,29 @@ class PositionForm(FlaskForm):
         )
 
         self.frame_id.choices = \
-            [(ft.id, ft.frame_name) for ft in FrameType.query.all()]
-        # self.frame_id.choices.insert(0, (0, "Не выбрана"))
+            [(ft.id, ft.frame_name or 'Нет') for ft in FrameType.query.all()]
+
+        self.casing_id.choices = \
+            [(cas.id, cas.casing_count or 'Нет') for cas in Casing.query.all()]
 
         self.expander_id.choices = \
-            [(er.id, er.expander_width) for er in Expander.query.all()]
-        # self.expander_id.choices.insert(0, (0, "Не выбран"))
+            [
+                (
+                    er.id,
+                    'Нет' if er.expander_width is None else er.expander_width
+                )
+                for er in Expander.query.all()
+            ]
 
         self.lock_purpose_id.choices = \
-            [(lp.id, lp.purpose_name) for lp in LocksPurpose.query.all()]
+            [(lp.id, lp.purpose_name or 'Нет')
+             for lp in LocksPurpose.query.all()]
 
         self.lock_type_id.choices = \
-            [(lt.id, lt.kind) for lt in LocksType.query.all()]
+            [(lt.id, lt.kind or 'Нет') for lt in LocksType.query.all()]
 
         self.lock_color_id.choices = \
-            [(lc.id, lc.color) for lc in LocksColor.query.all()]
+            [(lc.id, lc.color or 'Нет') for lc in LocksColor.query.all()]
 
 
 class OrderForm(FlaskForm):

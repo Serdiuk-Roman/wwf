@@ -44,7 +44,22 @@ door_model_list = [
     }
 ]
 
+casings_list = [
+    {
+        'casing_count': None
+    },
+    {
+        'casing_count': 1
+    },
+    {
+        'casing_count': 2
+    }
+]
+
 expander_list = [
+    {
+        'expander_width': None
+    },
     {
         'expander_width': 0
     },
@@ -68,18 +83,21 @@ frame_type_list = [
 ]
 
 locks_purpose_list = [
+    {'purpose': None},
     {'purpose': "BAD"},
     {'purpose': "WC"},
     {'purpose': "PZ"}
 ]
 
 locks_type_list = [
+    {'kind': None},
     {'kind': "AGB Evolution"},
     {'kind': "AGB Polaris"},
     {'kind': "Замок Заказчика"}
 ]
 
 locks_color_list = [
+    {'color': None},
     {'color': "Мат.Хром"},
     {'color': "Никель"},
     {'color': "Хром"},
