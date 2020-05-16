@@ -8,7 +8,8 @@ from wtforms.validators import ValidationError, DataRequired, Email, \
 from wtforms.widgets.html5 import NumberInput
 
 from app_dir.models import User, DoorModel, Decor, FrameType, Casing, \
-    Expander, LocksPurpose, LocksType, LocksColor, HingesSide
+    Expander, LocksPurpose, LocksType, LocksColor, HingesSide, HingesType, \
+    HingesColor, DoorsSeal
 
 
 class LoginForm(FlaskForm):
@@ -125,7 +126,7 @@ class PositionForm(FlaskForm):
         coerce=int
     )
 
-    lock_type_id = SelectField(
+    lock_kind_id = SelectField(
         'Тип замка',
         coerce=int
     )
@@ -137,6 +138,21 @@ class PositionForm(FlaskForm):
 
     hinge_side_id = SelectField(
         'Сторона петель',
+        coerce=int
+    )
+
+    hinge_kind_id = SelectField(
+        'Тип петель',
+        coerce=int
+    )
+
+    hinge_color_id = SelectField(
+        'Цвет петель',
+        coerce=int
+    )
+
+    doors_seal_id = SelectField(
+        'Уплотнитель',
         coerce=int
     )
 
@@ -188,9 +204,6 @@ class PositionForm(FlaskForm):
         self.casing_id.choices = \
             [(cas.id, cas.casing_count or 'Нет') for cas in Casing.query.all()]
 
-        self.hinge_side_id.choices = \
-            [(hs.id, hs.side or 'Нет') for hs in HingesSide.query.all()]
-
         self.expander_id.choices = \
             [
                 (
@@ -203,12 +216,26 @@ class PositionForm(FlaskForm):
         self.lock_purpose_id.choices = \
             [(lp.id, lp.purpose_name or 'Нет')
              for lp in LocksPurpose.query.all()]
-
-        self.lock_type_id.choices = \
+        self.lock_kind_id.choices = \
             [(lt.id, lt.kind or 'Нет') for lt in LocksType.query.all()]
-
         self.lock_color_id.choices = \
             [(lc.id, lc.color or 'Нет') for lc in LocksColor.query.all()]
+
+        self.hinge_side_id.choices = \
+            [(hs.id, hs.side or 'Нет') for hs in HingesSide.query.all()]
+        self.hinge_kind_id.choices = \
+            [(ht.id, ht.kind or 'Нет') for ht in HingesType.query.all()]
+        self.hinge_color_id.choices = \
+            [(hc.id, hc.color or 'Нет') for hc in HingesColor.query.all()]
+
+        self.doors_seal_id.choices = \
+            [
+                (
+                    ds.id,
+                    'Да' if ds.seal else 'Нет'
+                )
+                for ds in DoorsSeal.query.all()
+            ]
 
 
 class OrderForm(FlaskForm):

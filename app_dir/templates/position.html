@@ -2,12 +2,11 @@
 {% from "_if_none_table.html" import render_if_none %}
 
 {% block app_content %}
-
-    <table class="table table-bordered table-striped text-center" id="same_table">
-        {# <caption>Заказ № {{ order.id }}</caption> #}
-        <thead>
+<div>
+    <table class="table table-bordered table-striped text-center table-hover table-condensed">
+        <thead class="thead-inverse">
             <tr>
-                <th rowspan="2" class="text-center">№ п/п</th>
+                <th rowspan="2" class="text-center">#</th>
                 <th rowspan="2" class="text-center">Пом.</th>
                 <th rowspan="2" class="text-center">Модель</th>
                 <th rowspan="2" class="text-center">Основа</th>
@@ -17,54 +16,102 @@
                 <th rowspan="2" class="text-center">Нал., кол</th>
                 <th rowspan="2" class="text-center">Добор, мм</th>
                 <th colspan="3" class="text-center">Замок</th>
+                <th colspan="3" class="text-center">Петли</th>
+                <th rowspan="2" class="text-center">Уплот</th>
             </tr>
             <tr>
                 <th class="text-center">Выс</th>
                 <th class="text-center">Шир</th>
 
-                <th class="text-center">Назнач.</th>
+                <th class="text-center">Назн</th>
                 <th class="text-center">Тип</th>
                 <th class="text-center">Цвет</th>
+
+                <th class="text-center">Стор</th>
+                <th class="text-center">Тип</th>
+                <th class="text-center">Цвет</th>
+
             </tr>
         </thead>
         <tbody>
             {% for position in positions %}
             <tr>
-                <td>{{ loop.index }}</td>
+
+                <td>
+                    <a href="{{ url_for('edit_order_position', order_number=order.order_number, serial_number=position.serial_number) }}">
+                        {{ position.serial_number }}
+                    </a>
+                </td>
                 <td>{{ position.room }}</td>
                 <td>{{ position.doormodel }}</td>
                 <td>{{ position.base_decor }}</td>
                 <td>{{ position.second_decor }}</td>
+
                 <td>{{ position.frame_type }}</td>
+
                 <td>{{ position.doors_height }}</td>
                 <td>{{ position.doors_width }}</td>
+
                 <td>{{ render_if_none(position.casings_count) }}</td>
                 <td>{{ render_if_none(position.expander) }}</td>
+
                 <td>{{ render_if_none(position.lock_purpose) }}</td>
                 <td>{{ render_if_none(position.lock_kind) }}</td>
                 <td>{{ render_if_none(position.lock_color) }}</td>
+
+                <td>{{ render_if_none(position.hinge_side) }}</td>
+                <td>{{ render_if_none(position.hinge_kind) }}</td>
+                <td>{{ render_if_none(position.hinge_color) }}</td>
+
+                <td>{{ position.door_seal }}</td>
+
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
+</div>
 <div>
-    <h3>Позиция</h3>
+    <h3>Добавить позицию</h3>
     <form action="" method="post">
         {{ forms.hidden_tag() }}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-5">
+                    <dl>
+                        {{ render_field(forms.room) }}
+                        {{ render_field(forms.doormodel_id) }}
+                        {{ render_field(forms.base_decor_id) }}
+                        {{ render_field(forms.second_decor_id) }}
+
+                        {{ render_field(forms.frame_id) }}
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                     <dl>
+                        {{ render_field(forms.doors_height) }}
+                        {{ render_field(forms.doors_width) }}
+
+                        {{ render_field(forms.casing_id) }}
+                        {{ render_field(forms.expander_id) }}
+
+                        {{ render_field(forms.doors_seal_id) }}
+                    </dl>
+                </div>
+                <div class="col-md-3">
+                     <dl>
+                        {{ render_field(forms.lock_purpose_id) }}
+                        {{ render_field(forms.lock_kind_id) }}
+                        {{ render_field(forms.lock_color_id) }}
+
+                        {{ render_field(forms.hinge_side_id) }}
+                        {{ render_field(forms.hinge_kind_id) }}
+                        {{ render_field(forms.hinge_color_id) }}
+
+                    </dl>
+                </div>
+            </div>
+        </div>
         <dl>
-            {{ render_field(forms.room) }}
-            {{ render_field(forms.doormodel_id) }}
-            {{ render_field(forms.base_decor_id) }}
-            {{ render_field(forms.second_decor_id) }}
-            {{ render_field(forms.frame_id) }}
-            {{ render_field(forms.doors_height) }}
-            {{ render_field(forms.doors_width) }}
-            {{ render_field(forms.casing_id) }}
-            {{ render_field(forms.expander_id) }}
-            {{ render_field(forms.lock_purpose_id) }}
-            {{ render_field(forms.lock_type_id) }}
-            {{ render_field(forms.lock_color_id) }}
             {{ forms.submit(class_="btn btn-default") }}
         </dl>
     </form>

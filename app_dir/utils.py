@@ -98,7 +98,7 @@ locks_type_list = [
 
 locks_color_list = [
     {'color': None},
-    {'color': "Мат.Хром"},
+    {'color': "Мат. Хром"},
     {'color': "Никель"},
     {'color': "Хром"},
     {'color': "Старая бронза"},
@@ -110,4 +110,26 @@ hinge_sides_list = [
     {'side': None},
     {'side': "Правая"},
     {'side': "Левая"}
+]
+
+hinge_types_list = [
+    {'kind': None},
+    {'kind': 'Anselmi 505 2 шт'},
+    {'kind': 'Anselmi 505 3 шт'},
+    {'kind': 'Anselmi 516 2 шт'},
+    {'kind': 'Anselmi 516 3 шт'},
+    {'kind': 'Флажковые 2 шт'},
+    {'kind': 'Накладные 2 шт'}
+]
+
+hinge_colors_list = [
+    {'color': None},
+    {'color': "Мат. Хром"},
+    {'color': "Хром"},
+    {'color': "Бронза"}
+]
+
+door_seals_list = [
+    {'seal': True},
+    {'seal': None}
 ]

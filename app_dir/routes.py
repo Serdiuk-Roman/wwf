@@ -10,14 +10,15 @@ from app_dir import app, db
 
 from app_dir.models import User, Decor, DoorModel, Position, Casing, \
     Expander, FrameType, Order, LocksPurpose, LocksType, LocksColor, \
-    HingesSide
+    HingesSide, HingesType, HingesColor, DoorsSeal
 
 from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
     DoorModelForm, PositionForm, OrderForm
 
 from app_dir.utils import set_decor_type, decor_list, door_model_list, \
     casings_list, expander_list, frame_type_list, locks_purpose_list, \
-    locks_type_list, locks_color_list, hinge_sides_list
+    locks_type_list, locks_color_list, hinge_sides_list, hinge_types_list, \
+    hinge_colors_list, door_seals_list
 
 
 @app.route('/')
@@ -131,6 +132,132 @@ def door_model():
     )
 
 
+@app.route('/orders', methods=['get'])
+@login_required
+def orders():
+    orders = Order.query.all()
+    return render_template(
+        'orders.html',
+        title='Ваши Заказы',
+        orders=orders
+    )
+
+
+@app.route('/new_order', methods=['get', 'post'])
+@login_required
+def new_order():
+    form = OrderForm()
+    if form.validate_on_submit():
+        order = Order(
+            order_number=form.order_number.data,
+            timestamp=datetime.utcnow(),
+            creator=current_user,
+            customer_manager=form.customer_manager.data,
+            customer_city=form.customer_city.data
+        )
+        db.session.add(order)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новый заказ.')
+        return redirect(url_for('order', order_number=order.order_number))
+    return render_template(
+        'new_order.html',
+        title='Новый заказ',
+        forms=form
+    )
+
+
+@app.route('/order/<int:order_number>', methods=['get', 'post'])
+@login_required
+def order(order_number):
+
+    order = Order.query.filter_by(order_number=order_number).first_or_404()
+
+    form = PositionForm()
+    if form.validate_on_submit():
+        position = Position(
+
+            serial_number=len(order.positions) + 1,
+
+            order_id=order.id,
+
+            room=form.room.data,
+            doormodel_id=form.doormodel_id.data,
+            base_decor_id=form.base_decor_id.data,
+            second_decor_id=form.second_decor_id.data,
+
+            frame_id=form.frame_id.data,
+
+            doors_height=form.doors_height.data,
+            doors_width=form.doors_width.data,
+
+            casing_id=form.casing_id.data,
+            expander_id=form.expander_id.data,
+
+            lock_purpose_id=form.lock_purpose_id.data,
+            lock_kind_id=form.lock_kind_id.data,
+            lock_color_id=form.lock_color_id.data,
+
+            hinge_side_id=form.hinge_side_id.data,
+            hinge_kind_id=form.hinge_kind_id.data,
+            hinge_color_id=form.hinge_color_id.data,
+
+            doors_seal_id=form.doors_seal_id.data
+        )
+        db.session.add(position)
+        db.session.commit()
+        flash('Поздравляю, Вы добавили новую позицию.')
+        return redirect(url_for('order', order_number=order_number))
+    if form.errors:
+        print(form.errors)
+    positions = Position.query.filter_by(order=order).all()
+    if not positions:
+        flash('Добавьте позиции')
+    return render_template(
+        'order.html',
+        title='Заказ № {}'.format(order_number),
+        order=order,
+        positions=positions,
+        forms=form
+    )
+
+
+@app.route(
+    '/order/<int:order_number>/<int:serial_number>',
+    methods=['get', 'post'])
+@login_required
+def edit_order_position(order_number, serial_number):
+
+    order = Order.query.filter_by(order_number=order_number).first_or_404()
+    position = Position.query.\
+        filter_by(order_id=order.id).\
+        filter_by(serial_number=serial_number).\
+        first_or_404()
+
+    form = PositionForm(request.form, obj=position)
+
+    if request.method == 'POST' and form.validate_on_submit():
+
+        position.serial_number = serial_number
+
+        position.order_id = order.id
+
+        form.populate_obj(position)
+
+        db.session.commit()
+        flash('Вы изменили позицию № {}'.format(serial_number))
+        return redirect(url_for('order', order_number=order_number))
+
+    if form.errors:
+        print(form.errors)
+    return render_template(
+        'position_edit.html',
+        title='Заказ № {}'.format(order_number),
+        order=order,
+        position=position,
+        forms=form
+    )
+
+
 @app.route('/first_data')
 def first_data():
 
@@ -226,79 +353,32 @@ def first_data():
         db.session.commit()
         flash('Поздравляю, Вы внесли стороніь петель!!!')
 
+    if len(HingesType.query.all()) is 0:
+        for element in hinge_types_list:
+            ht = HingesType(
+                kind=element['kind']
+            )
+            db.session.add(ht)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли тип петель!!!')
+
+    if len(HingesColor.query.all()) is 0:
+        for element in hinge_colors_list:
+            hc = HingesColor(
+                color=element['color']
+            )
+            db.session.add(hc)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли цвет петель!!!')
+
+    if len(DoorsSeal.query.all()) is 0:
+        for element in door_seals_list:
+            ds = DoorsSeal(
+                seal=element['seal']
+            )
+            db.session.add(ds)
+        db.session.commit()
+        flash('Поздравляю, Вы внесли уплотнитель!!!')
+
     return redirect(url_for('register'))
 
-
-@app.route('/orders', methods=['get'])
-@login_required
-def orders():
-    orders = Order.query.all()
-    return render_template(
-        'orders.html',
-        title='Ваши Заказы',
-        orders=orders
-    )
-
-
-@app.route('/new_order', methods=['get', 'post'])
-@login_required
-def new_order():
-    form = OrderForm()
-    if form.validate_on_submit():
-        order = Order(
-            order_number=form.order_number.data,
-            timestamp=datetime.utcnow(),
-            creator=current_user,
-            customer_manager=form.customer_manager.data,
-            customer_city=form.customer_city.data
-        )
-        db.session.add(order)
-        db.session.commit()
-        flash('Поздравляю, Вы добавили новый заказ.')
-        return redirect(url_for('order', order_number=order.order_number))
-    return render_template(
-        'new_order.html',
-        title='Новый заказ',
-        forms=form
-    )
-
-
-@app.route('/order/<int:order_number>', methods=['get', 'post'])
-@login_required
-def order(order_number):
-
-    order = Order.query.filter_by(order_number=order_number).first_or_404()
-
-    form = PositionForm()
-    if form.validate_on_submit():
-        position = Position(
-            order_id=order.id,
-            room=form.room.data,
-            doormodel_id=form.doormodel_id.data,
-            base_decor_id=form.base_decor_id.data,
-            second_decor_id=form.second_decor_id.data,
-            frame_id=form.frame_id.data,
-            doors_height=form.doors_height.data,
-            doors_width=form.doors_width.data,
-            casing_id=form.casing_id.data,
-            expander_id=form.expander_id.data,
-            lock_purpose_id=form.lock_purpose_id.data,
-            lock_type_id=form.lock_type_id.data,
-            lock_color_id=form.lock_color_id.data
-        )
-        db.session.add(position)
-        db.session.commit()
-        flash('Поздравляю, Вы добавили новую позицию.')
-        return redirect(url_for('order', order_number=order_number))
-    if form.errors:
-        print(form.errors)
-    positions = Position.query.filter_by(order=order).all()
-    if not positions:
-        flash('Добавьте позиции')
-    return render_template(
-        'order.html',
-        title='Заказ № {}'.format(order_number),
-        order=order,
-        positions=positions,
-        forms=form
-    )
