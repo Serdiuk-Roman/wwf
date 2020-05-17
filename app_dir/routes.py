@@ -170,13 +170,21 @@ def new_order():
 @login_required
 def order(order_number):
 
-    order = Order.query.filter_by(order_number=order_number).first_or_404()
+    order = Order.query.filter_by(order_number=order_number).first()
 
     form = PositionForm()
     if form.validate_on_submit():
+
+        if len(order.positions) > 0:
+            next_serial_number = max(
+                [sn.serial_number for sn in order.positions]
+            ) + 1
+        else:
+            next_serial_number = 1
+
         position = Position(
 
-            serial_number=len(order.positions) + 1,
+            serial_number=next_serial_number,
 
             order_id=order.id,
 
@@ -256,6 +264,40 @@ def edit_order_position(order_number, serial_number):
         position=position,
         forms=form
     )
+
+
+@app.route(
+    '/order/<int:order_number>/<int:serial_number>/delete',
+    methods=['post'])
+@login_required
+def delete_order_position(order_number, serial_number):
+
+    order = Order.query.filter_by(order_number=order_number).first_or_404()
+    position = Position.query.\
+        filter_by(order_id=order.id).\
+        filter_by(serial_number=serial_number).\
+        first()
+
+    db.session.delete(position)
+
+    last_positions = Position.query.\
+        filter_by(order_id=order.id).\
+        filter(Position.serial_number > serial_number).\
+        all()
+
+    if len(last_positions) > 0:
+        for event in last_positions:
+            event.serial_number -= 1
+
+    db.session.commit()
+    flash('Вы удалили позицию из заказа № {}'.format(order_number))
+    return redirect(url_for('order', order_number=order_number))
+
+
+@app.route('/scetch/<int:order_number>', methods=['post'])
+@login_required
+def gen_scetch(order_number):
+    return "Hello {}".format(order_number)
 
 
 @app.route('/first_data')
@@ -381,4 +423,3 @@ def first_data():
         flash('Поздравляю, Вы внесли уплотнитель!!!')
 
     return redirect(url_for('register'))
-

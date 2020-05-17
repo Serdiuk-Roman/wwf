@@ -107,13 +107,22 @@
                     <td class="text-left">{{ forms.doors_seal_id }}</td>
                 </tr>
                 <tr>
-                    <td>{{ forms.submit(class_="btn btn-danger btn-lg btn-block", value='Удалить') }}</td>
-                    <td colspan="2">{{ forms.submit(class_="btn btn-primary btn-lg btn-block", value='Изменить') }}</td>
+
+                    <td colspan="3">{{ forms.submit(class_="btn btn-primary btn-lg btn-block", value='Изменить') }}</td>
                 </tr>
 
             </tbody>
         </table>
     </form>
+
+    <hr>
+    <form action="{{ url_for('delete_order_position', order_number=order.order_number, serial_number=position.serial_number) }}" method="POST">
+        <input type="submit" value="Удалить"
+                class="btn btn-danger btn-lg"
+                onclick="return confirm('Вы уверены что хотите удалить эту позицию?')">
+    </form>
+    <hr>
+
 </div>
 
 {% endblock %}

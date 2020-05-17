@@ -70,6 +70,7 @@
         </tbody>
     </table>
 </div>
+
 <div>
     <h3>Добавить позицию</h3>
     <form action="" method="post">
@@ -112,8 +113,15 @@
             </div>
         </div>
         <dl>
-            {{ forms.submit(class_="btn btn-default") }}
+            {{ forms.submit(class_="btn btn-lg btn-block btn-success") }}
         </dl>
     </form>
+    <hr>
+    <form action="{{ url_for('gen_scetch', order_number=order.order_number) }}" method="POST">
+        <input type="submit" value="Создать чертежи"
+                class="btn btn-secondary btn-lg"
+                onclick="return confirm('Вы уверены что все готово?')">
+    </form>
+    <hr>
 </div>
 {% endblock %}
