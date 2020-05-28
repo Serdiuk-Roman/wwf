@@ -6,7 +6,7 @@
     <table class="table table-bordered table-striped text-center table-hover table-condensed">
         <thead class="thead-inverse">
             <tr>
-                <th rowspan="2" class="text-center">#</th>
+                <th rowspan="2" class="text-center">№ п/п</th>
                 <th rowspan="2" class="text-center">Пом.</th>
                 <th rowspan="2" class="text-center">Модель</th>
                 <th rowspan="2" class="text-center">Основа</th>
@@ -39,7 +39,7 @@
 
                 <td>
                     <a href="{{ url_for('edit_order_position', order_number=order.order_number, serial_number=position.serial_number) }}">
-                        {{ position.serial_number }}
+                        <button type="button" class="btn"> {{ position.serial_number }} </button>
                     </a>
                 </td>
                 <td>{{ position.room }}</td>
@@ -71,8 +71,10 @@
     </table>
 </div>
 
-<div>
-    <h3>Добавить позицию</h3>
+<div class="bg-success">
+    <hr>
+    <h3 class="text-center">Добавить позицию</h3>
+    <hr>
     <form action="" method="post">
         {{ forms.hidden_tag() }}
         <div class="container-fluid">
