@@ -1,17 +1,6 @@
-{% extends "base.html" %}
-
 {% from "_formhelpers.html" import render_field %}
 
-{% block app_content %}
-
-    <div>
-        <a class="btn btn-primary" href="{{ url_for('new_order') }}">Новый заказ</a>
-    </div>
-
-    <hr>
-
-    <table class="table table-bordered table-striped text-center" id="same_table">
-        <caption>Заказ №</caption>
+    <table class="table table-bordered table-striped text-center" >
         <thead>
             <tr>
                 <th class="text-center">Заказ №</th>
@@ -22,12 +11,9 @@
             </tr>
         </thead>
         <tbody>
-            {% for order in orders %}
             <tr>
                 <td>
-                    <a href="{{ url_for('order', order_number=order.order_number) }}">
-                        {{ order.order_number }}
-                    </a>
+                    {{ order.order_number }}
                 </td>
                 <td>
                     {{ moment(order.timestamp).format('LLL') }}
@@ -42,9 +28,6 @@
                     {{ order.customer_city }}
                 </td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
 
-
-{% endblock %}

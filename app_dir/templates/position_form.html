@@ -1,0 +1,52 @@
+{% from "_formhelpers.html" import render_field %}
+
+<div class="bg-success">
+    <br>
+    <h3 class="text-center">Добавить позицию</h3>
+    <br>
+    <form action="" method="post">
+        {{ forms.hidden_tag() }}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-5">
+                    <dl>
+                        {{ render_field(forms.room) }}
+                        {{ render_field(forms.doormodel_id) }}
+                        {{ render_field(forms.base_decor_id) }}
+                        {{ render_field(forms.second_decor_id) }}
+
+                        {{ render_field(forms.alum_butt_id) }}
+                        {{ render_field(forms.frame_id) }}
+                    </dl>
+                </div>
+                <div class="col-md-4">
+                     <dl>
+                        {{ render_field(forms.doors_height) }}
+                        {{ render_field(forms.doors_width) }}
+
+                        {{ render_field(forms.casing_id) }}
+                        {{ render_field(forms.expander_id) }}
+
+                        {{ render_field(forms.doors_seal_id) }}
+                    </dl>
+                </div>
+                <div class="col-md-3">
+                     <dl>
+                        {{ render_field(forms.lock_purpose_id) }}
+                        {{ render_field(forms.lock_kind_id) }}
+                        {{ render_field(forms.lock_color_id) }}
+
+                        {{ render_field(forms.hinge_side_id) }}
+                        {{ render_field(forms.hinge_kind_id) }}
+                        {{ render_field(forms.hinge_color_id) }}
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <dl>
+            {{ forms.submit(class_="btn btn-lg btn-block btn-success") }}
+        </dl>
+    </form>
+
+</div>

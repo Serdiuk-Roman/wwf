@@ -1,7 +1,6 @@
 {% from "_formhelpers.html" import render_field %}
 {% from "_if_none_table.html" import render_if_none %}
 
-{% block app_content %}
 <div>
     <table class="table table-bordered table-striped text-center table-hover table-condensed">
         <thead class="thead-inverse">
@@ -11,6 +10,7 @@
                 <th rowspan="2" class="text-center">Модель</th>
                 <th rowspan="2" class="text-center">Основа</th>
                 <th rowspan="2" class="text-center">Декор</th>
+                <th rowspan="2" class="text-center">Алюм. торец</th>
                 <th rowspan="2" class="text-center">Тип лутки</th>
                 <th colspan="2" class="text-center">Полотно</th>
                 <th rowspan="2" class="text-center">Нал., кол</th>
@@ -36,7 +36,6 @@
         <tbody>
             {% for position in positions %}
             <tr>
-
                 <td>
                     <a href="{{ url_for('edit_order_position', order_number=order.order_number, serial_number=position.serial_number) }}">
                         <button type="button" class="btn"> {{ position.serial_number }} </button>
@@ -47,6 +46,7 @@
                 <td>{{ position.base_decor }}</td>
                 <td>{{ position.second_decor }}</td>
 
+                <td>{{ position.alum_butt }}</td>
                 <td>{{ position.frame_type }}</td>
 
                 <td>{{ position.doors_height }}</td>
@@ -70,60 +70,3 @@
         </tbody>
     </table>
 </div>
-
-<div class="bg-success">
-    <hr>
-    <h3 class="text-center">Добавить позицию</h3>
-    <hr>
-    <form action="" method="post">
-        {{ forms.hidden_tag() }}
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-5">
-                    <dl>
-                        {{ render_field(forms.room) }}
-                        {{ render_field(forms.doormodel_id) }}
-                        {{ render_field(forms.base_decor_id) }}
-                        {{ render_field(forms.second_decor_id) }}
-
-                        {{ render_field(forms.frame_id) }}
-                    </dl>
-                </div>
-                <div class="col-md-4">
-                     <dl>
-                        {{ render_field(forms.doors_height) }}
-                        {{ render_field(forms.doors_width) }}
-
-                        {{ render_field(forms.casing_id) }}
-                        {{ render_field(forms.expander_id) }}
-
-                        {{ render_field(forms.doors_seal_id) }}
-                    </dl>
-                </div>
-                <div class="col-md-3">
-                     <dl>
-                        {{ render_field(forms.lock_purpose_id) }}
-                        {{ render_field(forms.lock_kind_id) }}
-                        {{ render_field(forms.lock_color_id) }}
-
-                        {{ render_field(forms.hinge_side_id) }}
-                        {{ render_field(forms.hinge_kind_id) }}
-                        {{ render_field(forms.hinge_color_id) }}
-
-                    </dl>
-                </div>
-            </div>
-        </div>
-        <dl>
-            {{ forms.submit(class_="btn btn-lg btn-block btn-success") }}
-        </dl>
-    </form>
-    <hr>
-    <form action="{{ url_for('gen_scetch', order_number=order.order_number) }}" method="POST">
-        <input type="submit" value="Создать чертежи"
-                class="btn btn-secondary btn-lg"
-                onclick="return confirm('Вы уверены что все готово?')">
-    </form>
-    <hr>
-</div>
-{% endblock %}

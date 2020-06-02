@@ -208,6 +208,20 @@ class DoorsSeal(db.Model):
         return 'Да' if self.seal else 'Нет'
 
 
+class AluminumButt(db.Model):
+    """docstring for AluminumButt"""
+    __tablename__ = 'aluminum_butts'
+    id = db.Column(db.Integer, primary_key=True)
+    butt_description = db.Column(db.String(64))
+    butts = db.relationship(
+        'Position',
+        backref='alum_butt'
+    )
+
+    def __repr__(self):
+        return self.butt_description
+
+
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     positions = db.relationship('Position', backref='order')
@@ -236,6 +250,8 @@ class Position(db.Model):
     second_decor_id = db.Column(db.Integer, db.ForeignKey('decor.id'))
     base_decor = db.relationship('Decor', foreign_keys=[base_decor_id])
     second_decor = db.relationship('Decor', foreign_keys=[second_decor_id])
+
+    alum_butt_id = db.Column(db.Integer, db.ForeignKey('aluminum_butts.id'))
 
     frame_id = db.Column(db.Integer, db.ForeignKey('frame_type.id'))
     doors_height = db.Column(db.Integer)

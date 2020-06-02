@@ -9,7 +9,7 @@ from wtforms.widgets.html5 import NumberInput
 
 from app_dir.models import User, DoorModel, Decor, FrameType, Casing, \
     Expander, LocksPurpose, LocksType, LocksColor, HingesSide, HingesType, \
-    HingesColor, DoorsSeal
+    HingesColor, DoorsSeal, AluminumButt
 
 
 class LoginForm(FlaskForm):
@@ -81,6 +81,11 @@ class PositionForm(FlaskForm):
     )
     second_decor_id = SelectField(
         'Дополнительный декор',
+        coerce=int,
+        validators=[DataRequired()]
+    )
+    alum_butt_id = SelectField(
+        'Алюминиевьій торец',
         coerce=int,
         validators=[DataRequired()]
     )
@@ -198,6 +203,9 @@ class PositionForm(FlaskForm):
             )
         )
 
+        self.alum_butt_id.choices = \
+            [(ab.id, ab.butt_description) for ab in AluminumButt.query.all()]
+
         self.frame_id.choices = \
             [(ft.id, ft.frame_name or 'Нет') for ft in FrameType.query.all()]
 
@@ -244,7 +252,7 @@ class OrderForm(FlaskForm):
         widget=NumberInput(min='17000', step='1'),
         validators=[DataRequired()]
     )
-    customer_manager = StringField('Менеджер', validators=[DataRequired()])
+    customer_manager = StringField('Дилер', validators=[DataRequired()])
     customer_city = StringField('Город', validators=[DataRequired()])
 
     submit = SubmitField('Добавить')

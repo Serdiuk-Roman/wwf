@@ -172,6 +172,23 @@ def order(order_number):
 
     order = Order.query.filter_by(order_number=order_number).first()
 
+    positions = Position.query.filter_by(order=order).all()
+    if not positions:
+        flash('Добавьте позиции')
+    return render_template(
+        'order.html',
+        title='Заказ № {}'.format(order_number),
+        order=order,
+        positions=positions
+    )
+
+
+@app.route('/order/<int:order_number>/add_position', methods=['get', 'post'])
+@login_required
+def add_order_position(order_number):
+
+    order = Order.query.filter_by(order_number=order_number).first()
+
     form = PositionForm()
     if form.validate_on_submit():
 
@@ -193,6 +210,7 @@ def order(order_number):
             base_decor_id=form.base_decor_id.data,
             second_decor_id=form.second_decor_id.data,
 
+            alum_butt_id=form.alum_butt_id.data,
             frame_id=form.frame_id.data,
 
             doors_height=form.doors_height.data,
@@ -221,7 +239,7 @@ def order(order_number):
     if not positions:
         flash('Добавьте позиции')
     return render_template(
-        'order.html',
+        'order_add_position.html',
         title='Заказ № {}'.format(order_number),
         order=order,
         positions=positions,
@@ -267,7 +285,7 @@ def edit_order_position(order_number, serial_number):
 
 
 @app.route(
-    '/order/<int:order_number>/<int:serial_number>/delete',
+    '/order/<int:order_number>/delete/<int:serial_number>',
     methods=['post'])
 @login_required
 def delete_order_position(order_number, serial_number):

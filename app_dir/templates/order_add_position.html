@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block app_content %}
+
+    {% include 'order_table.html' %}
+
+    {% include 'position_table.html' %}
+
+    {% include 'position_form.html' %}
+
+{% endblock %}
