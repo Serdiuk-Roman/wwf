@@ -32,4 +32,4 @@ moment = Moment(app)
 toolbar = DebugToolbarExtension(app)
 
 
-from app_dir import routes, models
+from app_dir import routes, models, errors

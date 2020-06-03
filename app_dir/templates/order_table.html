@@ -12,8 +12,9 @@
         </thead>
         <tbody>
             <tr>
-                <td>
-                    {{ order.order_number }}
+                <td><a href="{{ url_for('order', order_number=order.order_number) }}">
+                        {{ order.order_number }}
+                    </a>
                 </td>
                 <td>
                     {{ moment(order.timestamp).format('LLL') }}

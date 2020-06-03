@@ -72,7 +72,14 @@ def logout():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
-        {'author': user, 'body': 'Test post #1'},
+        {'author': user, 'body': 'https://pythonru.com/uroki/7-osnovy-shablonizatora-jinja'},
+        {'author': user, 'body': 'https://habr.com/ru/post/346348/'},
+        {'author': user, 'body': 'https://www.google.com/search?source=hp&ei=PGfXXqL6N8_ergS2uJigCA&q=Flask+ajax+SelectField&oq=Flask+ajax+SelectField&gs_lcp=CgZwc3ktYWIQAzIHCCEQChCgATIHCCEQChCgAVCpAlipAmDMC2gAcAB4AIAB_AGIAfwBkgEDMi0xmAEAoAECoAEBqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwiiiKXYpOXpAhVPr4sKHTYcBoQQ4dUDCAY&uact=5'},
+        {'author': user, 'body': 'https://www.youtube.com/watch?v=I2dJuNwlIH0'},
+        {'author': user, 'body': 'https://stackoverflow.com/questions/34618956/javascript-ajax-to-dynamically-update-wtforms-select-field'},
+        {'author': user, 'body': 'https://github.com/saltycrane/flask-jquery-ajax-example'},
+        {'author': user, 'body': 'https://hruks.ru/2016/05/31/%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D0%BF%D0%BE%D0%B4%D0%B3%D1%80%D1%83%D0%B7%D0%B4%D0%BA%D0%B0-select-combobox/'},
+        {'author': user, 'body': 'https://gist.github.com/rschutjens/4d8302071f467d3395b87dad3993fc3c'},
         {'author': user, 'body': 'Test post #2'}
     ]
     return render_template('user.html', user=user, posts=posts)
@@ -97,7 +104,7 @@ def decor():
         flash('В базе еще нет декора')
     return render_template(
         'decor.html',
-        title='Decor',
+        title='Декор',
         decors=decors,
         forms=form
     )
@@ -126,7 +133,7 @@ def door_model():
         flash('В базе еще пусто')
     return render_template(
         'door_model.html',
-        title='Model',
+        title='Модель',
         door_models=door_models,
         forms=form
     )
@@ -138,7 +145,7 @@ def orders():
     orders = Order.query.all()
     return render_template(
         'orders.html',
-        title='Ваши Заказы',
+        title='Заказы',
         orders=orders
     )
 
@@ -192,7 +199,9 @@ def add_order_position(order_number):
     form = PositionForm()
     if form.validate_on_submit():
 
-        if len(order.positions) > 0:
+        print()
+
+        if len(order.positions):
             next_serial_number = max(
                 [sn.serial_number for sn in order.positions]
             ) + 1
@@ -315,6 +324,7 @@ def delete_order_position(order_number, serial_number):
 @app.route('/scetch/<int:order_number>', methods=['post'])
 @login_required
 def gen_scetch(order_number):
+
     return "Hello {}".format(order_number)
 
 
