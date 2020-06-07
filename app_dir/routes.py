@@ -2,23 +2,19 @@
 
 from datetime import datetime
 
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 from app_dir import app, db
 
-from app_dir.models import User, Decor, DoorModel, Position, Casing, \
-    Expander, FrameType, Order, LocksPurpose, LocksType, LocksColor, \
-    HingesSide, HingesType, HingesColor, DoorsSeal
+from app_dir.models import User, Decor, DoorModel, Position, Order
 
 from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
     DoorModelForm, PositionForm, OrderForm
 
-from app_dir.utils import set_decor_type, decor_list, door_model_list, \
-    casings_list, expander_list, frame_type_list, locks_purpose_list, \
-    locks_type_list, locks_color_list, hinge_sides_list, hinge_types_list, \
-    hinge_colors_list, door_seals_list
+from app_dir.utils import set_decor_type
+from app_dir.the_first_data import load_data
 
 
 @app.route('/')
@@ -38,7 +34,7 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Congratulations, you are now a registered user!')
+        flash('Поздравляю, Вы теперь зареестрированый пользователь!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
@@ -51,7 +47,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Некоректное имя или пароль')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
@@ -64,7 +60,7 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route('/user/<username>')
@@ -72,15 +68,15 @@ def logout():
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     posts = [
-        {'author': user, 'body': 'https://pythonru.com/uroki/7-osnovy-shablonizatora-jinja'},
-        {'author': user, 'body': 'https://habr.com/ru/post/346348/'},
-        {'author': user, 'body': 'https://www.google.com/search?source=hp&ei=PGfXXqL6N8_ergS2uJigCA&q=Flask+ajax+SelectField&oq=Flask+ajax+SelectField&gs_lcp=CgZwc3ktYWIQAzIHCCEQChCgATIHCCEQChCgAVCpAlipAmDMC2gAcAB4AIAB_AGIAfwBkgEDMi0xmAEAoAECoAEBqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwiiiKXYpOXpAhVPr4sKHTYcBoQQ4dUDCAY&uact=5'},
-        {'author': user, 'body': 'https://www.youtube.com/watch?v=I2dJuNwlIH0'},
-        {'author': user, 'body': 'https://stackoverflow.com/questions/34618956/javascript-ajax-to-dynamically-update-wtforms-select-field'},
-        {'author': user, 'body': 'https://github.com/saltycrane/flask-jquery-ajax-example'},
-        {'author': user, 'body': 'https://hruks.ru/2016/05/31/%D0%B4%D0%B8%D0%BD%D0%B0%D0%BC%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D0%BF%D0%BE%D0%B4%D0%B3%D1%80%D1%83%D0%B7%D0%B4%D0%BA%D0%B0-select-combobox/'},
-        {'author': user, 'body': 'https://gist.github.com/rschutjens/4d8302071f467d3395b87dad3993fc3c'},
-        {'author': user, 'body': 'Test post #2'}
+
+        {
+            'author': user,
+            'body': 'Test post #1'
+        },
+        {
+            'author': user,
+            'body': 'Test post #2'
+        }
     ]
     return render_template('user.html', user=user, posts=posts)
 
@@ -126,7 +122,7 @@ def door_model():
         )
         db.session.add(door_model)
         db.session.commit()
-        flash('Поздравляю, Вы добавили новую модель двери.')
+        flash('Вы добавили новую модель двери.')
         return redirect(url_for('door_model'))
     door_models = DoorModel.query.all()
     if not door_models:
@@ -144,7 +140,7 @@ def door_model():
 def orders():
     orders = Order.query.all()
     return render_template(
-        'orders.html',
+        'orders_list.html',
         title='Заказы',
         orders=orders
     )
@@ -164,10 +160,10 @@ def new_order():
         )
         db.session.add(order)
         db.session.commit()
-        flash('Поздравляю, Вы добавили новый заказ.')
+        flash('Вы добавили новый заказ.')
         return redirect(url_for('order', order_number=order.order_number))
     return render_template(
-        'new_order.html',
+        'order_form.html',
         title='Новый заказ',
         forms=form
     )
@@ -256,6 +252,53 @@ def add_order_position(order_number):
     )
 
 
+@app.route('/ajax/change_second_decor/<int:doormodel_id>')
+def second_decor(doormodel_id):
+
+    doormodel = DoorModel.query.filter_by(id=doormodel_id).first()
+    # [(1, 1), (2, 4)]
+    second_decor_array = [
+        dict([('id', d.id), ('decorname', d.decorname)])
+        for d in Decor.query.filter(
+            Decor.decor_type == '0111'
+        )
+    ]
+
+    if doormodel.cased_glass:
+        second_decor_array.extend([
+            dict([('id', d.id), ('decorname', d.decorname)])
+            for d in Decor.query.filter(
+                Decor.decor_type == '0100'
+            )]
+        )
+
+    elif doormodel.glass_cleare:
+        second_decor_array.extend([
+            dict([('id', d.id), ('decorname', d.decorname)])
+            for d in Decor.query.filter(
+                Decor.decor_type == '0010'
+            )]
+        )
+
+    elif doormodel.glass_plus:
+        second_decor_array.extend([
+            dict([('id', d.id), ('decorname', d.decorname)])
+            for d in Decor.query.filter(
+                Decor.decor_type == '0001'
+            )]
+        )
+
+    else:
+        second_decor_array = [
+            dict([('id', d.id), ('decorname', d.decorname)])
+            for d in Decor.query.filter(
+                Decor.decor_type == '0000'
+            )
+        ]
+
+    return jsonify({'second_decor': second_decor_array})
+
+
 @app.route(
     '/order/<int:order_number>/<int:serial_number>',
     methods=['get', 'post'])
@@ -331,123 +374,16 @@ def gen_scetch(order_number):
 @app.route('/first_data')
 def first_data():
 
-    if len(Decor.query.all()) is 0:
+    gen_data = load_data()
 
-        for element in decor_list:
-            decor = Decor(
-                indexname=element['indexname'],
-                decorname=element['decorname'],
-                decor_type=element['decor_type']
-            )
-            db.session.add(decor)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли первоначальный декор в базу!!!')
+    for i in gen_data:
 
-    if len(DoorModel.query.all()) is 0:
+        if not len(i['cls_name'].query.all()):
 
-        for element in door_model_list:
-            dm = DoorModel(
-                modelname=element['modelname'],
-                laminate=element['laminate'],
-                cased_glass=element['cased_glass'],
-                glass_cleare=element['glass_plus'],
-                glass_plus=element['glass_cleare']
-            )
-            db.session.add(dm)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли первоначальные модели в базу!!!')
-
-    if len(Casing.query.all()) is 0:
-
-        for element in casings_list:
-            cas = Casing(
-                casing_count=element['casing_count']
-            )
-            db.session.add(cas)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли количество наличников в базу!!!')
-
-    if len(Expander.query.all()) is 0:
-
-        for element in expander_list:
-            ex = Expander(
-                expander_width=element['expander_width']
-            )
-            db.session.add(ex)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли первоначальные доборы в базу!!!')
-
-    if len(FrameType.query.all()) is 0:
-
-        for element in frame_type_list:
-            ft = FrameType(
-                frame_name=element['frame_name']
-            )
-            db.session.add(ft)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли типы луток в базу!!!')
-
-    if len(LocksPurpose.query.all()) is 0:
-        for element in locks_purpose_list:
-            lp = LocksPurpose(
-                purpose_name=element['purpose']
-            )
-            db.session.add(lp)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли назначение замков!!!')
-
-    if len(LocksType.query.all()) is 0:
-        for element in locks_type_list:
-            lt = LocksType(
-                kind=element['kind']
-            )
-            db.session.add(lt)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли тип замков!!!')
-
-    if len(LocksColor.query.all()) is 0:
-        for element in locks_color_list:
-            lc = LocksColor(
-                color=element['color']
-            )
-            db.session.add(lc)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли цвет замков!!!')
-
-    if len(HingesSide.query.all()) is 0:
-        for element in hinge_sides_list:
-            hs = HingesSide(
-                side=element['side']
-            )
-            db.session.add(hs)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли стороніь петель!!!')
-
-    if len(HingesType.query.all()) is 0:
-        for element in hinge_types_list:
-            ht = HingesType(
-                kind=element['kind']
-            )
-            db.session.add(ht)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли тип петель!!!')
-
-    if len(HingesColor.query.all()) is 0:
-        for element in hinge_colors_list:
-            hc = HingesColor(
-                color=element['color']
-            )
-            db.session.add(hc)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли цвет петель!!!')
-
-    if len(DoorsSeal.query.all()) is 0:
-        for element in door_seals_list:
-            ds = DoorsSeal(
-                seal=element['seal']
-            )
-            db.session.add(ds)
-        db.session.commit()
-        flash('Поздравляю, Вы внесли уплотнитель!!!')
+            for element in i['obj_list']:
+                obj = i['cls_name'](**element)
+                db.session.add(obj)
+            db.session.commit()
+            flash(i['msg'])
 
     return redirect(url_for('register'))

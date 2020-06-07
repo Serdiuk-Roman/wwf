@@ -16,7 +16,7 @@ class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Sign In')
+    submit = SubmitField('Войти')
 
 
 class RegistrationForm(FlaskForm):
@@ -30,16 +30,16 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('Please use a different username.')
+            raise ValidationError('Такое Имя существует, придумайте другое')
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('Please use a different email address.')
+            raise ValidationError('Используйте другой email, такой уже есть')
 
 
 class DecorForm(FlaskForm):
-    indexname = StringField('Индекс', validators=[DataRequired()])
+    indexname = StringField('Индекс')
     decorname = StringField('Назва', validators=[DataRequired()])
 
     decor_type = RadioField(
@@ -173,18 +173,21 @@ class PositionForm(FlaskForm):
             [(d.id, d.decorname) for d in Decor.query.filter(
                 Decor.decor_type == '1000'
             )]
-        without_decor = Decor.query.get_or_404(1)
-        self.base_decor_id.choices.insert(
-            0, (
-                without_decor.id,
-                without_decor.decorname
-            )
-        )
 
         self.second_decor_id.choices = \
             [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '0000'
+            )]
+        self.second_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.decor_type == '0111'
+            )]
+        )
+        self.second_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
                 Decor.decor_type == '0100'
             )]
+        )
         self.second_decor_id.choices.extend(
             [(d.id, d.decorname) for d in Decor.query.filter(
                 Decor.decor_type == '0010'
@@ -195,55 +198,35 @@ class PositionForm(FlaskForm):
                 Decor.decor_type == '0001'
             )]
         )
-        empty = Decor.query.get_or_404(2)
-        self.second_decor_id.choices.insert(
-            0, (
-                empty.id,
-                empty.decorname
-            )
-        )
 
         self.alum_butt_id.choices = \
             [(ab.id, ab.butt_description) for ab in AluminumButt.query.all()]
 
         self.frame_id.choices = \
-            [(ft.id, ft.frame_name or 'Нет') for ft in FrameType.query.all()]
+            [(ft.id, ft.frame_name) for ft in FrameType.query.all()]
 
         self.casing_id.choices = \
-            [(cas.id, cas.casing_count or 'Нет') for cas in Casing.query.all()]
+            [(cas.id, cas.casing_count) for cas in Casing.query.all()]
 
         self.expander_id.choices = \
-            [
-                (
-                    er.id,
-                    'Нет' if er.expander_width is None else er.expander_width
-                )
-                for er in Expander.query.all()
-            ]
+            [(er.id, er.expander_width) for er in Expander.query.all()]
 
         self.lock_purpose_id.choices = \
-            [(lp.id, lp.purpose_name or 'Нет')
-             for lp in LocksPurpose.query.all()]
+            [(lp.id, lp.purpose_name) for lp in LocksPurpose.query.all()]
         self.lock_kind_id.choices = \
-            [(lt.id, lt.kind or 'Нет') for lt in LocksType.query.all()]
+            [(lt.id, lt.kind) for lt in LocksType.query.all()]
         self.lock_color_id.choices = \
-            [(lc.id, lc.color or 'Нет') for lc in LocksColor.query.all()]
+            [(lc.id, lc.color) for lc in LocksColor.query.all()]
 
         self.hinge_side_id.choices = \
-            [(hs.id, hs.side or 'Нет') for hs in HingesSide.query.all()]
+            [(hs.id, hs.side) for hs in HingesSide.query.all()]
         self.hinge_kind_id.choices = \
-            [(ht.id, ht.kind or 'Нет') for ht in HingesType.query.all()]
+            [(ht.id, ht.kind) for ht in HingesType.query.all()]
         self.hinge_color_id.choices = \
-            [(hc.id, hc.color or 'Нет') for hc in HingesColor.query.all()]
+            [(hc.id, hc.color) for hc in HingesColor.query.all()]
 
         self.doors_seal_id.choices = \
-            [
-                (
-                    ds.id,
-                    'Да' if ds.seal else 'Нет'
-                )
-                for ds in DoorsSeal.query.all()
-            ]
+            [(ds.id, ds.seal) for ds in DoorsSeal.query.all()]
 
 
 class OrderForm(FlaskForm):

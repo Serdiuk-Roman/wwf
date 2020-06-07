@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% from "_formhelpers.html" import render_field %}
-{% from "_if_none_table.html" import render_if_none %}
 
 {% block app_content %}
 
@@ -43,7 +42,7 @@
                 </tr>
                 <tr>
                     <td class="text-right">{{ position.second_decor }}</td>
-                    <td>Декор полотна</td>
+                    <td>Доп. декор</td>
                     <td class="text-left">{{ forms.second_decor_id }}</td>
                 </tr>
                 <tr>

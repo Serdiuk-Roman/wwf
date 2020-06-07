@@ -44,13 +44,13 @@ class Post(db.Model):
 class Decor(db.Model):
     __tablename__ = 'decor'
     id = db.Column(db.Integer, primary_key=True)
-    indexname = db.Column(db.String(16), index=True, unique=True)
+    indexname = db.Column(db.String(16))
     decorname = db.Column(db.String(128), index=True, unique=True)
     # 0 - laminate, 1 - cased_glass, 2 - glass_cleare, 3 - glass_plus
     decor_type = db.Column(db.String(4), index=True, unique=False)
 
     def __repr__(self):
-        return self.decorname
+        return self.indexname or self.decorname
 
 
 class DoorModel(db.Model):
@@ -87,27 +87,27 @@ class FrameType(db.Model):
 class Casing(db.Model):
     __tablename__ = 'casings'
     id = db.Column(db.Integer, primary_key=True)
-    casing_count = db.Column(db.Integer)
+    casing_count = db.Column(db.String(16))
     casings = db.relationship(
         'Position',
         backref='casings_count'
     )
 
     def __repr__(self):
-        return str(self.casing_count)
+        return self.casing_count
 
 
 class Expander(db.Model):
     __tablename__ = 'expanders'
     id = db.Column(db.Integer, primary_key=True)
-    expander_width = db.Column(db.Integer)
+    expander_width = db.Column(db.String(16))
     expanders = db.relationship(
         'Position',
         backref='expander'
     )
 
     def __repr__(self):
-        return str(self.expander_width)
+        return self.expander_width
 
 
 class LocksPurpose(db.Model):
@@ -121,7 +121,7 @@ class LocksPurpose(db.Model):
     )
 
     def __repr__(self):
-        return str(self.purpose_name)
+        return self.purpose_name
 
 
 class LocksType(db.Model):
@@ -135,7 +135,7 @@ class LocksType(db.Model):
     )
 
     def __repr__(self):
-        return str(self.kind)
+        return self.kind
 
 
 class LocksColor(db.Model):
@@ -149,7 +149,7 @@ class LocksColor(db.Model):
     )
 
     def __repr__(self):
-        return str(self.color)
+        return self.color
 
 
 class HingesSide(db.Model):
@@ -163,7 +163,7 @@ class HingesSide(db.Model):
     )
 
     def __repr__(self):
-        return str(self.side)
+        return self.side
 
 
 class HingesType(db.Model):
@@ -177,7 +177,7 @@ class HingesType(db.Model):
     )
 
     def __repr__(self):
-        return str(self.kind)
+        return self.kind
 
 
 class HingesColor(db.Model):
@@ -191,21 +191,21 @@ class HingesColor(db.Model):
     )
 
     def __repr__(self):
-        return str(self.color)
+        return self.color
 
 
 class DoorsSeal(db.Model):
     """docstring for DoorsSeal"""
     __tablename__ = 'door_seals'
     id = db.Column(db.Integer, primary_key=True)
-    seal = db.Column(db.Boolean)
+    seal = db.Column(db.String(16))
     seals = db.relationship(
         'Position',
         backref='door_seal'
     )
 
     def __repr__(self):
-        return 'Да' if self.seal else 'Нет'
+        return self.seal
 
 
 class AluminumButt(db.Model):
@@ -269,4 +269,3 @@ class Position(db.Model):
     hinge_color_id = db.Column(db.Integer, db.ForeignKey('hinge_colors.id'))
 
     doors_seal_id = db.Column(db.Integer, db.ForeignKey('door_seals.id'))
-

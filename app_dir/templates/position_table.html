@@ -1,5 +1,4 @@
 {% from "_formhelpers.html" import render_field %}
-{% from "_if_none_table.html" import render_if_none %}
 
 <div>
     <table class="table table-bordered table-striped text-center table-hover table-condensed">
@@ -52,16 +51,16 @@
                 <td>{{ position.doors_height }}</td>
                 <td>{{ position.doors_width }}</td>
 
-                <td>{{ render_if_none(position.casings_count) }}</td>
-                <td>{{ render_if_none(position.expander) }}</td>
+                <td>{{ position.casings_count }}</td>
+                <td>{{ position.expander }}</td>
 
-                <td>{{ render_if_none(position.lock_purpose) }}</td>
-                <td>{{ render_if_none(position.lock_kind) }}</td>
-                <td>{{ render_if_none(position.lock_color) }}</td>
+                <td>{{ position.lock_purpose }}</td>
+                <td>{{ position.lock_kind }}</td>
+                <td>{{ position.lock_color }}</td>
 
-                <td>{{ render_if_none(position.hinge_side) }}</td>
-                <td>{{ render_if_none(position.hinge_kind) }}</td>
-                <td>{{ render_if_none(position.hinge_color) }}</td>
+                <td>{{ position.hinge_side }}</td>
+                <td>{{ position.hinge_kind }}</td>
+                <td>{{ position.hinge_color }}</td>
 
                 <td>{{ position.door_seal }}</td>
 

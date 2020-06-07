@@ -6,13 +6,11 @@ export FLASK_DEBUG=1
 flask run
 flask run --host=0.0.0.0
 
-
 flask db init
 flask db migrate -m "lock table"
 flask db upgrade
 
 engine = create_engine('sqlite:///:memory:')
-
 
 git status
 git add -A
@@ -29,12 +27,6 @@ Flask-Login
         свойство, которое вернет False для обычных пользователей, и True, если пользователь анонимный.
     get_id():
         метод, который возвращает уникальный идентификатор пользователя в виде строки (unicode, если используется Python 2).
-
-
-
-flask db init
-flask db migrate -m "users table"
-flask db upgrade
 
 
 #  создание таблиц
