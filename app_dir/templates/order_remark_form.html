@@ -1,0 +1,14 @@
+
+<div class="bg-info">
+    <br>
+    <form action="" method="post">
+        {{ forms.hidden_tag() }}
+        <div class='text-center'>
+            {{ forms.body.label }}
+            {{ forms.body(rows=5, class_='form-control', placeholder="Какое бл@ еще примечание???") }}
+        </div>
+        <dl>
+            {{ forms.submit(class_="btn btn-lg btn-block btn-info") }}
+        </dl>
+    </form>
+</div>

@@ -41,6 +41,20 @@ class Post(db.Model):
         return 'Post {}'.format(self.body)
 
 
+class OrderRemark(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String())
+    order_id = db.Column(
+        db.Integer,
+        db.ForeignKey('order.id'),
+        index=True,
+        unique=True
+    )
+
+    def __repr__(self):
+        return self.body
+
+
 class Decor(db.Model):
     __tablename__ = 'decor'
     id = db.Column(db.Integer, primary_key=True)
@@ -231,6 +245,8 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     customer_manager = db.Column(db.String(64))
     customer_city = db.Column(db.String(64))
+
+    ord_rem = db.relationship('OrderRemark', backref='remark', uselist=False)
 
     def __repr__(self):
         return 'Заказ № {}'.format(self.order_number)

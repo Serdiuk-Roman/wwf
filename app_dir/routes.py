@@ -8,10 +8,10 @@ from werkzeug.urls import url_parse
 
 from app_dir import app, db
 
-from app_dir.models import User, Decor, DoorModel, Position, Order
+from app_dir.models import User, Decor, DoorModel, Position, Order, OrderRemark
 
 from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
-    DoorModelForm, PositionForm, OrderForm
+    DoorModelForm, PositionForm, OrderForm, OrderRemarkForm
 
 from app_dir.utils import set_decor_type
 from app_dir.the_first_data import load_data
@@ -176,13 +176,15 @@ def order(order_number):
     order = Order.query.filter_by(order_number=order_number).first()
 
     positions = Position.query.filter_by(order=order).all()
+    remark = OrderRemark.query.filter_by(order_id=order.id).first()
     if not positions:
         flash('Добавьте позиции')
     return render_template(
         'order.html',
         title='Заказ № {}'.format(order_number),
         order=order,
-        positions=positions
+        positions=positions,
+        remark=remark
     )
 
 
@@ -236,7 +238,7 @@ def add_order_position(order_number):
         )
         db.session.add(position)
         db.session.commit()
-        flash('Поздравляю, Вы добавили новую позицию.')
+        flash('Вы добавили новую позицию.')
         return redirect(url_for('order', order_number=order_number))
     if form.errors:
         print(form.errors)
@@ -245,6 +247,64 @@ def add_order_position(order_number):
         flash('Добавьте позиции')
     return render_template(
         'order_add_position.html',
+        title='Заказ № {}'.format(order_number),
+        order=order,
+        positions=positions,
+        forms=form
+    )
+
+
+@app.route('/order/<int:order_number>/remark_add', methods=['get', 'post'])
+@login_required
+def order_remark_add(order_number):
+
+    order = Order.query.filter_by(order_number=order_number).first()
+    positions = Position.query.filter_by(order=order).all()
+
+    form = OrderRemarkForm()
+    if form.validate_on_submit():
+
+        rem = OrderRemark(
+            body=form.body.data,
+            order_id=order.id
+        )
+        db.session.add(rem)
+        db.session.commit()
+        flash('Вы добавили примечание')
+        return redirect(url_for('order', order_number=order_number))
+    if form.errors:
+        print(form.errors)
+    return render_template(
+        'order_remark_add.html',
+        title='Заказ № {}'.format(order_number),
+        order=order,
+        positions=positions,
+        forms=form
+    )
+
+
+@app.route('/order/<int:order_number>/remark_edit', methods=['get', 'post'])
+@login_required
+def order_remark_edit(order_number):
+    order = Order.query.filter_by(order_number=order_number).first_or_404()
+    positions = Position.query.filter_by(order=order).all()
+    remark = OrderRemark.query.filter_by(order_id=order.id).first()
+
+    form = OrderRemarkForm(request.form, obj=remark)
+
+    if request.method == 'POST' and form.validate_on_submit():
+
+        remark.order_id = order.id
+
+        form.populate_obj(remark)
+
+        db.session.commit()
+        flash('Вы изменили примечание')
+        return redirect(url_for('order', order_number=order_number))
+    if form.errors:
+        print(form.errors)
+    return render_template(
+        'order_remark_edit.html',
         title='Заказ № {}'.format(order_number),
         order=order,
         positions=positions,

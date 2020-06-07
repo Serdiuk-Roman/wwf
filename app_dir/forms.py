@@ -2,10 +2,11 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, \
-    SubmitField, RadioField, SelectField, IntegerField
+    SubmitField, RadioField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Email, \
     EqualTo, NumberRange
 from wtforms.widgets.html5 import NumberInput
+# from wtforms.widgets import TextArea
 
 from app_dir.models import User, DoorModel, Decor, FrameType, Casing, \
     Expander, LocksPurpose, LocksType, LocksColor, HingesSide, HingesType, \
@@ -55,6 +56,13 @@ class DecorForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
+class OrderRemarkForm(FlaskForm):
+    body = TextAreaField(
+        'Примечание:'
+    )
+    submit = SubmitField('Добавить')
+
+
 class DoorModelForm(FlaskForm):
     modelname = StringField('Название', validators=[DataRequired()])
     laminate = BooleanField('Плёнка', validators=[DataRequired()])
@@ -85,7 +93,7 @@ class PositionForm(FlaskForm):
         validators=[DataRequired()]
     )
     alum_butt_id = SelectField(
-        'Алюминиевьій торец',
+        'Алюминиевый торец',
         coerce=int,
         validators=[DataRequired()]
     )
@@ -183,21 +191,21 @@ class PositionForm(FlaskForm):
                 Decor.decor_type == '0111'
             )]
         )
-        self.second_decor_id.choices.extend(
-            [(d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '0100'
-            )]
-        )
-        self.second_decor_id.choices.extend(
-            [(d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '0010'
-            )]
-        )
-        self.second_decor_id.choices.extend(
-            [(d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '0001'
-            )]
-        )
+        # self.second_decor_id.choices.extend(
+        #     [(d.id, d.decorname) for d in Decor.query.filter(
+        #         Decor.decor_type == '0100'
+        #     )]
+        # )
+        # self.second_decor_id.choices.extend(
+        #     [(d.id, d.decorname) for d in Decor.query.filter(
+        #         Decor.decor_type == '0010'
+        #     )]
+        # )
+        # self.second_decor_id.choices.extend(
+        #     [(d.id, d.decorname) for d in Decor.query.filter(
+        #         Decor.decor_type == '0001'
+        #     )]
+        # )
 
         self.alum_butt_id.choices = \
             [(ab.id, ab.butt_description) for ab in AluminumButt.query.all()]
