@@ -114,7 +114,7 @@ expander_list = dict(
             'expander_width': 'Паз под наличник'
         },
         {
-            'expander_width': 'Четверть под добор'
+            'expander_width': 'Нулевой добор'
         },
         {
             'expander_width': '50'

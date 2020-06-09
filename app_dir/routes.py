@@ -312,6 +312,16 @@ def order_remark_edit(order_number):
     )
 
 
+@app.route('/order/<int:order_number>/remark_delete', methods=['post'])
+@login_required
+def order_remark_delete(order_number):
+    order = Order.query.filter_by(order_number=order_number).first_or_404()
+    remark = OrderRemark.query.filter_by(order_id=order.id).first_or_404()
+    db.session.delete(remark)
+    db.session.commit()
+    return redirect(url_for('order', order_number=order_number))
+
+
 @app.route('/ajax/change_second_decor/<int:doormodel_id>')
 def second_decor(doormodel_id):
 
@@ -406,7 +416,7 @@ def delete_order_position(order_number, serial_number):
     position = Position.query.\
         filter_by(order_id=order.id).\
         filter_by(serial_number=serial_number).\
-        first()
+        first_or_404()
 
     db.session.delete(position)
 
@@ -415,7 +425,7 @@ def delete_order_position(order_number, serial_number):
         filter(Position.serial_number > serial_number).\
         all()
 
-    if len(last_positions) > 0:
+    if len(last_positions):
         for event in last_positions:
             event.serial_number -= 1
 
