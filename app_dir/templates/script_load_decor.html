@@ -1,0 +1,37 @@
+
+    function load_decor() {
+        let model_select =document.getElementById('doormodel_id');
+        let base_decor_select =document.getElementById('base_decor_id');
+        let second_decor_select =document.getElementById('second_decor_id');
+
+        model = model_select.value;
+        alert("Що за хуйня");
+        fetch('/ajax/change_base_decor/' + model).then(function(response) {
+
+            response.json().then(function(data) {
+                let optionHTML = '';
+
+                for (let decor of data.base_decor) {
+                    optionHTML += '<option value="' + decor.id + '">' + decor.decorname + '</option>';
+                }
+
+                base_decor_select.innerHTML = optionHTML;
+
+            });
+        });
+
+        fetch('/ajax/change_second_decor/' + model).then(function(response) {
+
+            response.json().then(function(data) {
+                let optionHTML = '';
+
+                for (let decor of data.second_decor) {
+                    optionHTML += '<option value="' + decor.id + '">' + decor.decorname + '</option>';
+                }
+
+                second_decor_select.innerHTML = optionHTML;
+
+            });
+        });
+    }
+

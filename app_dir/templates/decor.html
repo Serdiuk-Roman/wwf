@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% from "_formhelpers.html" import render_field %}
+{% from "_formhelpers_inline.html" import render_field_inline %}
 
 {% block app_content %}
 <div class="row" >
@@ -11,7 +12,14 @@
                 <dl>
                     {{ render_field(forms.indexname) }}
                     {{ render_field(forms.decorname) }}
-                    {{ render_field(forms.decor_type) }}
+
+                    {{ render_field_inline(forms.veneer) }}
+                    {{ render_field_inline(forms.paint) }}
+                    {{ render_field_inline(forms.laminate) }}
+                    {{ render_field_inline(forms.cased_glass) }}
+                    {{ render_field_inline(forms.glass_cleare) }}
+                    {{ render_field_inline(forms.glass_plus) }}
+
                     {{ forms.submit(class_="btn btn-default") }}
                 </dl>
         </form>
@@ -33,13 +41,17 @@
                     <strong>{{ decor.indexname }}</strong>
                 </td>
                 <td>
-                    {% if decor.decor_type == '1000' %}
+                    {% if decor.veneer %}
+                        Шпон
+                    {% elif decor.paint %}
+                        Краска
+                    {% elif decor.laminate %}
                         Плёнка
-                    {% elif decor.decor_type == '0100' %}
+                    {% elif decor.cased_glass %}
                         Накладное
-                    {% elif decor.decor_type == '0010' %}
+                    {% elif decor.glass_cleare %}
                         Для Cleare
-                    {% elif decor.decor_type == '0001' %}
+                    {% elif decor.glass_plus %}
                         Для Plus
                     {% endif %}
                 </td>

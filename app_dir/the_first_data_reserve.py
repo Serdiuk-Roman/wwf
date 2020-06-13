@@ -8,125 +8,54 @@ decor_list = dict(
     elm=[
         {
             'indexname': '',
-            'decorname': 'Отсутствует',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
+            'decorname': 'Не выбран',
+            'decor_type': '1000'
         },
         {
             'indexname': '',
-            'decorname': 'Не выбран',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
+            'decorname': 'Не выбрано',
+            'decor_type': '0111'
+        },
+        {
+            'indexname': '',
+            'decorname': 'Отсутствует',
+            'decor_type': '0000'
         },
         {
             'indexname': 'L1',
             'decorname': 'Дуб Сантана',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 1,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
+            'decor_type': '1000'
         },
         {
-            'indexname': 'Ш1',
-            'decorname': 'Ясень',
-            'veneer': 1,
-            'paint': 0,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
+            'indexname': 'L3',
+            'decorname': 'Дуб Ценамон',
+            'decor_type': '1000'
         },
         {
-            'indexname': '',
-            'decorname': 'Светлый грунт',
-            'veneer': 0,
-            'paint': 1,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
-        },
-        {
-            'indexname': '4',
-            'decorname': 'Зеркало Серебро',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 0,
-            'cased_glass': 1,
-            'glass_cleare': 0,
-            'glass_plus': 0
-        },
-        {
-            'indexname': '',
-            'decorname': 'RAL 9003',
-            'veneer': 0,
-            'paint': 1,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
-        },
-        {
-            'indexname': '1',
-            'decorname': 'Стекло крашеное черное',
-            'veneer': 0,
-            'paint': 1,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
+            'indexname': 'L11',
+            'decorname': 'Белый Матовый',
+            'decor_type': '1000'
         },
         {
             'indexname': '',
             'decorname': 'Антрацит',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 1,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0
+            'decor_type': '1000'
+        },
+        {
+            'indexname': '4',
+            'decorname': 'Зеркало Серебро',
+            'decor_type': '0100'
         },
         {
             'indexname': '7',
-            'decorname': 'Стекло t=6 прозрачное Сатин',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 1,
-            'glass_plus': 0
+            'decorname': 'Стекло прозрачное Сатин',
+            'decor_type': '0010'
         },
         {
-            'indexname': '7',
-            'decorname': 'Стекло t=8 прозрачное Сатин',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 1
-        },
-        {
-            'indexname': '7',
-            'decorname': 'Стекло t=10 прозрачное Сатин',
-            'veneer': 0,
-            'paint': 0,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 1
-        },
-
+            'indexname': '1',
+            'decorname': 'крашеное черное',
+            'decor_type': '0100'
+        }
     ]
 )
 
@@ -135,18 +64,7 @@ door_model_list = dict(
     msg='Внесены модели в базу!!!',
     elm=[
         {
-            'modelname': 'Evolushion 03 primer',
-            'veneer': 0,
-            'paint': 1,
-            'laminate': 0,
-            'cased_glass': 0,
-            'glass_cleare': 0,
-            'glass_plus': 0,
-        },
-        {
             'modelname': 'Forte 10',
-            'veneer': 0,
-            'paint': 0,
             'laminate': 1,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -154,8 +72,6 @@ door_model_list = dict(
         },
         {
             'modelname': 'Forte 12',
-            'veneer': 0,
-            'paint': 0,
             'laminate': 1,
             'cased_glass': 1,
             'glass_cleare': 0,
@@ -163,8 +79,6 @@ door_model_list = dict(
         },
         {
             'modelname': 'Forte cleare 12',
-            'veneer': 0,
-            'paint': 0,
             'laminate': 1,
             'cased_glass': 0,
             'glass_cleare': 1,
@@ -194,9 +108,6 @@ expander_list = dict(
     msg='Внесены доборы в базу!!!',
     elm=[
         {
-            'expander_width': 'Нет'
-        },
-        {
             'expander_width': 'Без паза'
         },
         {
@@ -224,13 +135,10 @@ frame_type_list = dict(
     cls_name=FrameType,
     msg='Внесены типы луток в базу',
     elm=[
-        {'frame_name': 'Форте ШпКр'},
-        {'frame_name': 'Форте Пл'},
+        {'frame_name': 'Форте'},
         {'frame_name': 'Стандарт'},
         {'frame_name': 'Француз'},
-        {'frame_name': 'Англ'},
-        {'frame_name': 'Алюм. Наруж'},
-        {'frame_name': 'Алюм. Внутр'}
+        {'frame_name': 'Англ'}
     ]
 )
 
@@ -352,3 +260,15 @@ def load_data():
             obj_list=point['elm'],
             msg=point['msg']
         )
+
+# if not len(Decor.query.all()):
+
+#     for element in decor_list:
+#         decor = Decor(
+#             indexname=element['indexname'],
+#             decorname=element['decorname'],
+#             decor_type=element['decor_type']
+#         )
+#         db.session.add(decor)
+#     db.session.commit()
+#     flash('Поздравляю, Вы внесли первоначальный декор в базу!!!')

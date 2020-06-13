@@ -56,12 +56,21 @@ class OrderRemark(db.Model):
 
 
 class Decor(db.Model):
+    """docstring for Decor
+    Hold id=1 - 'Отсутствует', id=2 - 'Не выбран'
+    """
     __tablename__ = 'decor'
+
     id = db.Column(db.Integer, primary_key=True)
     indexname = db.Column(db.String(16))
     decorname = db.Column(db.String(128), index=True, unique=True)
-    # 0 - laminate, 1 - cased_glass, 2 - glass_cleare, 3 - glass_plus
-    decor_type = db.Column(db.String(4), index=True, unique=False)
+
+    veneer = db.Column(db.Boolean, default=False, nullable=False)
+    paint = db.Column(db.Boolean, default=False, nullable=False)
+    laminate = db.Column(db.Boolean, default=False, nullable=False)
+    cased_glass = db.Column(db.Boolean, default=False, nullable=False)
+    glass_cleare = db.Column(db.Boolean, default=False, nullable=False)
+    glass_plus = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
         return self.indexname or self.decorname
@@ -72,6 +81,8 @@ class DoorModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     modelname = db.Column(db.String(64), index=True, unique=True)
 
+    veneer = db.Column(db.Boolean, default=False, nullable=False)
+    paint = db.Column(db.Boolean, default=False, nullable=False)
     laminate = db.Column(db.Boolean, default=False, nullable=False)
     cased_glass = db.Column(db.Boolean, default=False, nullable=False)
     glass_cleare = db.Column(db.Boolean, default=False, nullable=False)
@@ -125,6 +136,7 @@ class Expander(db.Model):
 
 
 class LocksPurpose(db.Model):
+
     """docstring for LocksPurpose"""
     __tablename__ = 'lock_purpose'
     id = db.Column(db.Integer, primary_key=True)

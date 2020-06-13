@@ -13,7 +13,6 @@ from app_dir.models import User, Decor, DoorModel, Position, Order, OrderRemark
 from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
     DoorModelForm, PositionForm, OrderForm, OrderRemarkForm
 
-from app_dir.utils import set_decor_type
 from app_dir.the_first_data import load_data
 
 
@@ -89,11 +88,17 @@ def decor():
         decor = Decor(
             indexname=form.indexname.data,
             decorname=form.decorname.data,
-            decor_type=set_decor_type(form.decor_type.data)
+
+            veneer=form.veneer.data,
+            paint=form.paint.data,
+            laminate=form.laminate.data,
+            cased_glass=form.cased_glass.data,
+            glass_cleare=form.glass_cleare.data,
+            glass_plus=form.glass_plus.data
         )
         db.session.add(decor)
         db.session.commit()
-        flash('Поздравляю, Вы добавили новый декор.')
+        flash('Вы добавили новый декор.')
         return redirect(url_for('decor'))
     decors = Decor.query.all()
     if not decors:
@@ -114,11 +119,13 @@ def door_model():
 
         door_model = DoorModel(
             modelname=form.modelname.data,
+
+            veneer=form.veneer.data,
+            paint=form.paint.data,
             laminate=form.laminate.data,
             cased_glass=form.cased_glass.data,
             glass_cleare=form.glass_cleare.data,
             glass_plus=form.glass_plus.data
-
         )
         db.session.add(door_model)
         db.session.commit()
@@ -196,15 +203,16 @@ def add_order_position(order_number):
 
     form = PositionForm()
     if form.validate_on_submit():
-
-        print()
-
         if len(order.positions):
             next_serial_number = max(
                 [sn.serial_number for sn in order.positions]
             ) + 1
         else:
             next_serial_number = 1
+
+        print()
+        print(form.__dict__)
+        print()
 
         position = Position(
 
@@ -241,7 +249,9 @@ def add_order_position(order_number):
         flash('Вы добавили новую позицию.')
         return redirect(url_for('order', order_number=order_number))
     if form.errors:
-        print(form.errors)
+        print()
+        print('error:', form.errors)
+        print()
     positions = Position.query.filter_by(order=order).all()
     if not positions:
         flash('Добавьте позиции')
@@ -322,50 +332,63 @@ def order_remark_delete(order_number):
     return redirect(url_for('order', order_number=order_number))
 
 
+@app.route('/ajax/change_base_decor/<int:doormodel_id>')
+def base_decor(doormodel_id):
+
+    doormodel = DoorModel.query.filter_by(id=doormodel_id).first()
+
+    not_choice = {'id': 2, 'decorname': str(Decor.query.get_or_404(2))}
+
+    base_decor_array = [not_choice, ]
+
+    if doormodel.veneer:
+        base_decor_array.extend([
+            {'id': d.id, 'decorname': d.decorname}
+            for d in Decor.query.filter(Decor.veneer)]
+        )
+    elif doormodel.paint:
+        base_decor_array.extend([
+            {'id': d.id, 'decorname': d.decorname}
+            for d in Decor.query.filter(Decor.paint)]
+        )
+    elif doormodel.laminate:
+        base_decor_array.extend([
+            {'id': d.id, 'decorname': d.decorname}
+            for d in Decor.query.filter(Decor.laminate)]
+        )
+    else:
+        empty_choice = {'id': 1, 'decorname': "Что то пошло не так"}
+        base_decor_array = [empty_choice, ]
+    return jsonify({'base_decor': base_decor_array})
+
+
 @app.route('/ajax/change_second_decor/<int:doormodel_id>')
 def second_decor(doormodel_id):
 
     doormodel = DoorModel.query.filter_by(id=doormodel_id).first()
-    # [(1, 1), (2, 4)]
-    second_decor_array = [
-        dict([('id', d.id), ('decorname', d.decorname)])
-        for d in Decor.query.filter(
-            Decor.decor_type == '0111'
-        )
-    ]
+
+    empty_choice = {'id': 1, 'decorname': str(Decor.query.get_or_404(1))}
+    not_choice = {'id': 2, 'decorname': str(Decor.query.get_or_404(2))}
+
+    second_decor_array = [not_choice, ]
 
     if doormodel.cased_glass:
         second_decor_array.extend([
-            dict([('id', d.id), ('decorname', d.decorname)])
-            for d in Decor.query.filter(
-                Decor.decor_type == '0100'
-            )]
+            {'id': d.id, 'decorname': d.decorname}
+            for d in Decor.query.filter(Decor.cased_glass)]
         )
-
     elif doormodel.glass_cleare:
         second_decor_array.extend([
-            dict([('id', d.id), ('decorname', d.decorname)])
-            for d in Decor.query.filter(
-                Decor.decor_type == '0010'
-            )]
+            {'id': d.id, 'decorname': d.decorname}
+            for d in Decor.query.filter(Decor.glass_cleare)]
         )
-
     elif doormodel.glass_plus:
         second_decor_array.extend([
-            dict([('id', d.id), ('decorname', d.decorname)])
-            for d in Decor.query.filter(
-                Decor.decor_type == '0001'
-            )]
+            {'id': d.id, 'decorname': d.decorname}
+            for d in Decor.query.filter(Decor.glass_plus)]
         )
-
     else:
-        second_decor_array = [
-            dict([('id', d.id), ('decorname', d.decorname)])
-            for d in Decor.query.filter(
-                Decor.decor_type == '0000'
-            )
-        ]
-
+        second_decor_array = [empty_choice, ]
     return jsonify({'second_decor': second_decor_array})
 
 

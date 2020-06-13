@@ -126,7 +126,17 @@
                 onclick="return confirm('Вы уверены что хотите удалить эту позицию?')">
     </form>
     <hr>
-
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+        <script type="text/javascript" charset="utf8">
+
+            {% include 'script_load_decor.html' %}
+
+            $('#doormodel_id').change(load_decor);
+
+        </script>
 {% endblock %}

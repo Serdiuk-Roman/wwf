@@ -1,7 +1,7 @@
-{% macro render_field(field) %}
+{% macro render_field_inline(field) %}
 
-  <dt>{{ field.label }}
-  <dd>{{ field(**kwargs)|safe }}
+  <dt>
+  <dd>{{ field(**kwargs)|safe }} {{ field.label }}
   {% if field.errors %}
     <ul class="bg-danger">
     {% for error in field.errors %}

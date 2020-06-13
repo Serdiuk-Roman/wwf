@@ -11,3 +11,19 @@
     {% include 'position_form.html' %}
 
 {% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+        <script type="text/javascript" charset="utf8">
+
+            {% include 'script_load_decor.html' %}
+
+            $(document).ready(load_decor());
+
+            $('#doormodel_id').change(load_decor);
+
+        </script>
+
+
+{% endblock %}

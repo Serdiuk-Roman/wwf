@@ -48,28 +48,5 @@
             {{ forms.submit(class_="btn btn-lg btn-block btn-success") }}
         </dl>
     </form>
-    <script>
-
-        let model_select =document.getElementById('doormodel_id');
-        let second_decor_select =document.getElementById('second_decor_id');
-
-        model_select.onchange = function() {
-            model = model_select.value;
-
-            fetch('/ajax/change_second_decor/' + model).then(function(response) {
-
-                response.json().then(function(data) {
-                    let optionHTML = '';
-
-                    for (let decor of data.second_decor) {
-                        optionHTML += '<option value="' + decor.id + '">' + decor.decorname + '</option>';
-                    }
-
-                    second_decor_select.innerHTML = optionHTML;
-
-                });
-            });
-        }
-    </script>
 
 </div>

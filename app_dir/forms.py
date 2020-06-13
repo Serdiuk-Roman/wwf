@@ -2,7 +2,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, \
-    SubmitField, RadioField, SelectField, IntegerField, TextAreaField
+    SubmitField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Email, \
     EqualTo, NumberRange
 from wtforms.widgets.html5 import NumberInput
@@ -43,29 +43,22 @@ class DecorForm(FlaskForm):
     indexname = StringField('Индекс')
     decorname = StringField('Назва', validators=[DataRequired()])
 
-    decor_type = RadioField(
-        'Тип',
-        choices=[
-            ('0', 'Пленка'),
-            ('1', 'Накладное'),
-            ('2', 'Для Cleare'),
-            ('3', 'Для Plus')
-        ]
-    )
+    veneer = BooleanField('Шпон')
+    paint = BooleanField('Краска')
+    laminate = BooleanField('Плёнка')
+    cased_glass = BooleanField('Накладное стекло')
+    glass_cleare = BooleanField('Cleare')
+    glass_plus = BooleanField('Plus')
 
-    submit = SubmitField('Добавить')
-
-
-class OrderRemarkForm(FlaskForm):
-    body = TextAreaField(
-        'Примечание:'
-    )
     submit = SubmitField('Добавить')
 
 
 class DoorModelForm(FlaskForm):
     modelname = StringField('Название', validators=[DataRequired()])
-    laminate = BooleanField('Плёнка', validators=[DataRequired()])
+
+    veneer = BooleanField('Шпон')
+    paint = BooleanField('Краска')
+    laminate = BooleanField('Плёнка')
     cased_glass = BooleanField('Накладное стекло')
     glass_cleare = BooleanField('Cleare')
     glass_plus = BooleanField('Plus')
@@ -177,35 +170,40 @@ class PositionForm(FlaskForm):
         self.doormodel_id.choices = \
             [(dm.id, dm.modelname) for dm in DoorModel.query.all()]
 
-        self.base_decor_id.choices = \
+        self.base_decor_id.choices = [(2, Decor.query.get(2)), ]
+        self.base_decor_id.choices.extend(
             [(d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '1000'
-            )]
-
-        self.second_decor_id.choices = \
-            [(d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '0000'
-            )]
-        self.second_decor_id.choices.extend(
-            [(d.id, d.decorname) for d in Decor.query.filter(
-                Decor.decor_type == '0111'
+                Decor.veneer
             )]
         )
-        # self.second_decor_id.choices.extend(
-        #     [(d.id, d.decorname) for d in Decor.query.filter(
-        #         Decor.decor_type == '0100'
-        #     )]
-        # )
-        # self.second_decor_id.choices.extend(
-        #     [(d.id, d.decorname) for d in Decor.query.filter(
-        #         Decor.decor_type == '0010'
-        #     )]
-        # )
-        # self.second_decor_id.choices.extend(
-        #     [(d.id, d.decorname) for d in Decor.query.filter(
-        #         Decor.decor_type == '0001'
-        #     )]
-        # )
+        self.base_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.paint
+            )]
+        )
+        self.base_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.laminate
+            )]
+        )
+
+        self.second_decor_id.choices = [(1, Decor.query.get(1)), ]
+        self.second_decor_id.choices.extend([(2, Decor.query.get(2)), ])
+        self.second_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.cased_glass
+            )]
+        )
+        self.second_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.glass_cleare
+            )]
+        )
+        self.second_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.glass_plus
+            )]
+        )
 
         self.alum_butt_id.choices = \
             [(ab.id, ab.butt_description) for ab in AluminumButt.query.all()]
@@ -235,6 +233,13 @@ class PositionForm(FlaskForm):
 
         self.doors_seal_id.choices = \
             [(ds.id, ds.seal) for ds in DoorsSeal.query.all()]
+
+
+class OrderRemarkForm(FlaskForm):
+    body = TextAreaField(
+        'Примечание:'
+    )
+    submit = SubmitField('Добавить')
 
 
 class OrderForm(FlaskForm):
