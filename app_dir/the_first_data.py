@@ -8,7 +8,7 @@ decor_list = dict(
     elm=[
         {
             'indexname': '',
-            'decorname': 'Отсутствует',
+            'decorname': 'Нет',
             'veneer': 0,
             'paint': 0,
             'laminate': 0,

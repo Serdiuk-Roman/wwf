@@ -5,7 +5,7 @@
         let second_decor_select =document.getElementById('second_decor_id');
 
         model = model_select.value;
-        alert("Що за хуйня");
+
         fetch('/ajax/change_base_decor/' + model).then(function(response) {
 
             response.json().then(function(data) {

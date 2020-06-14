@@ -210,10 +210,6 @@ def add_order_position(order_number):
         else:
             next_serial_number = 1
 
-        print()
-        print(form.__dict__)
-        print()
-
         position = Position(
 
             serial_number=next_serial_number,
@@ -249,9 +245,7 @@ def add_order_position(order_number):
         flash('Вы добавили новую позицию.')
         return redirect(url_for('order', order_number=order_number))
     if form.errors:
-        print()
         print('error:', form.errors)
-        print()
     positions = Position.query.filter_by(order=order).all()
     if not positions:
         flash('Добавьте позиции')
