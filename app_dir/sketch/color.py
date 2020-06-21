@@ -1,4 +1,6 @@
-from setting import CM, Small_line_width
+CM = 28
+Base_line_width = 2
+Small_line_width = 1
 
 
 black = (0, 0, 0)
@@ -13,30 +15,38 @@ g8 = (0.8, 0.8, 0.8)
 g9 = (0.9, 0.9, 0.9)
 white = (1, 1, 1)
 
-palitra = (black, g1, g2, g3, g4, g5, g6, g7, g8, g9, white)
-
 
 def perymetr(ctx):
 
     ctx.set_line_width(Small_line_width)
 
-    # horyzont
+    ctx.set_source_rgb(*g8)
+    # Вертикальные
     for i in range(31):
         ctx.move_to(CM * i, 0)
-        ctx.line_to(CM * i, 4)
-    # vertycal
+        ctx.line_to(CM * i, 5)
+    for i in range(26):
+        ctx.move_to((i + 3) * CM, CM)
+        ctx.line_to((i + 3) * CM, CM * 21)
+    # Горизонтальные
     for j in range(22):
         ctx.move_to(0, CM * j)
-        ctx.line_to(4, CM * j)
-    for k in range(7):
-        ctx.move_to(5 * k * CM, 0)
-        ctx.line_to(5 * k * CM, 10)
-    for l in range(5):
-        ctx.move_to(0, 5 * l * CM)
-        ctx.line_to(10, 5 * l * CM)
+        ctx.line_to(5, CM * j)
+    for j in range(18):
+        ctx.move_to(2 * CM, CM * (j + 2))
+        ctx.line_to(29 * CM, CM * (j + 2))
 
-    ctx.rectangle(2 * CM, CM, 27 * CM, 19 * CM)
+    ctx.stroke()
 
     ctx.set_source_rgb(*g5)
+
+    for k in range(6):
+        ctx.move_to(5 * k * CM, 0)
+        ctx.line_to(5 * k * CM, 595)
+    for li in range(5):
+        ctx.move_to(0, 5 * li * CM)
+        ctx.line_to(842, 5 * li * CM)
+
+    ctx.rectangle(2 * CM, CM, 27 * CM, 20 * CM)
 
     ctx.stroke()
