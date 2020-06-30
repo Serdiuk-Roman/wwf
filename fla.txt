@@ -39,22 +39,6 @@ if len(Category.query.all()) is 0:
         db.session.add(category)
     db.session.commit()
 
-if len(SubCategory.query.all()) is 0:
-    for name in ['апельсины', 'яблоки', 'груши']:
-        sub_category = SubCategory(category_id=1, name=name)
-        db.session.add(sub_category)
-
-    for name in ['сок', 'вода', 'газировка']:
-        sub_category = SubCategory(category_id=2, name=name)
-        db.session.add(sub_category)
-
-    for name in ['молоко', 'сметана', 'масло']:
-        sub_category = SubCategory(category_id=3, name=name)
-        db.session.add(sub_category)
-    db.session.commit()
-
-
-
 
 https://ondras.zarovi.cz/sql/demo/
 

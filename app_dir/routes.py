@@ -15,6 +15,8 @@ from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
 
 from app_dir.the_first_data import load_data
 
+from app_dir.sketch import Evolushion_03_primer_Forte_Paint as Ev
+
 
 @app.route('/')
 @app.route('/index')
@@ -454,6 +456,9 @@ def delete_order_position(order_number, serial_number):
 @app.route('/scetch/<int:order_number>', methods=['post'])
 @login_required
 def gen_scetch(order_number):
+
+    pg = Ev.Pdf_Generator(order_number)
+    pg.run()
 
     return "Hello {}".format(order_number)
 

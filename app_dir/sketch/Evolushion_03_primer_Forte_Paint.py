@@ -1,8 +1,11 @@
-import cairo
-import os
+from pathlib import Path
 import math
 
-from color import *
+import cairo
+
+from app_dir import app
+
+from app_dir.sketch.sketch_config import *
 
 
 def brus_40(ctx):
@@ -44,11 +47,7 @@ class Evolushion_03_primer_Forte_Paint():
     def create_from_png(self):
         dir_path = os.path.dirname(os.path.abspath(__file__))
         img_path = os.path.join(dir_path, 'surface', self.surface_name)
-        print()
-        print(type(img_path))
-        print(img_path)
-        print()
-        self.ims = cairo.ImageSurface.create_from_png(str(img_path))
+        self.ims = cairo.ImageSurface.create_from_png(img_path)
 
     def draw_page(self):
         # ims = cairo.ImageSurface.create_from_png(image_name)
@@ -75,7 +74,7 @@ class Evolushion_03_primer_Forte_Paint():
         self.ctx.set_font_size(42)
         # Номер позиции
         (x, y, width, height, dx, dy) = self.ctx.text_extents(
-            str(self.positions_list)
+            str(self.positions_list)[1:-1]
         )
         self.ctx.move_to(28 * CM - dx, 2 * CM)
         self.ctx.show_text(str(self.positions_list)[1:-1])
@@ -221,7 +220,13 @@ class Pdf_Generator():
         self.order_number = order_number
 
     def set_output_file(self):
-        filename = "resume/{}.pdf".format(self.order_number)
+
+        sketch_dir = Path(app.instance_path).parent / "app_dir" / "sketch"
+
+        filename = str(sketch_dir.joinpath(
+            "resume",
+            "{}.pdf".format(self.order_number)
+        ))
 
         surface = cairo.PDFSurface(filename, 842, 595)
         self.ctx = cairo.Context(surface)
