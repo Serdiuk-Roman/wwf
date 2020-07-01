@@ -253,7 +253,6 @@ class Order(db.Model):
     positions = db.relationship('Position', backref='order')
     order_number = db.Column(db.Integer, unique=True, index=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    positions = db.relationship('Position', backref='order')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     customer_manager = db.Column(db.String(64))
     customer_city = db.Column(db.String(64))

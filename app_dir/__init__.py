@@ -13,11 +13,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 app = Flask(__name__)
 
-# for i in app.config:
-#     print(str(i).rjust(32), ' : ', app.config[i])
-
 app.config.from_object(DevelopmentConfig())
-
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)

@@ -1,3 +1,4 @@
+
 CM = 28
 Base_line_width = 2
 Small_line_width = 1
@@ -48,5 +49,7 @@ def perymetr(ctx):
         ctx.line_to(842, 5 * li * CM)
 
     ctx.rectangle(2 * CM, CM, 27 * CM, 20 * CM)
+
+    ctx.set_source_rgb(*black)
 
     ctx.stroke()
