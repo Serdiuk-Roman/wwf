@@ -14,18 +14,18 @@
             {{ forms.body.label }}
             {{ forms.body(rows=5, class_='form-control') }}
         </div>
-        <div class="row">
-                <div class="col-sm-8">
-                    {{ forms.submit(class_="btn btn-block btn-lg btn-info", value='Изменить') }}
-                </div>
-                <div class="col-sm-3 col-md-offset-1">
-                    <a class="btn btn-block btn-lg btn-warning" href="{{ url_for('order_remark_delete', order_number=order.order_number) }}">Очистить примечание</a>
-                </div>
-            </div>
-        <dl>
-
-        </dl>
+        <div>
+            {{ forms.submit(class_="btn btn-block btn-lg btn-info", value='Изменить') }}
+        </div>
     </form>
 </div>
+
+<hr>
+    <form action="{{ url_for('order_remark_delete', order_number=order.order_number) }}" method="POST">
+        <input type="submit" value="Очистить примечание"
+                class="btn btn-block btn-lg btn-danger">
+    </form>
+<hr>
+
 
 {% endblock %}

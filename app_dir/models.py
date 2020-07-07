@@ -256,6 +256,7 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     customer_manager = db.Column(db.String(64))
     customer_city = db.Column(db.String(64))
+    sketch_is_ready = db.Column(db.Boolean)
 
     ord_rem = db.relationship('OrderRemark', backref='remark', uselist=False)
 

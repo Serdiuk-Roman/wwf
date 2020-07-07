@@ -460,7 +460,14 @@ def gen_scetch(order_number):
     pg = sketch_manager.Pdf_Generator(order_number)
     pg.run()
 
-    return "Hello {}".format(order_number)
+    order = Order.query.filter_by(order_number=order_number).first()
+
+    order.sketch_is_ready = True
+
+    db.session.add(order)
+    db.session.commit()
+    flash('Добавлены єскизы')
+    return redirect(url_for('order', order_number=order.order_number))
 
 
 @app.route('/first_data')

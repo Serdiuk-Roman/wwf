@@ -20,24 +20,26 @@ class Pdf_Generator():
     def set_output_file(self):
 
         self.sketch_dir = Path(app.root_path) / "sketch"
+        self.result_dir = Path(app.root_path) / "static" / "pdf"
 
-        filename = str(self.sketch_dir.joinpath(
-            "resume",
-            "{}.pdf".format(self.order.order_number)
+        self.filename = "{}_sketch.pdf".format(self.order.order_number)
+
+        self.filename_path = str(self.result_dir.joinpath(
+            self.result_dir,
+            self.filename
         ))
 
-        surface = cairo.PDFSurface(filename, 842, 595)
+        surface = cairo.PDFSurface(self.filename_path, 842, 595)
         self.ctx = cairo.Context(surface)
         self.ctx.select_font_face("Times New Roman")
         self.ctx.set_source_rgb(*black)
 
     def get_combined_positions(self):
-        door_size = \
+        self.base_page_list = \
             [(p.doors_height, p.doors_width, p.serial_number)
              for p in self.order.positions]
 
-        print(door_size)
-        return door_size
+        self.base_page_list
 
     def destr(self):
         # surface.show_page()
@@ -45,11 +47,11 @@ class Pdf_Generator():
         self.ctx.restore()
 
     def run(self):
+
         self.set_output_file()
+        self.get_combined_positions()
 
-        base_page_list = self.get_combined_positions()
-
-        for i in base_page_list:
+        for i in self.base_page_list:
             e = Evolushion_03_primer_Forte_Paint(
                 self.ctx,
                 self.order,
@@ -58,16 +60,7 @@ class Pdf_Generator():
             )
 
             e.draw_page()
-            e.draw_model_name()
-            e.draw_positions_number()
-            e.draw_door_size()
-            e.draw_finish_cut()
-            e.draw_carcase_thickness()
-            e.draw_carcase_size()
-            e.draw_frame_size()
-            e.draw_casing_size()
-            e.draw_expander_size()
-            e.draw_position_casing_count()
+
             self.ctx.show_page()
 
         self.destr()

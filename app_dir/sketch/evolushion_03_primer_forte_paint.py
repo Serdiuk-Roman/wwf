@@ -5,18 +5,6 @@ import cairo
 from app_dir.sketch.sketch_config import *
 
 
-def brus_40(ctx):
-    pass
-
-
-def mdf(ctx):
-    pass
-
-
-def se4enie_lutky(ctx):
-    pass
-
-
 class Evolushion_03_primer_Forte_Paint():
     def __init__(self, ctx, order, positions_list, sketch_dir):
         self.ctx = ctx
@@ -50,21 +38,6 @@ class Evolushion_03_primer_Forte_Paint():
 
         self.ims = cairo.ImageSurface.create_from_png(img_path)
 
-    def draw_page(self):
-        # ims = cairo.ImageSurface.create_from_png(image_name)
-        # mask_img = create_from_png("Evolshion_03_primer.png")
-        # размер изображения 1108x772 точок
-
-        self.ctx.save()
-        self.create_from_png()
-        self.ctx.scale(0.76, 0.76)
-        self.ctx.set_source_surface(self.ims, 0, 0)
-        self.ctx.paint()
-        self.ctx.restore()
-
-        # Сетка сантиметровая(приблизительно)
-        # perymetr(self.ctx)
-
     def draw_model_name(self):
         self.ctx.set_font_size(11)
         # Модель
@@ -75,10 +48,10 @@ class Evolushion_03_primer_Forte_Paint():
         self.ctx.set_font_size(42)
         # Номер позиции
         (x, y, width, height, dx, dy) = self.ctx.text_extents(
-            str(self.positions_list)[1:-1]
+            str(self.positions_list)
         )
         self.ctx.move_to(28 * CM - dx, 2 * CM)
-        self.ctx.show_text(str(self.positions_list)[1:-1])
+        self.ctx.show_text(str(self.positions_list))
 
     def draw_door_size(self):
         self.ctx.set_font_size(14)
@@ -99,7 +72,7 @@ class Evolushion_03_primer_Forte_Paint():
         self.ctx.show_text(str(self.door_w - 1))
 
     def draw_carcase_thickness(self):
-        self.ctx.set_font_size(16)
+        self.ctx.set_font_size(17)
         # Толщина бруса
         self.ctx.move_to(7.8 * CM, 5.4 * CM)
         self.ctx.show_text(str(self.TIMBER_THICKNESS))
@@ -220,3 +193,31 @@ class Evolushion_03_primer_Forte_Paint():
         self.ctx.show_text(msg)
         self.ctx.move_to(13.3 * CM, 4 * CM)
         self.ctx.show_text("1")
+
+    def draw_page(self):
+        # ims = cairo.ImageSurface.create_from_png(image_name)
+        # mask_img = create_from_png("Evolshion_03_primer.png")
+        # размер изображения 1108x772 точок
+
+        self.ctx.save()
+
+        self.create_from_png()
+
+        self.ctx.scale(0.76, 0.76)
+        self.ctx.set_source_surface(self.ims, 0, 0)
+        self.ctx.paint()
+        self.ctx.restore()
+
+        self.draw_model_name()
+        self.draw_positions_number()
+        self.draw_door_size()
+        self.draw_finish_cut()
+        self.draw_carcase_thickness()
+        self.draw_carcase_size()
+        self.draw_frame_size()
+        self.draw_casing_size()
+        self.draw_expander_size()
+        self.draw_position_casing_count()
+
+        # Сетка сантиметровая(приблизительно)
+        # perymetr(self.ctx)
