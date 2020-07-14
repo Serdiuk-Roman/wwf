@@ -9,7 +9,7 @@ from app_dir.models import Order
 from app_dir.sketch.evolushion_03_primer_forte_paint import \
     Evolushion_03_primer_Forte_Paint
 
-from app_dir.sketch.sketch_config import *
+from app_dir.sketch.sketch_config import black
 
 
 class Pdf_Generator():
@@ -25,7 +25,6 @@ class Pdf_Generator():
         self.filename = "{}_sketch.pdf".format(self.order.order_number)
 
         self.filename_path = str(self.result_dir.joinpath(
-            self.result_dir,
             self.filename
         ))
 

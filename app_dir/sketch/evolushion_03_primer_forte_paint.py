@@ -2,7 +2,7 @@ import math
 
 import cairo
 
-from app_dir.sketch.sketch_config import *
+from app_dir.sketch.sketch_config import CM
 
 
 class Evolushion_03_primer_Forte_Paint():
