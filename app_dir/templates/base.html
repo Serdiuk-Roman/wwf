@@ -28,23 +28,23 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}">WakeWood</a>
+                <a class="navbar-brand" href="{{ url_for('main.index') }}">WakeWood</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 {% if current_user.is_authenticated %}
                     <ul class="nav navbar-nav">
 
-                        <li><a href="{{ url_for('decor') }}">Добавить декор</a></li>
-                        <li><a href="{{ url_for('door_model') }}">Добавить модель</a></li>
-                        <li><a href="{{ url_for('orders') }}">Заказы</a></li>
+                        <li><a href="{{ url_for('new_elements.decor') }}">Добавить декор</a></li>
+                        <li><a href="{{ url_for('new_elements.door_model') }}">Добавить модель</a></li>
+                        <li><a href="{{ url_for('main.orders') }}">Заказы</a></li>
                     </ul>
                 {% endif %}
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_anonymous %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
                     {% else %}
-                    <li><a href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                     {% endif %}
                 </ul>
             </div>

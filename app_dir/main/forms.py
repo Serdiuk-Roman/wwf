@@ -1,69 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, \
-    SubmitField, SelectField, IntegerField, TextAreaField
-from wtforms.validators import ValidationError, DataRequired, Email, \
-    EqualTo, NumberRange
+from wtforms import StringField, SubmitField, SelectField, IntegerField, \
+    TextAreaField
+from wtforms.validators import DataRequired, NumberRange
 from wtforms.widgets.html5 import NumberInput
 # from wtforms.widgets import TextArea
 
-from app_dir.models import User, DoorModel, Decor, FrameType, Casing, \
-    Expander, LocksPurpose, LocksType, LocksColor, HingesSide, HingesType, \
+from app_dir.models import DoorModel, Decor, FrameType, Casing, Expander, \
+    LocksPurpose, LocksType, LocksColor, HingesSide, HingesType, \
     HingesColor, DoorsSeal, AluminumButt
-
-
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Remember Me')
-    submit = SubmitField('Войти')
-
-
-class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
-
-    def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
-        if user is not None:
-            raise ValidationError('Такое Имя существует, придумайте другое')
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is not None:
-            raise ValidationError('Используйте другой email, такой уже есть')
-
-
-class DecorForm(FlaskForm):
-    indexname = StringField('Индекс')
-    decorname = StringField('Назва', validators=[DataRequired()])
-
-    veneer = BooleanField('Шпон')
-    paint = BooleanField('Краска')
-    laminate = BooleanField('Плёнка')
-    cased_glass = BooleanField('Накладное стекло')
-    glass_cleare = BooleanField('Cleare')
-    glass_plus = BooleanField('Plus')
-
-    submit = SubmitField('Добавить')
-
-
-class DoorModelForm(FlaskForm):
-    modelname = StringField('Название', validators=[DataRequired()])
-
-    veneer = BooleanField('Шпон')
-    paint = BooleanField('Краска')
-    laminate = BooleanField('Плёнка')
-    cased_glass = BooleanField('Накладное стекло')
-    glass_cleare = BooleanField('Cleare')
-    glass_plus = BooleanField('Plus')
-
-    submit = SubmitField('Добавить')
 
 
 class PositionForm(FlaskForm):

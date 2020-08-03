@@ -3,68 +3,26 @@
 from datetime import datetime
 
 from flask import render_template, flash, redirect, url_for, request, jsonify
-from flask_login import current_user, login_user, logout_user, login_required
-from werkzeug.urls import url_parse
+from flask_login import current_user, login_required
 
-from app_dir import app, db
+from app_dir import db
 
 from app_dir.models import User, Decor, DoorModel, Position, Order, OrderRemark
 
-from app_dir.forms import LoginForm, RegistrationForm, DecorForm, \
-    DoorModelForm, PositionForm, OrderForm, OrderRemarkForm
-
-from app_dir.the_first_data import load_data
+from app_dir.main.forms import PositionForm, OrderForm, OrderRemarkForm
 
 from app_dir.sketch import sketch_manager
+from app_dir.main import bp
 
 
-@app.route('/')
-@app.route('/index')
+@bp.route('/')
+@bp.route('/index')
 @login_required
 def index():
     return render_template('index.html', title='Home')
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Поздравляю, Вы теперь зареестрированый пользователь!')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Некоректное имя или пароль')
-            return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
-
-
-@app.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('login'))
-
-
-@app.route('/user/<username>')
+@bp.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
@@ -82,69 +40,7 @@ def user(username):
     return render_template('user.html', user=user, posts=posts)
 
 
-@app.route('/decor', methods=['get', 'post'])
-@login_required
-def decor():
-    form = DecorForm()
-    if form.validate_on_submit():
-        decor = Decor(
-            indexname=form.indexname.data,
-            decorname=form.decorname.data,
-
-            veneer=form.veneer.data,
-            paint=form.paint.data,
-            laminate=form.laminate.data,
-            cased_glass=form.cased_glass.data,
-            glass_cleare=form.glass_cleare.data,
-            glass_plus=form.glass_plus.data
-        )
-        db.session.add(decor)
-        db.session.commit()
-        flash('Вы добавили новый декор.')
-        return redirect(url_for('decor'))
-    decors = Decor.query.all()
-    if not decors:
-        flash('В базе еще нет декора')
-    return render_template(
-        'decor.html',
-        title='Декор',
-        decors=decors,
-        forms=form
-    )
-
-
-@app.route('/door_model', methods=['get', 'post'])
-@login_required
-def door_model():
-    form = DoorModelForm()
-    if form.validate_on_submit():
-
-        door_model = DoorModel(
-            modelname=form.modelname.data,
-
-            veneer=form.veneer.data,
-            paint=form.paint.data,
-            laminate=form.laminate.data,
-            cased_glass=form.cased_glass.data,
-            glass_cleare=form.glass_cleare.data,
-            glass_plus=form.glass_plus.data
-        )
-        db.session.add(door_model)
-        db.session.commit()
-        flash('Вы добавили новую модель двери.')
-        return redirect(url_for('door_model'))
-    door_models = DoorModel.query.all()
-    if not door_models:
-        flash('В базе еще пусто')
-    return render_template(
-        'door_model.html',
-        title='Модель',
-        door_models=door_models,
-        forms=form
-    )
-
-
-@app.route('/orders', methods=['get'])
+@bp.route('/orders', methods=['get'])
 @login_required
 def orders():
     orders = Order.query.all()
@@ -155,7 +51,7 @@ def orders():
     )
 
 
-@app.route('/new_order', methods=['get', 'post'])
+@bp.route('/new_order', methods=['get', 'post'])
 @login_required
 def new_order():
     form = OrderForm()
@@ -178,7 +74,7 @@ def new_order():
     )
 
 
-@app.route('/order/<int:order_number>', methods=['get', 'post'])
+@bp.route('/order/<int:order_number>', methods=['get', 'post'])
 @login_required
 def order(order_number):
 
@@ -197,7 +93,7 @@ def order(order_number):
     )
 
 
-@app.route('/order/<int:order_number>/add_position', methods=['get', 'post'])
+@bp.route('/order/<int:order_number>/add_position', methods=['get', 'post'])
 @login_required
 def add_order_position(order_number):
 
@@ -245,7 +141,7 @@ def add_order_position(order_number):
         db.session.add(position)
         db.session.commit()
         flash('Вы добавили новую позицию.')
-        return redirect(url_for('order', order_number=order_number))
+        return redirect(url_for('main.order', order_number=order_number))
     if form.errors:
         print('error:', form.errors)
     positions = Position.query.filter_by(order=order).all()
@@ -260,7 +156,7 @@ def add_order_position(order_number):
     )
 
 
-@app.route('/order/<int:order_number>/remark_add', methods=['get', 'post'])
+@bp.route('/order/<int:order_number>/remark_add', methods=['get', 'post'])
 @login_required
 def order_remark_add(order_number):
 
@@ -277,7 +173,7 @@ def order_remark_add(order_number):
         db.session.add(rem)
         db.session.commit()
         flash('Вы добавили примечание')
-        return redirect(url_for('order', order_number=order_number))
+        return redirect(url_for('main.order', order_number=order_number))
     if form.errors:
         print(form.errors)
     return render_template(
@@ -289,7 +185,7 @@ def order_remark_add(order_number):
     )
 
 
-@app.route('/order/<int:order_number>/remark_edit', methods=['get', 'post'])
+@bp.route('/order/<int:order_number>/remark_edit', methods=['get', 'post'])
 @login_required
 def order_remark_edit(order_number):
     order = Order.query.filter_by(order_number=order_number).first_or_404()
@@ -306,7 +202,7 @@ def order_remark_edit(order_number):
 
         db.session.commit()
         flash('Вы изменили примечание')
-        return redirect(url_for('order', order_number=order_number))
+        return redirect(url_for('main.order', order_number=order_number))
     if form.errors:
         print(form.errors)
     return render_template(
@@ -318,17 +214,17 @@ def order_remark_edit(order_number):
     )
 
 
-@app.route('/order/<int:order_number>/remark_delete', methods=['post'])
+@bp.route('/order/<int:order_number>/remark_delete', methods=['post'])
 @login_required
 def order_remark_delete(order_number):
     order = Order.query.filter_by(order_number=order_number).first_or_404()
     remark = OrderRemark.query.filter_by(order_id=order.id).first_or_404()
     db.session.delete(remark)
     db.session.commit()
-    return redirect(url_for('order', order_number=order_number))
+    return redirect(url_for('main.order', order_number=order_number))
 
 
-@app.route('/ajax/change_base_decor/<int:doormodel_id>')
+@bp.route('/ajax/change_base_decor/<int:doormodel_id>')
 def base_decor(doormodel_id):
 
     doormodel = DoorModel.query.filter_by(id=doormodel_id).first()
@@ -358,7 +254,7 @@ def base_decor(doormodel_id):
     return jsonify({'base_decor': base_decor_array})
 
 
-@app.route('/ajax/change_second_decor/<int:doormodel_id>')
+@bp.route('/ajax/change_second_decor/<int:doormodel_id>')
 def second_decor(doormodel_id):
 
     doormodel = DoorModel.query.filter_by(id=doormodel_id).first()
@@ -388,7 +284,7 @@ def second_decor(doormodel_id):
     return jsonify({'second_decor': second_decor_array})
 
 
-@app.route(
+@bp.route(
     '/order/<int:order_number>/<int:serial_number>',
     methods=['get', 'post'])
 @login_required
@@ -425,7 +321,7 @@ def edit_order_position(order_number, serial_number):
     )
 
 
-@app.route(
+@bp.route(
     '/order/<int:order_number>/delete/<int:serial_number>',
     methods=['post'])
 @login_required
@@ -453,7 +349,7 @@ def delete_order_position(order_number, serial_number):
     return redirect(url_for('order', order_number=order_number))
 
 
-@app.route('/scetch/<int:order_number>', methods=['post'])
+@bp.route('/scetch/<int:order_number>', methods=['post'])
 @login_required
 def gen_scetch(order_number):
 
@@ -467,22 +363,4 @@ def gen_scetch(order_number):
     db.session.add(order)
     db.session.commit()
     flash('Добавлены єскизы')
-    return redirect(url_for('order', order_number=order.order_number))
-
-
-@app.route('/first_data')
-def first_data():
-
-    gen_data = load_data()
-
-    for i in gen_data:
-
-        if not len(i['cls_name'].query.all()):
-
-            for element in i['obj_list']:
-                obj = i['cls_name'](**element)
-                db.session.add(obj)
-            db.session.commit()
-            flash(i['msg'])
-
-    return redirect(url_for('register'))
+    return redirect(url_for('main.order', order_number=order.order_number))

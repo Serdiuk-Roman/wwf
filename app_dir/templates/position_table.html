@@ -36,7 +36,7 @@
             {% for position in positions %}
             <tr>
                 <td>
-                    <a href="{{ url_for('edit_order_position', order_number=order.order_number, serial_number=position.serial_number) }}">
+                    <a href="{{ url_for('main.edit_order_position', order_number=order.order_number, serial_number=position.serial_number) }}">
                         <button type="button" class="btn"> {{ position.serial_number }} </button>
                     </a>
                 </td>
