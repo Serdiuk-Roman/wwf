@@ -80,9 +80,9 @@ decor_list = dict(
             'indexname': '1',
             'decorname': 'Стекло крашеное черное',
             'veneer': 0,
-            'paint': 1,
+            'paint': 0,
             'laminate': 0,
-            'cased_glass': 0,
+            'cased_glass': 1,
             'glass_cleare': 0,
             'glass_plus': 0
         },
