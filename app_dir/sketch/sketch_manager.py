@@ -2,7 +2,7 @@ from pathlib import Path
 
 import cairo
 
-from app_dir import app
+from flask import current_app
 
 from app_dir.models import Order
 
@@ -19,8 +19,8 @@ class Pdf_Generator():
 
     def set_output_file(self):
 
-        self.sketch_dir = Path(app.root_path) / "sketch"
-        self.result_dir = Path(app.root_path) / "static" / "pdf"
+        self.sketch_dir = Path(current_app.root_path) / "sketch"
+        self.result_dir = Path(current_app.root_path) / "static" / "pdf"
 
         self.filename = "{}_sketch.pdf".format(self.order.order_number)
 

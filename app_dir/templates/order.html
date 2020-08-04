@@ -11,18 +11,18 @@
 <div class="row" >
     <div class="col-sm-3">
         <div>
-            <a class="btn btn-primary btn-lg" href="{{ url_for('add_order_position', order_number=order.order_number) }}">Добавить позицию</a>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('main.add_order_position', order_number=order.order_number) }}">Добавить позицию</a>
         </div>
     </div>
 
     <div class="col-sm-3">
         {% if remark %}
             <div>
-                <a class="btn btn-info btn-lg" href="{{ url_for('order_remark_edit', order_number=order.order_number) }}">Изменить примечание</a>
+                <a class="btn btn-info btn-lg" href="{{ url_for('main.order_remark_edit', order_number=order.order_number) }}">Изменить примечание</a>
             </div>
         {% else %}
             <div>
-                <a class="btn btn-info btn-lg" href="{{ url_for('order_remark_add', order_number=order.order_number) }}">Добавить примечание</a>
+                <a class="btn btn-info btn-lg" href="{{ url_for('main.order_remark_add', order_number=order.order_number) }}">Добавить примечание</a>
             </div>
         {% endif %}
 

@@ -5,7 +5,7 @@
 {% block app_content %}
 
     <div>
-        <a class="btn btn-primary" href="{{ url_for('new_order') }}">Новый заказ</a>
+        <a class="btn btn-primary" href="{{ url_for('main.new_order') }}">Новый заказ</a>
     </div>
 
     <hr>
@@ -25,7 +25,7 @@
             {% for order in orders %}
             <tr>
                 <td>
-                    <a href="{{ url_for('order', order_number=order.order_number) }}">
+                    <a href="{{ url_for('main.order', order_number=order.order_number) }}">
                         {{ order.order_number }}
                     </a>
                 </td>
