@@ -39,17 +39,23 @@ def create_app(config_class=DevelopmentConfig):
     moment.init_app(app)
     # babel.init_app(app)
 
-    from app_dir.errors import bp as errors_bp
-    app.register_blueprint(errors_bp)
-
     from app_dir.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    from app_dir.errors import bp as errors_bp
+    app.register_blueprint(errors_bp)
 
     from app_dir.main import bp as main_bp
     app.register_blueprint(main_bp)
 
     from app_dir.new_elements import bp as new_elements_bp
     app.register_blueprint(new_elements_bp, url_prefix='/new_elements')
+
+    from app_dir.order import bp as order_bp
+    app.register_blueprint(order_bp)
+
+    from app_dir.sketch import bp as sketch_bp
+    app.register_blueprint(sketch_bp)
 
     # if not app.debug and not app.testing:
     #     if app.config['MAIL_SERVER']:

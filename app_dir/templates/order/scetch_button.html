@@ -1,5 +1,5 @@
 
-<form action="{{ url_for('main.gen_scetch', order_number=order.order_number) }}" method="POST">
+<form action="{{ url_for('sketch.gen_sketch', order_number=order.order_number) }}" method="POST">
     <input type="submit" value="Создать чертежи"
             class="btn btn-secondary btn-lg"
             onclick="return confirm('Вы уверены что все готово?')">

@@ -1,4 +1,5 @@
 app.db
+app_dir/static/pdf
 
 
 # Created by https://www.gitignore.io/api/venv,linux,python,virtualenv,sublimetext
@@ -192,8 +193,3 @@ GitHub.sublime-settings
 pyvenv.cfg
 pip-selfcheck.json
 
-### VirtualEnv ###
-# Virtualenv
-# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
-
-# End of https://www.gitignore.io/api/venv,linux,python,virtualenv,sublimetext

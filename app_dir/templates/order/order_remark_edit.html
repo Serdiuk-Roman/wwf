@@ -2,9 +2,9 @@
 
 {% block app_content %}
 
-    {% include 'order_table.html' %}
+    {% include 'order/order_table.html' %}
 
-    {% include 'position_table.html' %}
+    {% include 'order/position_table.html' %}
 
 <div class="bg-info">
     <br>
@@ -21,7 +21,7 @@
 </div>
 
 <hr>
-    <form action="{{ url_for('main.order_remark_delete', order_number=order.order_number) }}" method="POST">
+    <form action="{{ url_for('order.order_remark_delete', order_number=order.order_number) }}" method="POST">
         <input type="submit" value="Очистить примечание"
                 class="btn btn-block btn-lg btn-danger">
     </form>

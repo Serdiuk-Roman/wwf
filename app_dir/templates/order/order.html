@@ -4,25 +4,25 @@
 
 {% block app_content %}
 
-    {% include 'order_table.html' %}
-    {% include 'position_table.html' %}
-    {% include 'order_remark.html' %}
+    {% include 'order/order_table.html' %}
+    {% include 'order/position_table.html' %}
+    {% include 'order/order_remark.html' %}
 <br>
 <div class="row" >
     <div class="col-sm-3">
         <div>
-            <a class="btn btn-primary btn-lg" href="{{ url_for('main.add_order_position', order_number=order.order_number) }}">Добавить позицию</a>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('order.add_order_position', order_number=order.order_number) }}">Добавить позицию</a>
         </div>
     </div>
 
     <div class="col-sm-3">
         {% if remark %}
             <div>
-                <a class="btn btn-info btn-lg" href="{{ url_for('main.order_remark_edit', order_number=order.order_number) }}">Изменить примечание</a>
+                <a class="btn btn-info btn-lg" href="{{ url_for('order.order_remark_edit', order_number=order.order_number) }}">Изменить примечание</a>
             </div>
         {% else %}
             <div>
-                <a class="btn btn-info btn-lg" href="{{ url_for('main.order_remark_add', order_number=order.order_number) }}">Добавить примечание</a>
+                <a class="btn btn-info btn-lg" href="{{ url_for('order.order_remark_add', order_number=order.order_number) }}">Добавить примечание</a>
             </div>
         {% endif %}
 
@@ -32,7 +32,7 @@
 
     <div class="col-sm-3 text-right" >
         {# {% if current_user.is_designers %} #}
-            {% include 'scetch_button.html' %}
+            {% include 'order/scetch_button.html' %}
         {# {% endif %} #}
     </div>
 

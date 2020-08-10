@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from app_dir.models import Decor, DoorModel, Casing, Expander, FrameType, \
     LocksPurpose, LocksType, LocksColor, HingesSide, HingesType, HingesColor, \
     DoorsSeal, AluminumButt
