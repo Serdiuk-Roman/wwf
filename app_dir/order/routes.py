@@ -2,12 +2,12 @@
 
 from datetime import datetime
 
-from flask import render_template, flash, redirect, url_for, request, jsonify
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_required
 
 from app_dir import db
 
-from app_dir.models import Decor, DoorModel, Position, Order, OrderRemark
+from app_dir.models import Position, Order, OrderRemark
 
 from app_dir.order.forms import PositionForm, OrderForm, OrderRemarkForm
 
@@ -40,9 +40,14 @@ def new_order():
         db.session.add(order)
         db.session.commit()
         flash('Вы добавили новый заказ.')
-        return redirect(url_for('main.order', order_number=order.order_number))
+        return redirect(
+            url_for(
+                'order.order',
+                order_number=order.order_number
+            )
+        )
     return render_template(
-        'order_form.html',
+        'order/order_form.html',
         title='Новый заказ',
         forms=form
     )
@@ -115,14 +120,14 @@ def add_order_position(order_number):
         db.session.add(position)
         db.session.commit()
         flash('Вы добавили новую позицию.')
-        return redirect(url_for('main.order', order_number=order_number))
+        return redirect(url_for('order.order', order_number=order_number))
     if form.errors:
         print('error:', form.errors)
     positions = Position.query.filter_by(order=order).all()
     if not positions:
         flash('Добавьте позиции')
     return render_template(
-        'order_add_position.html',
+        'order/order_add_position.html',
         title='Заказ № {}'.format(order_number),
         order=order,
         positions=positions,
@@ -147,11 +152,11 @@ def order_remark_add(order_number):
         db.session.add(rem)
         db.session.commit()
         flash('Вы добавили примечание')
-        return redirect(url_for('main.order', order_number=order_number))
+        return redirect(url_for('order.order', order_number=order_number))
     if form.errors:
         print(form.errors)
     return render_template(
-        'order_remark_add.html',
+        'order/order_remark_add.html',
         title='Заказ № {}'.format(order_number),
         order=order,
         positions=positions,
@@ -176,11 +181,11 @@ def order_remark_edit(order_number):
 
         db.session.commit()
         flash('Вы изменили примечание')
-        return redirect(url_for('main.order', order_number=order_number))
+        return redirect(url_for('order.order', order_number=order_number))
     if form.errors:
         print(form.errors)
     return render_template(
-        'order_remark_edit.html',
+        'order/order_remark_edit.html',
         title='Заказ № {}'.format(order_number),
         order=order,
         positions=positions,
@@ -195,67 +200,7 @@ def order_remark_delete(order_number):
     remark = OrderRemark.query.filter_by(order_id=order.id).first_or_404()
     db.session.delete(remark)
     db.session.commit()
-    return redirect(url_for('main.order', order_number=order_number))
-
-
-@bp.route('/ajax/change_base_decor/<int:doormodel_id>')
-def base_decor(doormodel_id):
-
-    doormodel = DoorModel.query.filter_by(id=doormodel_id).first()
-
-    not_choice = {'id': 2, 'decorname': str(Decor.query.get_or_404(2))}
-
-    base_decor_array = [not_choice, ]
-
-    if doormodel.veneer:
-        base_decor_array.extend([
-            {'id': d.id, 'decorname': d.decorname}
-            for d in Decor.query.filter(Decor.veneer)]
-        )
-    elif doormodel.paint:
-        base_decor_array.extend([
-            {'id': d.id, 'decorname': d.decorname}
-            for d in Decor.query.filter(Decor.paint)]
-        )
-    elif doormodel.laminate:
-        base_decor_array.extend([
-            {'id': d.id, 'decorname': d.decorname}
-            for d in Decor.query.filter(Decor.laminate)]
-        )
-    else:
-        empty_choice = {'id': 1, 'decorname': "Что то пошло не так"}
-        base_decor_array = [empty_choice, ]
-    return jsonify({'base_decor': base_decor_array})
-
-
-@bp.route('/ajax/change_second_decor/<int:doormodel_id>')
-def second_decor(doormodel_id):
-
-    doormodel = DoorModel.query.filter_by(id=doormodel_id).first()
-
-    empty_choice = {'id': 1, 'decorname': str(Decor.query.get_or_404(1))}
-    not_choice = {'id': 2, 'decorname': str(Decor.query.get_or_404(2))}
-
-    second_decor_array = [not_choice, ]
-
-    if doormodel.cased_glass:
-        second_decor_array.extend([
-            {'id': d.id, 'decorname': d.decorname}
-            for d in Decor.query.filter(Decor.cased_glass)]
-        )
-    elif doormodel.glass_cleare:
-        second_decor_array.extend([
-            {'id': d.id, 'decorname': d.decorname}
-            for d in Decor.query.filter(Decor.glass_cleare)]
-        )
-    elif doormodel.glass_plus:
-        second_decor_array.extend([
-            {'id': d.id, 'decorname': d.decorname}
-            for d in Decor.query.filter(Decor.glass_plus)]
-        )
-    else:
-        second_decor_array = [empty_choice, ]
-    return jsonify({'second_decor': second_decor_array})
+    return redirect(url_for('order.order', order_number=order_number))
 
 
 @bp.route(
@@ -282,12 +227,12 @@ def edit_order_position(order_number, serial_number):
 
         db.session.commit()
         flash('Вы изменили позицию № {}'.format(serial_number))
-        return redirect(url_for('order', order_number=order_number))
+        return redirect(url_for('order.order', order_number=order_number))
 
     if form.errors:
         print(form.errors)
     return render_template(
-        'position_edit.html',
+        'order/position_edit.html',
         title='Заказ № {}'.format(order_number),
         order=order,
         position=position,
@@ -320,4 +265,4 @@ def delete_order_position(order_number, serial_number):
 
     db.session.commit()
     flash('Вы удалили позицию из заказа № {}'.format(order_number))
-    return redirect(url_for('order', order_number=order_number))
+    return redirect(url_for('order.order', order_number=order_number))

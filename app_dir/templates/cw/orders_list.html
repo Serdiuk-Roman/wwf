@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block app_content %}
+
+    <div>
+        <a class="btn btn-primary" href="{{ url_for('cw.new_order') }}">Новый заказ CW</a>
+    </div>
+
+    <hr>
+
+    <table class="table table-bordered table-striped text-center" id="same_table">
+        <caption>Заказ CW №</caption>
+        <thead>
+            <tr>
+                <th class="text-center">Заказ CW №</th>
+                <th class="text-center">Дата создания</th>
+                <th class="text-center">Оформил</th>
+                <th class="text-center">Дилер</th>
+                <th class="text-center">Город</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>
+                    <a href="{{ url_for('cw.order', order_number=order.order_number) }}">
+                        {{ order.order_number }}
+                    </a>
+                </td>
+                <td>
+                    {{ moment(order.timestamp).format('LLL') }}
+                </td>
+                <td>
+                    {{ order.cw_creator }}
+                </td>
+                <td>
+                    {{ order.customer_manager }}
+                </td>
+                <td>
+                    {{ order.customer_city }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

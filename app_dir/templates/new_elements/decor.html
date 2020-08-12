@@ -13,8 +13,9 @@
                     {{ render_field(forms.indexname) }}
                     {{ render_field(forms.decorname) }}
 
-                    {{ render_field_inline(forms.veneer) }}
+                    {{ render_field_inline(forms.primer) }}
                     {{ render_field_inline(forms.paint) }}
+                    {{ render_field_inline(forms.veneer) }}
                     {{ render_field_inline(forms.laminate) }}
                     {{ render_field_inline(forms.cased_glass) }}
                     {{ render_field_inline(forms.glass_cleare) }}
@@ -41,10 +42,12 @@
                     <strong>{{ decor.indexname }}</strong>
                 </td>
                 <td>
-                    {% if decor.veneer %}
-                        Шпон
+                    {% if decor.primer %}
+                        Грунт
                     {% elif decor.paint %}
                         Краска
+                    {% elif decor.veneer %}
+                        Шпон
                     {% elif decor.laminate %}
                         Плёнка
                     {% elif decor.cased_glass %}

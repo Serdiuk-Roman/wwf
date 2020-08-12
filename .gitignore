@@ -1,5 +1,6 @@
 app.db
 app_dir/static/pdf
+*.zip
 
 
 # Created by https://www.gitignore.io/api/venv,linux,python,virtualenv,sublimetext

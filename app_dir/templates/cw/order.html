@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block app_content %}
+
+    {% include 'cw/order_table.html' %}
+    {% include 'cw/position_table.html' %}
+<br>
+<div class="row" >
+    <div class="col-sm-3">
+        <div>
+            <a class="btn btn-primary btn-lg" href="{{ url_for('cw.add_order_position', order_number=order.order_number) }}">Добавить позицию</a>
+        </div>
+    </div>
+
+{#     <div class="col-sm-3">
+    </div>
+    <div class="col-sm-3">
+    </div>
+
+    <div class="col-sm-3 text-right" >
+    </div> #}
+
+</div>
+<br>
+{% if order.sketch_is_ready %}
+    <div>
+        <embed src="{{ url_for('static', filename='pdf/{}_sketch.pdf'.format(order.order_number)) }}" width="100%" height="900" type="application/pdf" />
+    </div>
+{% endif %}
+
+{% endblock %}
+

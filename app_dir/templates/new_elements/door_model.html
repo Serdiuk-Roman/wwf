@@ -12,8 +12,9 @@
             <dl>
                 {{ render_field(forms.modelname) }}
 
-                {{ render_field_inline(forms.veneer) }}
+                {{ render_field_inline(forms.primer) }}
                 {{ render_field_inline(forms.paint) }}
+                {{ render_field_inline(forms.veneer) }}
                 {{ render_field_inline(forms.laminate) }}
                 {{ render_field_inline(forms.cased_glass) }}
                 {{ render_field_inline(forms.glass_cleare) }}
@@ -29,8 +30,9 @@
             <thead>
                 <tr>
                     <th class="text-center">Название</th>
-                    <th class="text-center">Шпон</th>
+                    <th class="text-center">Грунт</th>
                     <th class="text-center">Краска</th>
+                    <th class="text-center">Шпон</th>
                     <th class="text-center">Пленка</th>
                     <th class="text-center">Накладное</th>
                     <th class="text-center">Cleare</th>
@@ -44,10 +46,13 @@
                     <strong>{{ model.modelname }}</strong>
                 </td>
                 <td>
-                    {{ '\u2714' if model.veneer else '-' }}
+                    {{ '\u2714' if model.primer else '-' }}
                 </td>
                 <td>
                     {{ '\u2714' if model.paint else '-' }}
+                </td>
+                <td>
+                    {{ '\u2714' if model.veneer else '-' }}
                 </td>
                 <td>
                     {{ '\u2714' if model.laminate else '-' }}

@@ -23,8 +23,9 @@ def decor():
             indexname=form.indexname.data,
             decorname=form.decorname.data,
 
-            veneer=form.veneer.data,
+            primer=form.primer.data,
             paint=form.paint.data,
+            veneer=form.veneer.data,
             laminate=form.laminate.data,
             cased_glass=form.cased_glass.data,
             glass_cleare=form.glass_cleare.data,
@@ -54,8 +55,9 @@ def door_model():
         door_model = DoorModel(
             modelname=form.modelname.data,
 
-            veneer=form.veneer.data,
+            primer=form.primer.data,
             paint=form.paint.data,
+            veneer=form.veneer.data,
             laminate=form.laminate.data,
             cased_glass=form.cased_glass.data,
             glass_cleare=form.glass_cleare.data,

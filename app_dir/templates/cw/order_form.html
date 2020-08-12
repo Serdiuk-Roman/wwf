@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% from "_formhelpers.html" import render_field %}
+
+{% block app_content %}
+
+<div>
+    <form action="" method="post">
+        {{ forms.hidden_tag() }}
+        <dl>
+            {{ render_field(forms.order_number) }}
+            {{ render_field(forms.customer_manager) }}
+            {{ render_field(forms.customer_city) }}
+
+            {{ forms.submit(class_="btn btn-default") }}
+        </dl>
+    </form>
+</div>
+
+
+{% endblock %}

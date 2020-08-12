@@ -11,10 +11,16 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
-    orders = db.relationship('Order', backref='creator', lazy='dynamic')
     about_me = db.Column(db.String(140))
     # last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    orders = db.relationship('Order', backref='creator', lazy='dynamic')
+    cw_orders = db.relationship(
+        'CW_order',
+        backref='cw_creator',
+        lazy='dynamic'
+    )
 
     def __repr__(self):
         return self.username
@@ -41,23 +47,8 @@ class Post(db.Model):
         return 'Post {}'.format(self.body)
 
 
-class OrderRemark(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String())
-    order_id = db.Column(
-        db.Integer,
-        db.ForeignKey('order.id'),
-        index=True,
-        unique=True
-    )
-
-    def __repr__(self):
-        return self.body
-
-
 class Decor(db.Model):
     """docstring for Decor
-    Hold id=1 - 'Отсутствует', id=2 - 'Не выбран'
     """
     __tablename__ = 'decor'
 
@@ -65,8 +56,9 @@ class Decor(db.Model):
     indexname = db.Column(db.String(16))
     decorname = db.Column(db.String(128), index=True, unique=True)
 
-    veneer = db.Column(db.Boolean, default=False, nullable=False)
+    primer = db.Column(db.Boolean, default=False, nullable=False)
     paint = db.Column(db.Boolean, default=False, nullable=False)
+    veneer = db.Column(db.Boolean, default=False, nullable=False)
     laminate = db.Column(db.Boolean, default=False, nullable=False)
     cased_glass = db.Column(db.Boolean, default=False, nullable=False)
     glass_cleare = db.Column(db.Boolean, default=False, nullable=False)
@@ -81,8 +73,9 @@ class DoorModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     modelname = db.Column(db.String(64), index=True, unique=True)
 
-    veneer = db.Column(db.Boolean, default=False, nullable=False)
+    primer = db.Column(db.Boolean, default=False, nullable=False)
     paint = db.Column(db.Boolean, default=False, nullable=False)
+    veneer = db.Column(db.Boolean, default=False, nullable=False)
     laminate = db.Column(db.Boolean, default=False, nullable=False)
     cased_glass = db.Column(db.Boolean, default=False, nullable=False)
     glass_cleare = db.Column(db.Boolean, default=False, nullable=False)
@@ -248,6 +241,20 @@ class AluminumButt(db.Model):
         return self.butt_description
 
 
+class OrderRemark(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String())
+    order_id = db.Column(
+        db.Integer,
+        db.ForeignKey('order.id'),
+        index=True,
+        unique=True
+    )
+
+    def __repr__(self):
+        return self.body
+
+
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     positions = db.relationship('Position', backref='order')
@@ -297,3 +304,49 @@ class Position(db.Model):
     hinge_color_id = db.Column(db.Integer, db.ForeignKey('hinge_colors.id'))
 
     doors_seal_id = db.Column(db.Integer, db.ForeignKey('door_seals.id'))
+
+
+class CW_order(db.Model):
+    __tablename__ = 'cw_orders'
+    id = db.Column(db.Integer, primary_key=True)
+    order_number = db.Column(db.String(16))
+    customer_manager = db.Column(db.String(32))
+    customer_city = db.Column(db.String(32))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    sketch_is_ready = db.Column(db.Boolean)
+    stickers_is_ready = db.Column(db.Boolean)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    cw_positions = db.relationship('CW_position', backref='cw_order')
+
+
+class CW_position(db.Model):
+    __tablename__ = 'cw_positions'
+    id = db.Column(db.Integer, primary_key=True)
+
+    doors_quantity = db.Column(db.Integer)
+
+    cw_vendor_code_id = db.Column(
+        db.Integer,
+        db.ForeignKey('cw_vendor_codes.id')
+    )
+    cw_order_id = db.Column(
+        db.Integer,
+        db.ForeignKey('cw_orders.id')
+    )
+
+
+class CW_vendor_code(db.Model):
+    __tablename__ = 'cw_vendor_codes'
+    id = db.Column(db.Integer, primary_key=True)
+    cw_vendor_code_index = db.Column(db.Integer, index=True, unique=True)
+    vendor_code_name = db.Column(db.String(32))
+    doors_height = db.Column(db.Integer)
+    doors_width = db.Column(db.Integer)
+    hinge_side = db.Column(db.String(8))
+
+    cw_positions = db.relationship(
+        'CW_position',
+        backref='cw_vendor_code'
+    )

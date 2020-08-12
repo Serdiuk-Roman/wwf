@@ -9,8 +9,9 @@ class DecorForm(FlaskForm):
     indexname = StringField('Индекс')
     decorname = StringField('Назва', validators=[DataRequired()])
 
-    veneer = BooleanField('Шпон')
+    primer = BooleanField('Грунт')
     paint = BooleanField('Краска')
+    veneer = BooleanField('Шпон')
     laminate = BooleanField('Плёнка')
     cased_glass = BooleanField('Накладное стекло')
     glass_cleare = BooleanField('Cleare')
@@ -22,8 +23,9 @@ class DecorForm(FlaskForm):
 class DoorModelForm(FlaskForm):
     modelname = StringField('Название', validators=[DataRequired()])
 
-    veneer = BooleanField('Шпон')
+    primer = BooleanField('Грунт')
     paint = BooleanField('Краска')
+    veneer = BooleanField('Шпон')
     laminate = BooleanField('Плёнка')
     cased_glass = BooleanField('Накладное стекло')
     glass_cleare = BooleanField('Cleare')

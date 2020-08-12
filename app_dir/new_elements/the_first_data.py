@@ -2,7 +2,7 @@
 
 from app_dir.models import Decor, DoorModel, Casing, Expander, FrameType, \
     LocksPurpose, LocksType, LocksColor, HingesSide, HingesType, HingesColor, \
-    DoorsSeal, AluminumButt
+    DoorsSeal, AluminumButt, CW_vendor_code
 
 decor_list = dict(
     cls_name=Decor,
@@ -11,8 +11,9 @@ decor_list = dict(
         {
             'indexname': '',
             'decorname': 'Нет',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -21,8 +22,9 @@ decor_list = dict(
         {
             'indexname': '',
             'decorname': 'Не выбран',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -31,8 +33,9 @@ decor_list = dict(
         {
             'indexname': 'L1',
             'decorname': 'Дуб Сантана',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 1,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -41,8 +44,9 @@ decor_list = dict(
         {
             'indexname': 'Ш1',
             'decorname': 'Ясень',
-            'veneer': 1,
+            'primer': 0,
             'paint': 0,
+            'veneer': 1,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -51,8 +55,9 @@ decor_list = dict(
         {
             'indexname': '',
             'decorname': 'Светлый грунт',
+            'primer': 1,
+            'paint': 0,
             'veneer': 0,
-            'paint': 1,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -61,8 +66,9 @@ decor_list = dict(
         {
             'indexname': '4',
             'decorname': 'Зеркало Серебро',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 1,
             'glass_cleare': 0,
@@ -71,8 +77,9 @@ decor_list = dict(
         {
             'indexname': '',
             'decorname': 'RAL 9003',
-            'veneer': 0,
+            'primer': 0,
             'paint': 1,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -81,8 +88,9 @@ decor_list = dict(
         {
             'indexname': '1',
             'decorname': 'Стекло крашеное черное',
-            'veneer': 0,
+            'primer': 0,
             'paint': 1,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -91,8 +99,9 @@ decor_list = dict(
         {
             'indexname': '',
             'decorname': 'Антрацит',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 1,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -101,8 +110,9 @@ decor_list = dict(
         {
             'indexname': '7',
             'decorname': 'Стекло t=6 прозрачное Сатин',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 1,
@@ -111,8 +121,9 @@ decor_list = dict(
         {
             'indexname': '7',
             'decorname': 'Стекло t=8 прозрачное Сатин',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -121,8 +132,9 @@ decor_list = dict(
         {
             'indexname': '7',
             'decorname': 'Стекло t=10 прозрачное Сатин',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -138,8 +150,9 @@ door_model_list = dict(
     elm=[
         {
             'modelname': 'Evolushion 03 primer',
+            'primer': 1,
+            'paint': 0,
             'veneer': 0,
-            'paint': 1,
             'laminate': 0,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -147,8 +160,9 @@ door_model_list = dict(
         },
         {
             'modelname': 'Forte 10',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 1,
             'cased_glass': 0,
             'glass_cleare': 0,
@@ -156,8 +170,9 @@ door_model_list = dict(
         },
         {
             'modelname': 'Forte 12',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 1,
             'cased_glass': 1,
             'glass_cleare': 0,
@@ -165,8 +180,9 @@ door_model_list = dict(
         },
         {
             'modelname': 'Forte cleare 12',
-            'veneer': 0,
+            'primer': 0,
             'paint': 0,
+            'veneer': 0,
             'laminate': 1,
             'cased_glass': 0,
             'glass_cleare': 1,
@@ -329,6 +345,68 @@ aluminum_butts_list = dict(
     ]
 )
 
+vendor_code_list = dict(
+    cls_name=CW_vendor_code,
+    msg='Внесен артикул складской програміь',
+    elm=[
+        {
+            'cw_vendor_code_index': '1',
+            'vendor_code_name': '№1_нар_2000_600_прав.',
+            'doors_height': 2000,
+            'doors_width': 600,
+            'hinge_side': 'Правое'
+        },
+        {
+            'cw_vendor_code_index': '2',
+            'vendor_code_name': '№2_нар_2000_600_лев.',
+            'doors_height': 2000,
+            'doors_width': 600,
+            'hinge_side': 'Левое'
+        },
+        {
+            'cw_vendor_code_index': '3',
+            'vendor_code_name': '№3_нар_2000_700_прав.',
+            'doors_height': 2000,
+            'doors_width': 700,
+            'hinge_side': 'Правое'
+        },
+        {
+            'cw_vendor_code_index': '4',
+            'vendor_code_name': '№4_нар_2000_700_лев.',
+            'doors_height': 2000,
+            'doors_width': 700,
+            'hinge_side': 'Левое'
+        },
+        {
+            'cw_vendor_code_index': '5',
+            'vendor_code_name': '№5_нар_2000_800_прав.',
+            'doors_height': 2000,
+            'doors_width': 800,
+            'hinge_side': 'Правое'
+        },
+        {
+            'cw_vendor_code_index': '6',
+            'vendor_code_name': '№6_нар_2000_800_лев.',
+            'doors_height': 2000,
+            'doors_width': 800,
+            'hinge_side': 'Левое'
+        },
+        {
+            'cw_vendor_code_index': '7',
+            'vendor_code_name': '№7_нар_2000_900_прав.',
+            'doors_height': 2000,
+            'doors_width': 900,
+            'hinge_side': 'Правое'
+        },
+        {
+            'cw_vendor_code_index': '8',
+            'vendor_code_name': '№8_нар_2000_900_лев.',
+            'doors_height': 2000,
+            'doors_width': 900,
+            'hinge_side': 'Левое'
+        }
+    ]
+)
 
 def load_data():
 
@@ -345,7 +423,8 @@ def load_data():
         hinge_types_list,
         hinge_colors_list,
         door_seals_list,
-        aluminum_butts_list
+        aluminum_butts_list,
+        vendor_code_list
     ]
 
     for point in data_list:

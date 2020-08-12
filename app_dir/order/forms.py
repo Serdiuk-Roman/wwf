@@ -119,12 +119,17 @@ class PositionForm(FlaskForm):
         self.base_decor_id.choices = [(2, Decor.query.get(2)), ]
         self.base_decor_id.choices.extend(
             [(d.id, d.decorname) for d in Decor.query.filter(
-                Decor.veneer
+                Decor.primer
             )]
         )
         self.base_decor_id.choices.extend(
             [(d.id, d.decorname) for d in Decor.query.filter(
                 Decor.paint
+            )]
+        )
+        self.base_decor_id.choices.extend(
+            [(d.id, d.decorname) for d in Decor.query.filter(
+                Decor.veneer
             )]
         )
         self.base_decor_id.choices.extend(

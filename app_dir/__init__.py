@@ -54,6 +54,9 @@ def create_app(config_class=DevelopmentConfig):
     from app_dir.order import bp as order_bp
     app.register_blueprint(order_bp)
 
+    from app_dir.cw import bp as cw_bp
+    app.register_blueprint(cw_bp, url_prefix='/cw')
+
     from app_dir.sketch import bp as sketch_bp
     app.register_blueprint(sketch_bp)
 
