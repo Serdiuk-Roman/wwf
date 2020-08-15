@@ -1,0 +1,21 @@
+
+    function load_vendor_code() {
+        let order_number =document.getElementById('order_number').innerText;
+
+        let cw_vendor_code =document.getElementById('cw_vendor_code_id');
+
+        fetch('/ajax/change_cw_vendor_code/' + order_number).then(function(response) {
+
+            response.json().then(function(data) {
+                let optionHTML = '';
+
+                for (let cw_index of data.cw_vendor_code_list) {
+                    optionHTML += '<option value="' + cw_index.id + '">' + cw_index.index + '</option>';
+                }
+
+                cw_vendor_code.innerHTML = optionHTML;
+
+            });
+        });
+    }
+

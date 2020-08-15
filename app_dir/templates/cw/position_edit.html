@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<div>
+    <h2>
+        Заказ № <a href="{{ url_for('cw.order', order_number=order.order_number) }}">{{ order.order_number }}</a> позиция № {{ position.cw_vendor_code.cw_vendor_code_index }}
+    </h2>
+</div>
+
+<div>
+    <h3>{{ position.cw_vendor_code.vendor_code_name }}</h3>
+</div>
+
+<div>
+    <form action="" method="post">
+    {{ forms.hidden_tag() }}
+        <table class="table table-bordered table-striped text-center table-hover table-condensed">
+            <thead class="thead-inverse">
+                <tr>
+                    <th class="text-right">Текущее</th>
+                    <th class="text-center" width="20%">Поле</th>
+                    <th class="text-left">Изменить на</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-right">{{ position.doors_quantity }}</td>
+                    <td>Количество</td>
+                    <td class="text-left">{{ forms.doors_quantity }}</td>
+                </tr>
+                <tr>
+                    <td colspan="3">{{ forms.submit(class_="btn btn-primary btn-lg btn-block", value='Изменить') }}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </form>
+
+    <hr>
+    <form action="{{ url_for('cw.delete_cw_order_position', order_number=order.order_number, id=position.id) }}" method="POST">
+        <input type="submit" value="<span class='glyphicon glyphicon-trash' aria-hiden='true'></span>Удалить"
+                class="btn btn-danger btn-lg"
+                onclick="return confirm('Вы уверены что хотите удалить эту позицию?')">
+    </form>
+    <hr>
+</div>
+
+{% endblock %}

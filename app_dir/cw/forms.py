@@ -29,10 +29,11 @@ class CWPositionForm(FlaskForm):
     )
 
     doors_quantity = IntegerField(
-        'Количество полотен',
-        widget=NumberInput(min='0', step='1'),
+        'Количество',
+        widget=NumberInput(min='0', max='99', step='1'),
         validators=[NumberRange(
             min=0,
+            max=99,
             message='Некоректное количество'
         )]
     )

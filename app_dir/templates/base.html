@@ -80,7 +80,9 @@
     </script>
     <script type="text/javascript" charset="utf8">
         $(document).ready(function() {
-            $('#same_table').DataTable();
+            $('#same_table').DataTable({
+                "lengthMenu": [ [25, 50, 100, -1], [25, 50, 100, "All"] ]
+            });
         } );
     </script>
 

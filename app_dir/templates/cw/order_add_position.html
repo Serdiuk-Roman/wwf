@@ -13,17 +13,16 @@
 {% endblock %}
 
 
-{# {% block scripts %}
+{% block scripts %}
     {{ super() }}
         <script type="text/javascript" charset="utf8">
 
-            {% include 'order/script_load_decor.html' %}
+            {% include 'cw/script_load_vendor_code.html' %}
 
-            $(document).ready(load_decor());
-
-            $('#doormodel_id').change(load_decor);
+            $(document).ready(load_vendor_code());
 
         </script>
 
 
-{% endblock %} #}
+{% endblock %}
+

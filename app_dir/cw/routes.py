@@ -2,7 +2,7 @@
 
 from datetime import datetime
 
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, current_user
 
 from app_dir import db
@@ -101,3 +101,53 @@ def add_order_position(order_number):
         positions=positions,
         forms=form
     )
+
+
+@bp.route(
+    '/order/<order_number>/<id>',
+    methods=['get', 'post'])
+@login_required
+def edit_order_position(order_number, id):
+
+    order = CW_order.query.filter_by(order_number=order_number).first_or_404()
+    position = CW_position.query.\
+        filter_by(cw_order_id=order.id).\
+        filter_by(id=id).\
+        first_or_404()
+
+    form = CWPositionForm(request.form, obj=position)
+
+    if request.method == 'POST' and form.validate_on_submit():
+
+        position.doors_quantity = form.doors_quantity.data,
+
+        form.populate_obj(position)
+
+        db.session.commit()
+        flash('Вы изменили позицию № {}'.format(
+            position.cw_vendor_code.cw_vendor_code_index
+        ))
+        return redirect(url_for('cw.order', order_number=order_number))
+
+    if form.errors:
+        print(form.errors)
+    return render_template(
+        'cw/position_edit.html',
+        title='Заказ № {}'.format(order_number),
+        order=order,
+        position=position,
+        forms=form
+    )
+
+
+@bp.route('/order/<order_number>/delete/<int:id>', methods=['post'])
+@login_required
+def delete_cw_order_position(order_number, id):
+    order = CW_order.query.filter_by(order_number=order_number).first_or_404()
+    position = CW_position.query.\
+        filter_by(cw_order_id=order.id).\
+        filter_by(id=id).\
+        first_or_404()
+    db.session.delete(position)
+    db.session.commit()
+    return redirect(url_for('cw.order', order_number=order_number))

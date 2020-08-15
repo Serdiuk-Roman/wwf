@@ -5,7 +5,7 @@ from flask_login import login_required
 
 # from app_dir import db
 
-from app_dir.models import User, Decor, DoorModel
+from app_dir.models import User, Decor, DoorModel, CW_order, CW_vendor_code
 
 from app_dir.main import bp
 
@@ -98,3 +98,22 @@ def second_decor(doormodel_id):
     else:
         second_decor_array = [empty_choice, ]
     return jsonify({'second_decor': second_decor_array})
+
+
+@bp.route('/ajax/change_cw_vendor_code/<order_number>')
+def cw_vendor_code(order_number):
+
+    order = CW_order.query.filter_by(order_number=order_number).first()
+    cw_vendor_code_list = CW_vendor_code.query.all()
+
+    existing_cw_vendor_code_list = [
+        vc.cw_vendor_code for vc in order.cw_positions
+    ]
+
+    clean_cw_vendor_code_list = [
+        {'id': vendor_code.id, 'index': vendor_code.cw_vendor_code_index}
+        for vendor_code in cw_vendor_code_list
+        if vendor_code not in existing_cw_vendor_code_list
+    ]
+
+    return jsonify({'cw_vendor_code_list': clean_cw_vendor_code_list})

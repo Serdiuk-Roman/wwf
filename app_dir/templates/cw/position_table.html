@@ -1,7 +1,7 @@
 {% from "_formhelpers.html" import render_field %}
 
 <div>
-    <table class="table table-bordered table-striped text-center table-hover table-condensed">
+    <table id="same_table" class="table table-bordered table-striped text-center table-hover table-condensed">
         <thead class="thead-inverse">
             <tr>
                 <th class="text-center">№ п/п</th>
@@ -10,24 +10,28 @@
                 <th class="text-center">Ширина полотна</th>
                 <th class="text-center">Открывание</th>
                 <th class="text-center">Количество</th>
+                <th class="text-center">Изменить</th>
             </tr>
         </thead>
         <tbody>
             {% for position in positions %}
             <tr>
                 <td>
-                    {# <a href="{{ url_for('cw.edit_order_position', order_number=order.order_number, serial_number=position.serial_number) }}">
-                        <button type="button" class="btn"> {{ position.serial_number }} </button>
-                    </a> #}
-                    {{ position.cw_articles.cw_vendor_code_index }}
+                    {{ position.cw_vendor_code.cw_vendor_code_index }}
                 </td>
-                <td>{{ position.cw_articles.article_name }}</td>
+                <td>{{ position.cw_vendor_code.vendor_code_name }}</td>
 
-                <td>{{ position.cw_articles.doors_height }}</td>
-                <td>{{ position.cw_articles.doors_width }}</td>
+                <td>{{ position.cw_vendor_code.doors_height }}</td>
+                <td>{{ position.cw_vendor_code.doors_width }}</td>
 
-                <td>{{ position.cw_articles.hinge_side }}</td>
+                <td>{{ position.cw_vendor_code.hinge_side }}</td>
 
+                <td>{{ position.doors_quantity }}</td>
+                <td>
+                    <a href="{{ url_for('cw.edit_order_position', order_number=order.order_number, id=position.id) }}">
+                        <button type="button" class="btn"> <span class="glyphicon glyphicon-wrench" aria-hiden="true"></span> </button>
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
