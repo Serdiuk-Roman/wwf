@@ -7,6 +7,9 @@
     <form action="" method="post" class="text-center">
         {{ forms.hidden_tag() }}
         {{ render_field_inline(forms.cw_vendor_code_id) }}
+        <dl>
+            <p id='vendor_code_name'></p>
+        </dl>
         {{ render_field_inline(forms.doors_quantity) }}
         <dl>
             {{ forms.submit(class_="btn btn-lg btn-block btn-success") }}

@@ -117,3 +117,11 @@ def cw_vendor_code(order_number):
     ]
 
     return jsonify({'cw_vendor_code_list': clean_cw_vendor_code_list})
+
+
+@bp.route('/ajax/cw_vendor_code_name/<id>')
+def cw_vendor_code_name(id):
+
+    vendor_code = CW_vendor_code.query.filter_by(id=id).first()
+
+    return jsonify({'vendor_code_name': vendor_code.vendor_code_name})

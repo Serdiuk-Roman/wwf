@@ -1,0 +1,17 @@
+
+    function vendor_code_name() {
+        let vendor_code_select =document.getElementById('cw_vendor_code_id');
+        let vendor_code_name_field =document.getElementById('vendor_code_name');
+
+        vendor_code_id = vendor_code_select.value;
+
+        fetch('/ajax/cw_vendor_code_name/' + vendor_code_id).then(function(response) {
+
+            response.json().then(function(data) {
+                let optionHTML = data.vendor_code_name;
+                vendor_code_name_field.innerHTML = optionHTML;
+
+            });
+        });
+    }
+

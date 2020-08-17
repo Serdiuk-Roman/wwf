@@ -18,8 +18,13 @@
         <script type="text/javascript" charset="utf8">
 
             {% include 'cw/script_load_vendor_code.html' %}
+            {% include 'cw/script_load_vendor_code_name.html' %}
 
             $(document).ready(load_vendor_code());
+
+            $(window).on("load", vendor_code_name);
+
+            $('#cw_vendor_code_id').change(vendor_code_name);
 
         </script>
 
