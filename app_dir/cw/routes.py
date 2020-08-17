@@ -59,6 +59,7 @@ def order(order_number):
     order = CW_order.query.filter_by(order_number=order_number).first()
 
     positions = CW_position.query.filter_by(cw_order=order).all()
+
     if not positions:
         flash('Добавьте позиции')
     return render_template(

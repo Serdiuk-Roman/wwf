@@ -19,6 +19,12 @@ white = (1, 1, 1)
 
 def perymetr(ctx):
 
+    min_x = 2 * CM
+    min_y = CM
+
+    max_x = 29 * CM
+    max_y = 20 * CM
+
     ctx.set_line_width(Small_line_width)
 
     ctx.set_source_rgb(*g8)
@@ -27,15 +33,15 @@ def perymetr(ctx):
         ctx.move_to(CM * i, 0)
         ctx.line_to(CM * i, 5)
     for i in range(26):
-        ctx.move_to((i + 3) * CM, CM)
-        ctx.line_to((i + 3) * CM, CM * 21)
+        ctx.move_to((i + 3) * CM, min_y)
+        ctx.line_to((i + 3) * CM, max_y)
     # Горизонтальные
     for j in range(22):
         ctx.move_to(0, CM * j)
         ctx.line_to(5, CM * j)
     for j in range(18):
-        ctx.move_to(2 * CM, CM * (j + 2))
-        ctx.line_to(29 * CM, CM * (j + 2))
+        ctx.move_to(min_x, CM * (j + 2))
+        ctx.line_to(max_x, CM * (j + 2))
 
     ctx.stroke()
 
@@ -48,7 +54,7 @@ def perymetr(ctx):
         ctx.move_to(0, 5 * li * CM)
         ctx.line_to(842, 5 * li * CM)
 
-    ctx.rectangle(2 * CM, CM, 27 * CM, 20 * CM)
+    ctx.rectangle(min_x, min_y, max_x - min_x, max_y - min_y)
 
     ctx.set_source_rgb(*black)
 
