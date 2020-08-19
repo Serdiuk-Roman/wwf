@@ -5,7 +5,7 @@ import cairo
 from app_dir.sketch.sketch_config import CM
 from app_dir.sketch.sketch_config import perymetr
 from app_dir.sketch.sketch_config import draw_carcase, draw_table,\
-    draw_finishing_cutting
+    draw_finishing_cutting, razmer_h, razmer_v
 
 
 class Cw_evolushion_03_primer_ww_external():
@@ -81,25 +81,32 @@ class Cw_evolushion_03_primer_ww_external():
 
     def draw_carcase_thickness(self):
         pass
-        # self.ctx.set_font_size(17)
-        # # Толщина бруса
-        # self.ctx.move_to(7.8 * CM, 5.4 * CM)
-        # self.ctx.show_text(str(self.TIMBER_THICKNESS))
+        self.ctx.set_font_size(18)
+        # Толщина бруса
+        self.ctx.move_to(5.7 * CM, 5.2 * CM)
+        self.ctx.show_text(str(self.TIMBER_THICKNESS))
 
     def draw_carcase_size(self):
         self.ctx.set_font_size(12)
         # Высота черновая, Стойка бруса и МДФ 6
-        # draft_size_h = str(self.door_h + 9 * 2)
-        # self.ctx.save()
-        # self.ctx.move_to(3 * CM, 13 * CM)
-        # self.ctx.rotate(3 * math.pi / 2)
-        # self.ctx.show_text(draft_size_h)
-        # self.ctx.restore()
+        draft_size_h = str(self.door_h + 9 * 2)
+        razmer_v(
+            self.ctx, 3 * CM, 7.5 * CM, 9 * CM,
+            -1, d=0.5,
+            text=draft_size_h
+        )
+        razmer_v(
+            self.ctx, 8.5 * CM, 7.5 * CM, 9 * CM,
+            -1, d=0.5,
+            text=draft_size_h
+        )
+
         # self.ctx.save()
         # self.ctx.move_to(15.2 * CM, 13 * CM)
         # self.ctx.rotate(3 * math.pi / 2)
         # self.ctx.show_text(draft_size_h)
         # self.ctx.restore()
+
         # self.ctx.move_to(24 * CM, 19.05 * CM)
         # self.ctx.show_text(draft_size_h)
         # self.ctx.move_to(3 * CM, 18.61 * CM)
@@ -107,16 +114,25 @@ class Cw_evolushion_03_primer_ww_external():
 
         # Ширина черновая и МДФ 6
         draft_size_w = str(self.door_w + 9 * 2)
-        self.ctx.move_to(7 * CM, 6.5 * CM)
-        self.ctx.show_text(draft_size_w)
-        self.ctx.move_to(13 * CM, 6.5 * CM)
-        self.ctx.show_text(draft_size_w)
-        self.ctx.move_to(25 * CM, 19 * CM)
+        # каркас
+        razmer_h(
+            self.ctx, 3 * CM, 7.5 * CM, 4 * CM, -1, d=1, text=draft_size_w
+        )
+        # полотно
+        razmer_h(
+            self.ctx, 8.5 * CM, 7.5 * CM, 4 * CM, -1, d=1, text=draft_size_w
+        )
+        self.ctx.move_to(25.9 * CM, 18.4 * CM)
         self.ctx.show_text(draft_size_w)
 
         # Поперечка бруса
-        self.ctx.move_to(7 * CM, 7 * CM)
-        self.ctx.show_text(str(self.door_w + 9 * 2 - 40 * 2))
+        razmer_h(
+            self.ctx, 3 * CM + 0.2 * CM, 7.5 * CM, 4 * CM - 0.2 * CM * 2,
+            -1, d=0.5,
+            text=str(self.door_w + 9 * 2 - 40 * 2)
+        )
+        # self.ctx.move_to(7 * CM, 7 * CM)
+        # self.ctx.show_text(str(self.door_w + 9 * 2 - 40 * 2))
         self.ctx.move_to(4.4 * CM, 19 * CM)
         self.ctx.show_text(str(self.door_w + 9 * 2 - 40 * 2))
 

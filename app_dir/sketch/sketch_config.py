@@ -1,3 +1,4 @@
+import math
 
 CM = 28
 Base_line_width = 2
@@ -154,7 +155,7 @@ def draw_table(ctx):
     ctx.move_to(2.1 * CM, 4.9 * CM)
     ctx.show_text("Каркас")
     ctx.set_font_size(10)
-    ctx.move_to(2.2 * CM, 5.4 * CM)
+    ctx.move_to(2.2 * CM, 5.3 * CM)
     ctx.show_text("(грязн)")
     ctx.move_to(3.8 * CM, 4.9 * CM)
     ctx.show_text("шт")
@@ -186,7 +187,7 @@ def draw_table(ctx):
         thin_rectangle(ctx, 2, 17.5 + i * 0.5, 1.5, 0.5)
         thin_rectangle(ctx, 3.5, 17.5 + i * 0.5, 1.5, 0.5)
 
-    base_rectangle(ctx, 2, 17, 3, 3.5)
+    base_rectangle(ctx, 2, 17, 3, 3)
 
     # Таблица для бруса 18
     thin_rectangle(ctx, 5, 17.5, 1.5, 0.5)
@@ -213,3 +214,77 @@ def draw_table(ctx):
 
     base_rectangle(ctx, 23, 17, 1, 3.5)
     base_rectangle(ctx, 24, 17, 4, 3.5)
+
+
+def strelka(ctx, sx=56, sy=56, vector=0):
+    # big size
+    bs = 8
+    # half small size
+    hss = 2
+    ctx.move_to(sx, sy)
+    if vector == 0:
+        ctx.line_to(sx + bs, sy - hss)
+        ctx.line_to(sx + bs, sy + hss)
+    elif vector == 1:
+        ctx.line_to(sx + hss, sy + bs)
+        ctx.line_to(sx - hss, sy + bs)
+    elif vector == 2:
+        ctx.line_to(sx - bs, sy - hss)
+        ctx.line_to(sx - bs, sy + hss)
+    elif vector == 3:
+        ctx.line_to(sx - hss, sy - bs)
+        ctx.line_to(sx + hss, sy - bs)
+    ctx.close_path()
+    ctx.set_line_width(1.00)
+    ctx.set_source_rgb(*black)
+    # ctx.fill()
+    ctx.fill_preserve()
+    ctx.stroke()
+
+
+def razmer_h(ctx, x, y, dx, v, d=0.5, text="пусто"):
+    # x, y - начальная точка
+    # dx - длина на рисунке
+    # v - направление отсупа вниз(+) или вверх(-)
+    # d - размер отступа на рисунке
+    # text - само значенние
+    ctx.set_line_width(Small_line_width)
+    ctx.move_to(x, y + 4 * v)
+    ctx.line_to(x, y + d * CM * v)
+    ctx.move_to(x + dx, y + 4 * v)
+    ctx.line_to(x + dx, y + d * CM * v)
+    ctx.move_to(x + 2, y + (d * CM - 4) * v)
+    ctx.line_to(x + dx - 2, y + (d * CM - 4) * v)
+    ctx.stroke()
+    strelka(ctx, x + 2, y + (d * CM - 4) * v, vector=0)
+    strelka(ctx, x + dx - 2, y + (d * CM - 4) * v, vector=2)
+
+    (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
+
+    ctx.move_to(x + dx / 2 - dxt / 2, y + (d * CM - 2) * v)
+    ctx.show_text(text)
+
+
+def razmer_v(ctx, x, y, dy, v, d=0.5, text="пусто"):
+    # x, y - начальная точка
+    # dy - длина на рисунке
+    # v - направление отсупа вправо(+) или влево(-)
+    # d - размер отступа на рисунке
+    # text - само значенние
+    ctx.set_line_width(Small_line_width)
+    ctx.move_to(x + 4 * v, y)
+    ctx.line_to(x + d * CM * v, y)
+    ctx.move_to(x + 4 * v, y + dy)
+    ctx.line_to(x + d * CM * v, y + dy)
+    ctx.move_to(x + (d * CM - 4) * v, y + 2)
+    ctx.line_to(x + (d * CM - 4) * v, y + dy - 2)
+    ctx.stroke()
+    strelka(ctx, x + (d * CM - 4) * v, y + 2, vector=1)
+    strelka(ctx, x + (d * CM - 4) * v, y + dy - 2, vector=3)
+
+    (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
+    ctx.save()
+    ctx.move_to(x + (d * CM - 2) * v, y + dy / 2 + dxt / 2)
+    ctx.rotate(3 * math.pi / 2)
+    ctx.show_text(text)
+    ctx.restore()
