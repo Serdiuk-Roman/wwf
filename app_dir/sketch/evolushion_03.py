@@ -4,6 +4,8 @@ import cairo
 
 from app_dir.sketch.sketch_config import CM
 from app_dir.sketch.sketch_config import perymetr
+from app_dir.sketch.sketch_config import draw_carcase, draw_table,\
+    draw_finishing_cutting
 
 
 class Cw_evolushion_03_primer_ww_external():
@@ -15,7 +17,7 @@ class Cw_evolushion_03_primer_ww_external():
         self.door_w = positions_list[1]
         self.sketch_dir = sketch_dir
 
-        self.surface_name = "cw_evolushion_03_pr_ww_external.png"
+        self.surface_name = "cw_evolushion_03_pr_ww_external_2.png"
         # Толщина бруса
         self.TIMBER_THICKNESS = 28
         # Толщина лутки
@@ -43,11 +45,12 @@ class Cw_evolushion_03_primer_ww_external():
         self.ims = cairo.ImageSurface.create_from_png(img_path)
 
     def draw_model_name(self):
-        pass
-        # self.ctx.set_font_size(11)
-        # # Модель
-        # self.ctx.move_to(11.5 * CM, 2.4 * CM)
-        # self.ctx.show_text('Evolushion 03 primer')
+        self.ctx.set_font_size(12)
+        # Модель
+        self.ctx.move_to(10.5 * CM, 2.4 * CM)
+        self.ctx.show_text('Evolushion 03 primer')
+        self.ctx.move_to(7.5 * CM, 3.7 * CM)
+        self.ctx.show_text('Светлый грунт')
 
     def draw_positions_number(self):
         self.ctx.set_font_size(42)
@@ -61,19 +64,19 @@ class Cw_evolushion_03_primer_ww_external():
     def draw_door_size(self):
         self.ctx.set_font_size(14)
         # Висота полотна
-        # self.ctx.move_to(2.7 * CM, 4 * CM)
-        # self.ctx.show_text(str(self.door_h))
+        self.ctx.move_to(2.5 * CM, 3.7 * CM)
+        self.ctx.show_text(str(self.door_h))
         # Ширина полотна
-        self.ctx.move_to(5.5 * CM, 4 * CM)
+        self.ctx.move_to(4.6 * CM, 3.7 * CM)
         self.ctx.show_text(str(self.door_w))
 
     def draw_finish_cut(self):
         self.ctx.set_font_size(14)
         # Висота полотна без кромки
-        # self.ctx.move_to(14.2 * CM, 19.7 * CM)
-        # self.ctx.show_text(str(self.door_h - 1))
+        self.ctx.move_to(9 * CM, 19.2 * CM)
+        self.ctx.show_text(str(self.door_h - 1))
         # Ширина полотна без кромки
-        self.ctx.move_to(14.8 * CM, 19.7 * CM)
+        self.ctx.move_to(11 * CM, 19.2 * CM)
         self.ctx.show_text(str(self.door_w - 1))
 
     def draw_carcase_thickness(self):
@@ -216,7 +219,10 @@ class Cw_evolushion_03_primer_ww_external():
         self.ctx.restore()
 
         # Сетка сантиметровая(приблизительно)
-        perymetr(self.ctx)
+        # perymetr(self.ctx)
+        draw_carcase(self.ctx)
+        draw_finishing_cutting(self.ctx)
+        draw_table(self.ctx)
 
         self.draw_model_name()
         self.draw_positions_number()
