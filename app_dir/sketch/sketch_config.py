@@ -212,7 +212,7 @@ def draw_table(ctx):
 
 def strelka(ctx, sx=56, sy=56, vector=0):
     # big size
-    bs = 8
+    bs = 5
     # half small size
     hss = 2
     ctx.move_to(sx, sy)
@@ -255,7 +255,7 @@ def razmer_h(ctx, x, y, dx, v, d=0.5, text="пусто"):
 
     (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
 
-    ctx.move_to(x + dx / 2 - dxt / 2, y + (d * CM - 2) * v)
+    ctx.move_to(x + dx / 2 - dxt / 2, y + (d * CM - 4) * v - 2)
     ctx.show_text(text)
 
 
@@ -278,7 +278,7 @@ def razmer_v(ctx, x, y, dy, v, d=0.5, text="пусто"):
 
     (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
     ctx.save()
-    ctx.move_to(x + (d * CM - 2) * v, y + dy / 2 + dxt / 2)
+    ctx.move_to(x + (d * CM - 4) * v - 2, y + dy / 2 + dxt / 2)
     ctx.rotate(3 * math.pi / 2)
     ctx.show_text(text)
     ctx.restore()

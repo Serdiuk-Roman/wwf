@@ -81,14 +81,15 @@ class Cw_evolushion_03_primer_ww_external():
         self.ctx.show_text(str(self.TIMBER_THICKNESS))
 
     def draw_carcase_size(self):
-        self.ctx.set_font_size(12)
-        # Высота черновая, Стойка бруса и МДФ 6
+        self.ctx.set_font_size(10)
+        # Высота черновая Стойка бруса
         draft_size_h = str(self.door_h + 9 * 2)
         razmer_v(
             self.ctx, 3 * CM, 7.5 * CM, 9 * CM,
             -1, d=0.5,
             text=draft_size_h
         )
+        # Высота черновая МДФ 6
         razmer_v(
             self.ctx, 8.5 * CM, 7.5 * CM, 9 * CM,
             -1, d=0.5,
@@ -125,36 +126,49 @@ class Cw_evolushion_03_primer_ww_external():
             -1, d=0.5,
             text=str(self.door_w + 9 * 2 - 40 * 2)
         )
-        # self.ctx.move_to(7 * CM, 7 * CM)
-        # self.ctx.show_text(str(self.door_w + 9 * 2 - 40 * 2))
+
         self.ctx.move_to(4.4 * CM, 19 * CM)
         self.ctx.show_text(str(self.door_w + 9 * 2 - 40 * 2))
 
         # Замочний брус
-        # self.ctx.save()
-        # self.ctx.move_to(5.4 * CM, 13 * CM)
-        # self.ctx.rotate(3 * math.pi / 2)
-        # self.ctx.show_text(str(int(draft_size_h) - 800 * 2))
-        
-
-
-
-
+        razmer_v(
+            self.ctx, (3 + 0.5) * CM, 7.5 * CM, 3.5 * CM,
+            1, d=0.7,
+            text="800"
+        )
         razmer_v(
             self.ctx, (3 + 0.5) * CM, 11 * CM, 2 * CM,
-            1, d=0.5,
+            1, d=0.7,
             text=str(int(draft_size_h) - 800 * 2)
         )
+        razmer_v(
+            self.ctx, (3 + 0.5) * CM, 13 * CM, 3.5 * CM,
+            1, d=0.7,
+            text="800"
+        )
 
-
-
-
-
-        # self.ctx.restore()
-        # self.ctx.move_to(3 * CM, 19.45 * CM)
-        # self.ctx.show_text(str(int(draft_size_h) - 800 * 2))
-        # self.ctx.move_to(6.5 * CM, 18.61 * CM)
-        # self.ctx.show_text(str(int(draft_size_h) - 800 * 2))
+        # Петлевой брус
+        start_x = (3 + 4 - 0.4) * CM
+        razmer_v(
+            self.ctx, start_x, 7.5 * CM, 1 * CM,
+            -1, d=0.5,
+            text="140"
+        )
+        razmer_v(
+            self.ctx, start_x, 8.5 * CM, 1.5 * CM,
+            -1, d=0.5,
+            text="210"
+        )
+        razmer_v(
+            self.ctx, start_x, 14 * CM, 1.5 * CM,
+            -1, d=0.5,
+            text="210"
+        )
+        razmer_v(
+            self.ctx, start_x, 15.5 * CM, 1 * CM,
+            -1, d=0.5,
+            text="140"
+        )
 
     def draw_frame_size(self):
         self.ctx.set_font_size(12)
