@@ -5,7 +5,7 @@ import cairo
 from app_dir.sketch.sketch_config import CM
 from app_dir.sketch.sketch_config import perymetr
 from app_dir.sketch.sketch_config import draw_carcase, draw_table,\
-    draw_finishing_cutting, razmer_h, razmer_v
+    draw_finishing_cutting, razmer_h, razmer_v, thin_rectangle, base_rectangle
 
 
 class Cw_evolushion_03_primer_ww_external():
@@ -38,19 +38,15 @@ class Cw_evolushion_03_primer_ww_external():
             self.surface_name
         ))
 
-        print()
-        print(img_path)
-        print()
-
         self.ims = cairo.ImageSurface.create_from_png(img_path)
 
     def draw_model_name(self):
+
         self.ctx.set_font_size(12)
         # Модель
-        self.ctx.move_to(10.5 * CM, 2.4 * CM)
-        self.ctx.show_text('Evolushion 03 primer')
-        self.ctx.move_to(7.5 * CM, 3.7 * CM)
-        self.ctx.show_text('Светлый грунт')
+        thin_rectangle(self.ctx, 11, 2, 5, 0.5, text="Evolushion 03 primer")
+        # self.ctx.set_font_size(10)
+        thin_rectangle(self.ctx, 7, 3, 4, 1, text="Светлый грунт")
 
     def draw_positions_number(self):
         self.ctx.set_font_size(42)
@@ -64,11 +60,9 @@ class Cw_evolushion_03_primer_ww_external():
     def draw_door_size(self):
         self.ctx.set_font_size(14)
         # Висота полотна
-        self.ctx.move_to(2.5 * CM, 3.7 * CM)
-        self.ctx.show_text(str(self.door_h))
+        thin_rectangle(self.ctx, 2, 3, 2, 1, text=str(self.door_h))
         # Ширина полотна
-        self.ctx.move_to(4.6 * CM, 3.7 * CM)
-        self.ctx.show_text(str(self.door_w))
+        thin_rectangle(self.ctx, 4, 3, 2, 1, text=str(self.door_w))
 
     def draw_finish_cut(self):
         self.ctx.set_font_size(14)
@@ -141,6 +135,21 @@ class Cw_evolushion_03_primer_ww_external():
         # self.ctx.move_to(5.4 * CM, 13 * CM)
         # self.ctx.rotate(3 * math.pi / 2)
         # self.ctx.show_text(str(int(draft_size_h) - 800 * 2))
+        
+
+
+
+
+        razmer_v(
+            self.ctx, (3 + 0.5) * CM, 11 * CM, 2 * CM,
+            1, d=0.5,
+            text=str(int(draft_size_h) - 800 * 2)
+        )
+
+
+
+
+
         # self.ctx.restore()
         # self.ctx.move_to(3 * CM, 19.45 * CM)
         # self.ctx.show_text(str(int(draft_size_h) - 800 * 2))

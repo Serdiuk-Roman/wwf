@@ -69,11 +69,19 @@ def base_rectangle(ctx, start_x, start_y, delta_x, delta_y):
     ctx.stroke()
 
 
-def thin_rectangle(ctx, start_x, start_y, delta_x, delta_y):
+def thin_rectangle(ctx, start_x, start_y, delta_x, delta_y, text=""):
     ctx.rectangle(start_x * CM, start_y * CM, delta_x * CM, delta_y * CM)
     ctx.set_line_width(Small_line_width)
     ctx.set_source_rgb(*black)
     ctx.stroke()
+
+    (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
+
+    ctx.move_to(
+        start_x * CM + delta_x * CM / 2 - dxt / 2,
+        start_y * CM + delta_y * CM / 2 - yt / 2
+    )
+    ctx.show_text(text)
 
 
 def draw_brus_40(ctx, start_x, start_y, delta_x, delta_y):
@@ -130,25 +138,15 @@ def draw_finishing_cutting(ctx):
 
 def draw_table(ctx):
     # Таблица для размера полотна
-    thin_rectangle(ctx, 2, 2.5, 2, 0.5)
-    thin_rectangle(ctx, 4, 2.5, 2, 0.5)
-    thin_rectangle(ctx, 2, 3, 2, 1)
+    ctx.set_font_size(14)
+    thin_rectangle(ctx, 2, 2, 4, 0.5, text="Полотно")
+    ctx.set_font_size(12)
+    thin_rectangle(ctx, 2, 2.5, 2, 0.5, text="Высота")
+    thin_rectangle(ctx, 4, 2.5, 2, 0.5, text="Ширина")
 
     base_rectangle(ctx, 2, 2, 4, 2)
 
-    ctx.set_font_size(14)
-    ctx.move_to(3 * CM, 2.4 * CM)
-    ctx.show_text("Полотно")
-    ctx.set_font_size(12)
-    ctx.move_to(2.3 * CM, 2.9 * CM)
-    ctx.show_text("Высота")
-    ctx.move_to(4.2 * CM, 2.9 * CM)
-    ctx.show_text("Ширина")
-
     # Таблица для базового бруса каркаса
-    thin_rectangle(ctx, 3.5, 4.5, 1, 0.5)
-    thin_rectangle(ctx, 3.5, 5, 1, 0.5)
-
     base_rectangle(ctx, 2, 4.5, 4.5, 1)
 
     ctx.set_font_size(12)
@@ -157,30 +155,26 @@ def draw_table(ctx):
     ctx.set_font_size(10)
     ctx.move_to(2.2 * CM, 5.3 * CM)
     ctx.show_text("(грязн)")
-    ctx.move_to(3.8 * CM, 4.9 * CM)
-    ctx.show_text("шт")
-    ctx.move_to(3.9 * CM, 5.4 * CM)
-    ctx.show_text("1")
+    thin_rectangle(ctx, 3.5, 4.5, 1, 0.5, text="шт")
+    thin_rectangle(ctx, 3.5, 5, 1, 0.5, text="1")
     ctx.set_font_size(18)
     ctx.move_to(4.7 * CM, 5.2 * CM)
     ctx.show_text("40х")
 
     # Таблица для декора полотна
-    thin_rectangle(ctx, 7, 2, 3, 0.5)
-    thin_rectangle(ctx, 10, 2, 5, 0.5)
-    thin_rectangle(ctx, 7, 2.5, 6, 0.5)
-    thin_rectangle(ctx, 13, 2.5, 2, 0.5)
-    thin_rectangle(ctx, 13, 3, 2, 1)
-
-    base_rectangle(ctx, 7, 2, 8, 2)
-
     ctx.set_font_size(12)
-    ctx.move_to(7.5 * CM, 2.4 * CM)
-    ctx.show_text("Модель")
-    ctx.move_to(7.5 * CM, 2.9 * CM)
-    ctx.show_text("Полотно")
-    ctx.move_to(13.5 * CM, 2.9 * CM)
-    ctx.show_text("Лутка")
+    thin_rectangle(ctx, 7, 2, 4, 0.5, text="Модель")
+    thin_rectangle(ctx, 7, 2.5, 4, 0.5, text="Полотно")
+    thin_rectangle(ctx, 14, 2.5, 2, 0.5, text="Лутка")
+
+    base_rectangle(ctx, 7, 2, 9, 2)
+
+    # ctx.move_to(7.5 * CM, 2.4 * CM)
+    # ctx.show_text("Модель")
+    # ctx.move_to(7.5 * CM, 2.9 * CM)
+    # ctx.show_text("Полотно")
+    # ctx.move_to(13.5 * CM, 2.9 * CM)
+    # ctx.show_text("Лутка")
 
     # Таблица для бруса 40
     for i in range(5):
