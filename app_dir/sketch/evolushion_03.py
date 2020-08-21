@@ -3,10 +3,11 @@ import math
 import cairo
 
 from app_dir.sketch.sketch_config import CM
-# from app_dir.sketch.sketch_config import perymetr
+
+from app_dir.sketch.sketch_config import perymetr
 from app_dir.sketch.sketch_config import draw_carcase, draw_table,\
     draw_finishing_cutting, razmer_h, razmer_v, thin_rectangle,\
-    centered_text
+    centered_text, black, g8, Base_line_width, Small_line_width
 
 
 class Cw_evolushion_03_primer_ww_external():
@@ -233,6 +234,84 @@ class Cw_evolushion_03_primer_ww_external():
             text="4 шт."
         )
 
+    def draw_frame_ww_external(self):
+        sx, sy = 17.5 * CM, 7 * CM
+
+        self.ctx.move_to(sx, sy)
+        self.ctx.line_to(sx + 4 * CM, sy)
+        self.ctx.line_to(sx + 4 * CM, sy + 9.5 * CM)
+        self.ctx.line_to(sx + 4 * CM - 0.4 * CM, sy + 9.5 * CM)
+        self.ctx.line_to(sx + 4 * CM - 0.4 * CM, sy + 0.4 * CM)
+        self.ctx.line_to(sx + 0.4 * CM, sy + 0.4 * CM)
+        self.ctx.line_to(sx + 0.4 * CM, sy + 9.5 * CM)
+        self.ctx.line_to(sx, sy + 9.5 * CM)
+        self.ctx.close_path()
+        self.ctx.set_source_rgb(*g8)
+        self.ctx.fill_preserve()
+        self.ctx.set_line_width(Base_line_width)
+        self.ctx.set_source_rgb(*black)
+        self.ctx.stroke()
+        self.ctx.line_to(sx + 0.4 * CM, sy + 0.4 * CM)
+        self.ctx.move_to(sx + 4 * CM, sy)
+        self.ctx.stroke()
+        self.ctx.line_to(sx + 4 * CM - 0.4 * CM, sy + 0.4 * CM)
+        self.ctx.stroke()
+        self.ctx.set_line_width(Small_line_width)
+        self.ctx.move_to(sx + 0.3 * CM, sy + 9.5 * CM)
+        self.ctx.line_to(sx + 0.3 * CM, sy + 0.3 * CM)
+        self.ctx.line_to(sx + (4 - 0.3) * CM, sy + 0.3 * CM)
+        self.ctx.line_to(sx + (4 - 0.3) * CM, sy + 9.5 * CM)
+        self.ctx.stroke()
+
+        """
+        self.ctx.line_to(sx - 14, sy - 14)
+        self.ctx.line_to(sx - 21, sy - 14)
+        self.ctx.line_to(sx - 21, sy - 21)
+        self.ctx.line_to(sx + 4 * CM + 21, sy - 21)
+        self.ctx.line_to(sx + 4 * CM + 21, sy - 14)
+        self.ctx.line_to(sx + 4 * CM + 14, sy - 14)
+        self.ctx.line_to(sx + 4 * CM, sy)
+        self.ctx.close_path()
+        self.ctx.set_source_rgb(*g8)
+        self.ctx.fill_preserve()
+        self.ctx.set_line_width(Base_line_width)
+        self.ctx.set_source_rgb(*black)
+        self.ctx.stroke()
+        self.ctx.move_to(sx - 7, sy - 7)
+        self.ctx.line_to(sx + 4 * CM + 7, sy - 7)
+        self.ctx.stroke()
+
+        self.ctx.move_to(sx, sy)
+        self.ctx.line_to(sx - 14, sy - 14)
+        self.ctx.line_to(sx - 21, sy - 14)
+        self.ctx.line_to(sx - 21, sy + 10 * CM)
+        self.ctx.line_to(sx, sy + 10 * CM)
+        self.ctx.close_path()
+        self.ctx.set_source_rgb(*g8)
+        self.ctx.fill_preserve()
+        self.ctx.set_line_width(Base_line_width)
+        self.ctx.set_source_rgb(*black)
+        self.ctx.stroke()
+        self.ctx.move_to(sx - 7, sy - 7)
+        self.ctx.line_to(sx - 7, sy + 10 * CM)
+        self.ctx.stroke()
+
+        self.ctx.move_to(sx + 4 * CM, sy)
+        self.ctx.line_to(sx + 4 * CM + 14, sy - 14)
+        self.ctx.line_to(sx + 4 * CM + 21, sy - 14)
+        self.ctx.line_to(sx + 4 * CM + 21, sy + 10 * CM)
+        self.ctx.line_to(sx + 4 * CM, sy + 10 * CM)
+        self.ctx.close_path()
+        self.ctx.set_source_rgb(*g8)
+        self.ctx.fill_preserve()
+        self.ctx.set_line_width(Base_line_width)
+        self.ctx.set_source_rgb(*black)
+        self.ctx.stroke()
+        self.ctx.move_to(sx + 4 * CM + 7, sy - 7)
+        self.ctx.line_to(sx + 4 * CM + 7, sy + 10 * CM)
+        self.ctx.stroke()
+        """
+
     def draw_frame_size(self):
         self.ctx.set_font_size(12)
         # Коробка
@@ -321,7 +400,7 @@ class Cw_evolushion_03_primer_ww_external():
         self.ctx.restore()
 
         # Сетка сантиметровая(приблизительно)
-        # perymetr(self.ctx)
+        perymetr(self.ctx)
         draw_carcase(self.ctx)
         draw_finishing_cutting(self.ctx)
         draw_table(self.ctx)
@@ -336,6 +415,7 @@ class Cw_evolushion_03_primer_ww_external():
         self.draw_casing_size()
         self.draw_expander_size()
         self.draw_position_casing_count()
+        self.draw_frame_ww_external()
 
 
 class Evolushion_03_primer_Forte_Paint():
