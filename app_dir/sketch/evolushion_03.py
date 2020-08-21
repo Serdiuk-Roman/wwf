@@ -3,9 +3,10 @@ import math
 import cairo
 
 from app_dir.sketch.sketch_config import CM
-from app_dir.sketch.sketch_config import perymetr
+# from app_dir.sketch.sketch_config import perymetr
 from app_dir.sketch.sketch_config import draw_carcase, draw_table,\
-    draw_finishing_cutting, razmer_h, razmer_v, thin_rectangle, base_rectangle
+    draw_finishing_cutting, razmer_h, razmer_v, thin_rectangle,\
+    centered_text
 
 
 class Cw_evolushion_03_primer_ww_external():
@@ -65,29 +66,59 @@ class Cw_evolushion_03_primer_ww_external():
         thin_rectangle(self.ctx, 4, 3, 2, 1, text=str(self.door_w))
 
     def draw_finish_cut(self):
-        self.ctx.set_font_size(14)
+        self.ctx.set_font_size(12)
+        centered_text(
+            self.ctx, 8.5, 17, 4, 0.5,
+            text="Размер полотна"
+        )
+        centered_text(
+            self.ctx, 8.5, 17.5, 4, 0.5,
+            text="БЕЗ кромки"
+        )
+        self.ctx.set_font_size(16)
         # Висота полотна без кромки
-        self.ctx.move_to(9 * CM, 19.2 * CM)
-        self.ctx.show_text(str(self.door_h - 1))
+        thin_rectangle(
+            self.ctx, 8.5, 18.5, 2, 1,
+            text=str(self.door_h - 1)
+        )
         # Ширина полотна без кромки
-        self.ctx.move_to(11 * CM, 19.2 * CM)
-        self.ctx.show_text(str(self.door_w - 1))
+        thin_rectangle(
+            self.ctx, 10.5, 18.5, 2, 1,
+            text=str(self.door_w - 1)
+        )
 
     def draw_carcase_thickness(self):
-        pass
-        self.ctx.set_font_size(18)
         # Толщина бруса
-        self.ctx.move_to(5.7 * CM, 5.2 * CM)
-        self.ctx.show_text(str(self.TIMBER_THICKNESS))
+        self.ctx.set_font_size(18)
+        thin_rectangle(
+            self.ctx, 4.5, 4.5, 2, 1,
+            text="40х" + str(self.TIMBER_THICKNESS)
+        )
 
     def draw_carcase_size(self):
         self.ctx.set_font_size(10)
+        thin_rectangle(
+            self.ctx, 2, 17, 3, 0.5,
+            text="Брус 40*" + str(self.TIMBER_THICKNESS)
+        )
+        thin_rectangle(
+            self.ctx, 5, 17, 3, 0.5,
+            text="Брус 18*" + str(self.TIMBER_THICKNESS)
+        )
         # Высота черновая Стойка бруса
         draft_size_h = str(self.door_h + 9 * 2)
         razmer_v(
             self.ctx, 3 * CM, 7.5 * CM, 9 * CM,
             -1, d=0.5,
             text=draft_size_h
+        )
+        thin_rectangle(
+            self.ctx, 2, 17.5, 1.5, 0.5,
+            text=draft_size_h
+        )
+        thin_rectangle(
+            self.ctx, 3.5, 17.5, 1.5, 0.5,
+            text="2 шт."
         )
         # Высота черновая МДФ 6
         razmer_v(
@@ -126,11 +157,16 @@ class Cw_evolushion_03_primer_ww_external():
             -1, d=0.5,
             text=str(self.door_w + 9 * 2 - 40 * 2)
         )
+        thin_rectangle(
+            self.ctx, 2, 18, 1.5, 0.5,
+            text=str(self.door_w + 9 * 2 - 40 * 2)
+        )
+        thin_rectangle(
+            self.ctx, 3.5, 18, 1.5, 0.5,
+            text="2 шт."
+        )
 
-        self.ctx.move_to(4.4 * CM, 19 * CM)
-        self.ctx.show_text(str(self.door_w + 9 * 2 - 40 * 2))
-
-        # Замочний брус
+        # Замочний брус размер
         razmer_v(
             self.ctx, (3 + 0.5) * CM, 7.5 * CM, 3.5 * CM,
             1, d=0.7,
@@ -146,8 +182,26 @@ class Cw_evolushion_03_primer_ww_external():
             1, d=0.7,
             text="800"
         )
+        # Замочний брус таблица 40x
+        thin_rectangle(
+            self.ctx, 2, 18.5, 1.5, 0.5,
+            text=str(int(draft_size_h) - 800 * 2)
+        )
+        thin_rectangle(
+            self.ctx, 3.5, 18.5, 1.5, 0.5,
+            text="2 шт."
+        )
+        # Замочний брус таблица 18x
+        thin_rectangle(
+            self.ctx, 5, 17.5, 1.5, 0.5,
+            text=str(int(draft_size_h) - 800 * 2)
+        )
+        thin_rectangle(
+            self.ctx, 6.5, 17.5, 1.5, 0.5,
+            text="2 шт."
+        )
 
-        # Петлевой брус
+        # Петлевой брус размер
         start_x = (3 + 4 - 0.4) * CM
         razmer_v(
             self.ctx, start_x, 7.5 * CM, 1 * CM,
@@ -168,6 +222,15 @@ class Cw_evolushion_03_primer_ww_external():
             self.ctx, start_x, 15.5 * CM, 1 * CM,
             -1, d=0.5,
             text="140"
+        )
+        # Петлевой брус таблица
+        thin_rectangle(
+            self.ctx, 2, 19, 1.5, 0.5,
+            text="210"
+        )
+        thin_rectangle(
+            self.ctx, 3.5, 19, 1.5, 0.5,
+            text="4 шт."
         )
 
     def draw_frame_size(self):

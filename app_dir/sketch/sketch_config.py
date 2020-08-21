@@ -84,6 +84,16 @@ def thin_rectangle(ctx, start_x, start_y, delta_x, delta_y, text=""):
     ctx.show_text(text)
 
 
+def centered_text(ctx, start_x, start_y, delta_x, delta_y, text="hiden"):
+    (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
+
+    ctx.move_to(
+        start_x * CM + delta_x * CM / 2 - dxt / 2,
+        start_y * CM + delta_y * CM / 2 - yt / 2
+    )
+    ctx.show_text(text)
+
+
 def draw_brus_40(ctx, start_x, start_y, delta_x, delta_y):
     ctx.rectangle(start_x, start_y, delta_x, delta_y)
     ctx.set_source_rgb(*g8)
@@ -147,19 +157,20 @@ def draw_table(ctx):
     base_rectangle(ctx, 2, 2, 4, 2)
 
     # Таблица для базового бруса каркаса
-    base_rectangle(ctx, 2, 4.5, 4.5, 1)
-
     ctx.set_font_size(12)
-    ctx.move_to(2.1 * CM, 4.9 * CM)
-    ctx.show_text("Каркас")
+    centered_text(
+        ctx, 2, 4.5, 1.5, 0.5,
+        text="Каркас"
+    )
     ctx.set_font_size(10)
-    ctx.move_to(2.2 * CM, 5.3 * CM)
-    ctx.show_text("(грязн)")
+    centered_text(
+        ctx, 2, 5, 1.5, 0.5,
+        text="(грязн)"
+    )
     thin_rectangle(ctx, 3.5, 4.5, 1, 0.5, text="шт")
     thin_rectangle(ctx, 3.5, 5, 1, 0.5, text="1")
-    ctx.set_font_size(18)
-    ctx.move_to(4.7 * CM, 5.2 * CM)
-    ctx.show_text("40х")
+
+    base_rectangle(ctx, 2, 4.5, 4.5, 1)
 
     # Таблица для декора полотна
     ctx.set_font_size(12)
@@ -169,31 +180,21 @@ def draw_table(ctx):
 
     base_rectangle(ctx, 7, 2, 9, 2)
 
-    # ctx.move_to(7.5 * CM, 2.4 * CM)
-    # ctx.show_text("Модель")
-    # ctx.move_to(7.5 * CM, 2.9 * CM)
-    # ctx.show_text("Полотно")
-    # ctx.move_to(13.5 * CM, 2.9 * CM)
-    # ctx.show_text("Лутка")
-
     # Таблица для бруса 40
-    for i in range(5):
-        thin_rectangle(ctx, 2, 17.5 + i * 0.5, 1.5, 0.5)
-        thin_rectangle(ctx, 3.5, 17.5 + i * 0.5, 1.5, 0.5)
-
     base_rectangle(ctx, 2, 17, 3, 3)
 
     # Таблица для бруса 18
-    thin_rectangle(ctx, 5, 17.5, 1.5, 0.5)
-    thin_rectangle(ctx, 6.5, 17.5, 1.5, 0.5)
-
     base_rectangle(ctx, 5, 17, 3, 3)
 
     # Таблица для чистового
-    thin_rectangle(ctx, 8.5, 18, 2, 0.5)
-    thin_rectangle(ctx, 10.5, 18, 2, 0.5)
-    thin_rectangle(ctx, 8.5, 18.5, 2, 1)
-
+    thin_rectangle(
+        ctx, 8.5, 18, 2, 0.5,
+        text="Длина"
+    )
+    thin_rectangle(
+        ctx, 10.5, 18, 2, 0.5,
+        text="Ширина"
+    )
     base_rectangle(ctx, 8.5, 17, 4, 2.5)
 
     # Таблица для чернового
