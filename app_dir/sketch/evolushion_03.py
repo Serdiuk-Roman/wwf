@@ -3,11 +3,13 @@ import math
 import cairo
 
 from app_dir.sketch.sketch_config import CM
+from app_dir.sketch.sketch_elem import ww_external_points
 
 from app_dir.sketch.sketch_config import perymetr
 from app_dir.sketch.sketch_config import draw_carcase, draw_table,\
     draw_finishing_cutting, razmer_h, razmer_v, thin_rectangle,\
-    centered_text, black, g8, Base_line_width, Small_line_width
+    centered_text, black, g8, Base_line_width, Small_line_width,\
+    base_rectangle, centered_vertical_text
 
 
 class Cw_evolushion_03_primer_ww_external():
@@ -128,17 +130,6 @@ class Cw_evolushion_03_primer_ww_external():
             text=draft_size_h
         )
 
-        # self.ctx.save()
-        # self.ctx.move_to(15.2 * CM, 13 * CM)
-        # self.ctx.rotate(3 * math.pi / 2)
-        # self.ctx.show_text(draft_size_h)
-        # self.ctx.restore()
-
-        # self.ctx.move_to(24 * CM, 19.05 * CM)
-        # self.ctx.show_text(draft_size_h)
-        # self.ctx.move_to(3 * CM, 18.61 * CM)
-        # self.ctx.show_text(draft_size_h)
-
         # Ширина черновая и МДФ 6
         draft_size_w = str(self.door_w + 9 * 2)
         # каркас
@@ -149,8 +140,6 @@ class Cw_evolushion_03_primer_ww_external():
         razmer_h(
             self.ctx, 8.5 * CM, 7.5 * CM, 4 * CM, -1, d=1, text=draft_size_w
         )
-        self.ctx.move_to(25.9 * CM, 18.4 * CM)
-        self.ctx.show_text(draft_size_w)
 
         # Поперечка бруса
         razmer_h(
@@ -234,16 +223,46 @@ class Cw_evolushion_03_primer_ww_external():
             text="4 шт."
         )
 
-    def draw_frame_ww_external(self):
-        sx, sy = 17.5 * CM, 7 * CM
+    def draw_rough_table(self, sx=23, sy=16.5):
+        # Таблица для чернового
+        self.ctx.set_font_size(10)
+        thin_rectangle(self.ctx, sx + 1, sy, 1.5, 0.5, text="Длина")
+        thin_rectangle(self.ctx, sx + 2.5, sy, 1.5, 0.5, text="Ширина")
+        thin_rectangle(self.ctx, sx + 4, sy, 1, 0.5, text="Кол.")
+
+        thin_rectangle(
+            self.ctx, sx + 1, sy + 0.5, 4, 0.5,
+            text="МДФ 16 (карточка)"
+        )
+
+        thin_rectangle(
+            self.ctx, sx + 1, sy + 1, 1.5, 0.5,
+            text=str(self.door_h + 9 * 2)
+        )
+        thin_rectangle(
+            self.ctx, sx + 2.5, sy + 1, 1.5, 0.5,
+            text=str(self.door_w + 9 * 2)
+        )
+        thin_rectangle(
+            self.ctx, sx + 4, sy + 1, 1, 0.5,
+            text="2"
+        )
+
+        base_rectangle(self.ctx, sx, sy, 1, 3.5)
+        self.ctx.set_font_size(16)
+        centered_vertical_text(self.ctx, sx, sy, 1, 3.5, text="Раскрой")
+        base_rectangle(self.ctx, sx + 1, sy, 4, 3.5)
+
+    def draw_frame_ww_external(self, sx=17.5 * CM, sy=7 * CM):
+        # sx и sy - стартовые координаты относительно которых рисуется ескиз
 
         self.ctx.move_to(sx, sy)
         self.ctx.line_to(sx + 4 * CM, sy)
         self.ctx.line_to(sx + 4 * CM, sy + 9.5 * CM)
-        self.ctx.line_to(sx + 4 * CM - 0.4 * CM, sy + 9.5 * CM)
-        self.ctx.line_to(sx + 4 * CM - 0.4 * CM, sy + 0.4 * CM)
-        self.ctx.line_to(sx + 0.4 * CM, sy + 0.4 * CM)
-        self.ctx.line_to(sx + 0.4 * CM, sy + 9.5 * CM)
+        self.ctx.line_to(sx + 4 * CM - 0.5 * CM, sy + 9.5 * CM)
+        self.ctx.line_to(sx + 4 * CM - 0.5 * CM, sy + 0.5 * CM)
+        self.ctx.line_to(sx + 0.5 * CM, sy + 0.5 * CM)
+        self.ctx.line_to(sx + 0.5 * CM, sy + 9.5 * CM)
         self.ctx.line_to(sx, sy + 9.5 * CM)
         self.ctx.close_path()
         self.ctx.set_source_rgb(*g8)
@@ -251,10 +270,11 @@ class Cw_evolushion_03_primer_ww_external():
         self.ctx.set_line_width(Base_line_width)
         self.ctx.set_source_rgb(*black)
         self.ctx.stroke()
-        self.ctx.line_to(sx + 0.4 * CM, sy + 0.4 * CM)
-        self.ctx.move_to(sx + 4 * CM, sy)
+        self.ctx.move_to(sx, sy)
+        self.ctx.line_to(sx + 0.5 * CM, sy + 0.5 * CM)
         self.ctx.stroke()
-        self.ctx.line_to(sx + 4 * CM - 0.4 * CM, sy + 0.4 * CM)
+        self.ctx.move_to(sx + 4 * CM, sy)
+        self.ctx.line_to(sx + 4 * CM - 0.5 * CM, sy + 0.5 * CM)
         self.ctx.stroke()
         self.ctx.set_line_width(Small_line_width)
         self.ctx.move_to(sx + 0.3 * CM, sy + 9.5 * CM)
@@ -263,87 +283,84 @@ class Cw_evolushion_03_primer_ww_external():
         self.ctx.line_to(sx + (4 - 0.3) * CM, sy + 9.5 * CM)
         self.ctx.stroke()
 
-        """
-        self.ctx.line_to(sx - 14, sy - 14)
-        self.ctx.line_to(sx - 21, sy - 14)
-        self.ctx.line_to(sx - 21, sy - 21)
-        self.ctx.line_to(sx + 4 * CM + 21, sy - 21)
-        self.ctx.line_to(sx + 4 * CM + 21, sy - 14)
-        self.ctx.line_to(sx + 4 * CM + 14, sy - 14)
-        self.ctx.line_to(sx + 4 * CM, sy)
-        self.ctx.close_path()
-        self.ctx.set_source_rgb(*g8)
-        self.ctx.fill_preserve()
-        self.ctx.set_line_width(Base_line_width)
-        self.ctx.set_source_rgb(*black)
-        self.ctx.stroke()
-        self.ctx.move_to(sx - 7, sy - 7)
-        self.ctx.line_to(sx + 4 * CM + 7, sy - 7)
-        self.ctx.stroke()
+    def draw_frame_size(self, sx=17.5 * CM, sy=7 * CM):
 
-        self.ctx.move_to(sx, sy)
-        self.ctx.line_to(sx - 14, sy - 14)
-        self.ctx.line_to(sx - 21, sy - 14)
-        self.ctx.line_to(sx - 21, sy + 10 * CM)
-        self.ctx.line_to(sx, sy + 10 * CM)
-        self.ctx.close_path()
-        self.ctx.set_source_rgb(*g8)
-        self.ctx.fill_preserve()
-        self.ctx.set_line_width(Base_line_width)
-        self.ctx.set_source_rgb(*black)
-        self.ctx.stroke()
-        self.ctx.move_to(sx - 7, sy - 7)
-        self.ctx.line_to(sx - 7, sy + 10 * CM)
-        self.ctx.stroke()
-
-        self.ctx.move_to(sx + 4 * CM, sy)
-        self.ctx.line_to(sx + 4 * CM + 14, sy - 14)
-        self.ctx.line_to(sx + 4 * CM + 21, sy - 14)
-        self.ctx.line_to(sx + 4 * CM + 21, sy + 10 * CM)
-        self.ctx.line_to(sx + 4 * CM, sy + 10 * CM)
-        self.ctx.close_path()
-        self.ctx.set_source_rgb(*g8)
-        self.ctx.fill_preserve()
-        self.ctx.set_line_width(Base_line_width)
-        self.ctx.set_source_rgb(*black)
-        self.ctx.stroke()
-        self.ctx.move_to(sx + 4 * CM + 7, sy - 7)
-        self.ctx.line_to(sx + 4 * CM + 7, sy + 10 * CM)
-        self.ctx.stroke()
-        """
-
-    def draw_frame_size(self):
-        self.ctx.set_font_size(12)
-        # Коробка
-        # self.frame_h = (
-        #     self.door_h + self.VERTICAL_CLEARANCES + self.FRAME_THICKNESS
-        # )
         self.frame_w = (
             self.door_w + self.SIDE_CLEARANCES + 2 * self.FRAME_THICKNESS
         )
+        self.frame_h = (
+            self.door_h + self.VERTICAL_CLEARANCES + self.FRAME_THICKNESS
+        )
 
-        # Лутка высоты
-        # self.ctx.save()
-        # self.ctx.move_to(18.5 * CM, 12 * CM)
-        # self.ctx.rotate(3 * math.pi / 2)
-        # self.ctx.show_text(str(self.door_h + self.VERTICAL_CLEARANCES))
-        # self.ctx.restore()
-        # self.ctx.save()
-        # self.ctx.move_to(23 * CM, 14 * CM)
-        # self.ctx.rotate(3 * math.pi / 2)
-        # self.ctx.show_text(str(self.frame_h))
-        # self.ctx.restore()
-        # self.ctx.save()
-        # self.ctx.move_to(22.5 * CM, 12 * CM)
-        # self.ctx.rotate(3 * math.pi / 2)
-        # self.ctx.show_text(str(self.frame_h - 17))
-        # self.ctx.restore()
+        self.ctx.set_line_width(Small_line_width)
+        self.ctx.set_source_rgb(*black)
+        self.ctx.set_font_size(10)
+        centered_text(
+            self.ctx, 18.5, 8.5, 2, 0.5,
+            text="Проём"
+        )
+        centered_text(
+            self.ctx, 18.5, 9, 2, 0.5,
+            text="полотна"
+        )
 
         # Поперечка лутки
-        self.ctx.move_to(20 * CM, 9 * CM)
-        self.ctx.show_text(str(self.door_w + self.SIDE_CLEARANCES))
-        self.ctx.move_to(20 * CM, 7 * CM)
-        self.ctx.show_text(str(self.frame_w))
+
+        # Габаритный размер поперечки лутки
+        razmer_h(
+            self.ctx, sx, sy, 4 * CM,
+            -1, d=0.5,
+            text=str(self.frame_w)
+        )
+        # Проёмный размер поперечки лутки
+        razmer_h(
+            self.ctx,
+            sx + (0.5 - 0.2) * CM,
+            sy + 0.5 * CM,
+            (4 - (0.5 - 0.2) * 2) * CM,
+            1,
+            d=1,
+            text=str(self.door_w + self.SIDE_CLEARANCES)
+        )
+
+        # Стоевая лутки
+
+        # Габаритный размер стоевой лутки
+        razmer_v(
+            self.ctx, sx, sy, 9.5 * CM,
+            -1, d=0.5,
+            text=str(self.frame_h)
+        )
+        # Проёмный размер стоевой лутки
+        razmer_v(
+            self.ctx,
+            sx + 0.5 * CM,
+            sy + (0.5 - 0.2) * CM,
+            (9.5 - 0.5 + 0.2) * CM,
+            0.7,
+            d=1,
+            text=str(self.door_h + self.VERTICAL_CLEARANCES)
+        )
+
+    def draw_frame_section(self, sx=18.5 * CM, sy=10 * CM):
+        # Сечение лутки
+
+        self.ctx.move_to(sx + CM, sy + 6 * CM)
+
+        for point in ww_external_points:
+            self.ctx.rel_line_to(*point)
+
+        self.ctx.close_path()
+        self.ctx.set_source_rgb(*g8)
+        self.ctx.fill_preserve()
+        self.ctx.set_line_width(Small_line_width)
+        self.ctx.set_source_rgb(*black)
+        self.ctx.stroke()
+        self.ctx.set_font_size(8)
+        centered_text(
+            self.ctx, 18.5, 13, 2.5, 0.5,
+            text="Сечение лутки"
+        )
 
     def draw_casing_size(self):
         pass
@@ -400,7 +417,7 @@ class Cw_evolushion_03_primer_ww_external():
         self.ctx.restore()
 
         # Сетка сантиметровая(приблизительно)
-        perymetr(self.ctx)
+        # perymetr(self.ctx)
         draw_carcase(self.ctx)
         draw_finishing_cutting(self.ctx)
         draw_table(self.ctx)
@@ -411,11 +428,14 @@ class Cw_evolushion_03_primer_ww_external():
         self.draw_finish_cut()
         self.draw_carcase_thickness()
         self.draw_carcase_size()
-        self.draw_frame_size()
+
         self.draw_casing_size()
         self.draw_expander_size()
         self.draw_position_casing_count()
         self.draw_frame_ww_external()
+        self.draw_frame_size()
+        self.draw_frame_section()
+        self.draw_rough_table()
 
 
 class Evolushion_03_primer_Forte_Paint():

@@ -28,6 +28,9 @@ def perymetr(ctx):
 
     ctx.set_line_width(Small_line_width)
 
+    ctx.save()
+
+    ctx.set_dash([0.2 * CM, 0.3 * CM])
     ctx.set_source_rgb(*g8)
     # Вертикальные
     for i in range(31):
@@ -55,9 +58,11 @@ def perymetr(ctx):
         ctx.move_to(0, 5 * li * CM)
         ctx.line_to(842, 5 * li * CM)
 
-    ctx.rectangle(min_x, min_y, max_x - min_x, max_y - min_y)
+    ctx.stroke()
+    ctx.restore()
 
     ctx.set_source_rgb(*black)
+    ctx.rectangle(min_x, min_y, max_x - min_x, max_y - min_y)
 
     ctx.stroke()
 
@@ -84,7 +89,7 @@ def thin_rectangle(ctx, start_x, start_y, delta_x, delta_y, text=""):
     ctx.show_text(text)
 
 
-def centered_text(ctx, start_x, start_y, delta_x, delta_y, text="hiden"):
+def centered_text(ctx, start_x, start_y, delta_x, delta_y, text="пусто"):
     (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
 
     ctx.move_to(
@@ -92,6 +97,19 @@ def centered_text(ctx, start_x, start_y, delta_x, delta_y, text="hiden"):
         start_y * CM + delta_y * CM / 2 - yt / 2
     )
     ctx.show_text(text)
+
+
+def centered_vertical_text(ctx, sx, sy, delta_x, delta_y, text="пусто"):
+    (xt, yt, width_t, height_t, dxt, dyt) = ctx.text_extents(text)
+
+    ctx.save()
+    ctx.move_to(
+        sx * CM + delta_x * CM / 2 - yt / 2,
+        sy * CM + delta_y * CM / 2 + dxt / 2
+    )
+    ctx.rotate(3 * math.pi / 2)
+    ctx.show_text(text)
+    ctx.restore()
 
 
 def draw_brus_40(ctx, start_x, start_y, delta_x, delta_y):
@@ -197,19 +215,6 @@ def draw_table(ctx):
     )
     base_rectangle(ctx, 8.5, 17, 4, 2.5)
 
-    # Таблица для чернового
-    thin_rectangle(ctx, 24, 17, 4, 0.5)
-    thin_rectangle(ctx, 25.5, 17, 1.5, 0.5)
-    for i in range(2):
-        thin_rectangle(ctx, 24, 18 + i * 0.5, 4, 0.5)
-        thin_rectangle(ctx, 25.5, 18 + i * 0.5, 1.5, 0.5)
-    for i in range(2):
-        thin_rectangle(ctx, 24, 19.5 + i * 0.5, 4, 0.5)
-        thin_rectangle(ctx, 25.5, 19.5 + i * 0.5, 1.5, 0.5)
-
-    base_rectangle(ctx, 23, 17, 1, 3.5)
-    base_rectangle(ctx, 24, 17, 4, 3.5)
-
 
 def strelka(ctx, sx=56, sy=56, vector=0):
     # big size
@@ -283,3 +288,11 @@ def razmer_v(ctx, x, y, dy, v, d=0.5, text="пусто"):
     ctx.rotate(3 * math.pi / 2)
     ctx.show_text(text)
     ctx.restore()
+
+
+# sr1 = cairo.ImageSurface.create_from_png("blueweb.png")
+# self.pt1 = cairo.SurfacePattern(sr1)
+# self.pt1.set_extend(cairo.EXTEND_REPEAT)
+# cr.set_source(self.pt1)
+# cr.rectangle(20, 20, 100, 100)
+# cr.fill()
