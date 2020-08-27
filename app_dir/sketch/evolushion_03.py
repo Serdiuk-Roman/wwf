@@ -2,31 +2,33 @@ import math
 
 import cairo
 
-from app_dir.sketch.sketch_config import CM
-from app_dir.sketch.sketch_elem import ww_external_points
+from app_dir.sketch.sketch_config import CM, black, g8,\
+    Base_line_width, Small_line_width,\
+    base_rectangle, thin_rectangle,\
+    centered_text, centered_vertical_text,\
+    razmer_h, razmer_v,\
+    draw_carcase, draw_table, draw_finishing_cutting
+
+from app_dir.sketch.frame_sections import FramePainter
 
 from app_dir.sketch.sketch_config import perymetr
-from app_dir.sketch.sketch_config import draw_carcase, draw_table,\
-    draw_finishing_cutting, razmer_h, razmer_v, thin_rectangle,\
-    centered_text, black, g8, Base_line_width, Small_line_width,\
-    base_rectangle, centered_vertical_text
 
 
 class Cw_evolushion_03_primer_ww_external():
     def __init__(self, ctx, order, positions_list, sketch_dir):
         self.ctx = ctx
         self.order = order
-        self.positions_list = positions_list[2]
+        self.doors_quantity = positions_list[2]
         self.door_h = positions_list[0]
         self.door_w = positions_list[1]
         self.sketch_dir = sketch_dir
 
-        self.surface_name = "cw_evolushion_03_pr_ww_external_2.png"
+        # self.surface_name = "cw_evolushion_03_pr_ww_external_2.png"
         # Толщина бруса
         self.TIMBER_THICKNESS = 28
         # Толщина лутки
         self.FRAME_THICKNESS = 33
-        # боковой зазор
+        # Боковой зазор
         self.SIDE_CLEARANCES = 6
         # Вертикальные зазоры
         self.VERTICAL_CLEARANCES = 12
@@ -56,10 +58,10 @@ class Cw_evolushion_03_primer_ww_external():
         self.ctx.set_font_size(42)
         # Номер позиции
         (x, y, width, height, dx, dy) = self.ctx.text_extents(
-            str(self.positions_list)
+            str(self.doors_quantity)
         )
         self.ctx.move_to(29 * CM - dx, 2 * CM)
-        self.ctx.show_text(str(self.positions_list))
+        self.ctx.show_text(str(self.doors_quantity))
 
     def draw_door_size(self):
         self.ctx.set_font_size(14)
@@ -342,62 +344,19 @@ class Cw_evolushion_03_primer_ww_external():
             text=str(self.door_h + self.VERTICAL_CLEARANCES)
         )
 
-    def draw_frame_section(self, sx=18.5 * CM, sy=10 * CM):
+    def draw_frame_section(self, sx=18.5 * CM, sy=13 * CM):
         # Сечение лутки
-
-        self.ctx.move_to(sx + CM, sy + 6 * CM)
-
-        for point in ww_external_points:
-            self.ctx.rel_line_to(*point)
-
-        self.ctx.close_path()
-        self.ctx.set_source_rgb(*g8)
-        self.ctx.fill_preserve()
-        self.ctx.set_line_width(Small_line_width)
-        self.ctx.set_source_rgb(*black)
-        self.ctx.stroke()
-        self.ctx.set_font_size(8)
-        centered_text(
-            self.ctx, 18.5, 13, 2.5, 0.5,
-            text="Сечение лутки"
-        )
-
-    def draw_casing_size(self):
-        pass
-        # Наличник
-        # self.ctx.set_font_size(12)
-        # self.ctx.move_to(25.4 * CM, 7 * CM)
-        # self.ctx.show_text(str(self.frame_w - 16 * 2))
-        # self.ctx.move_to(25.4 * CM, 6.5 * CM)
-        # self.ctx.show_text(str(self.frame_w - 16 * 2 + 70 * 2))
-        # self.ctx.save()
-        # self.ctx.move_to(28.3 * CM, 12 * CM)
-        # self.ctx.rotate(3 * math.pi / 2)
-        # self.ctx.show_text(str(self.frame_h - 16 + 70))
-        # self.ctx.restore()
-
-    def draw_expander_size(self):
-        pass
-        # Доборы
-        # self.ctx.set_font_size(12)
-        # expander_h = (
-        #     self.door_h + self.VERTICAL_CLEARANCES + self.FRAME_THICKNESS - 23
-        # )
-        # expander_w = self.frame_w
-        # self.ctx.move_to(17.7 * CM, 3.7 * CM)
-        # self.ctx.show_text(str(expander_h))
-        # self.ctx.move_to(17.9 * CM, 4.3 * CM)
-        # self.ctx.show_text(str(expander_w))
+        frame = FramePainter()
+        frame.draw(self.ctx, sx, sy, frame_type="ww_outside")
 
     def draw_position_casing_count(self):
-        pass
-        # Количество комплектов и наличников
-        # self.ctx.set_font_size(16)
-        # kol = len(self.positions_list)
-        # if kol > 1:
-        #     msg = "Изготовить {} компл.".format(kol)
-        #     self.ctx.move_to(8 * CM, 1.3 * CM)
-        #     self.ctx.show_text(msg)
+        # Количество комплектов
+        self.ctx.set_font_size(16)
+        kol = self.doors_quantity
+        if kol > 1:
+            msg = "Изготовить {} компл.".format(kol)
+            self.ctx.move_to(7 * CM, 1.5 * CM)
+            self.ctx.show_text(msg)
         # msg = "{} компл. наличников".format('1')
         # self.ctx.move_to(8 * CM, 1.9 * CM)
         # self.ctx.show_text(msg)
@@ -407,14 +366,12 @@ class Cw_evolushion_03_primer_ww_external():
     def draw_page(self):
         # размер изображения 1522x1080 точок
 
-        self.ctx.save()
-
-        self.create_from_png()
-
-        self.ctx.scale(0.55, 0.55)
-        self.ctx.set_source_surface(self.ims, 0, 0)
-        self.ctx.paint()
-        self.ctx.restore()
+        # self.ctx.save()
+        # self.create_from_png()
+        # self.ctx.scale(0.55, 0.55)
+        # self.ctx.set_source_surface(self.ims, 0, 0)
+        # self.ctx.paint()
+        # self.ctx.restore()
 
         # Сетка сантиметровая(приблизительно)
         # perymetr(self.ctx)
@@ -429,12 +386,12 @@ class Cw_evolushion_03_primer_ww_external():
         self.draw_carcase_thickness()
         self.draw_carcase_size()
 
-        self.draw_casing_size()
-        self.draw_expander_size()
         self.draw_position_casing_count()
+
         self.draw_frame_ww_external()
         self.draw_frame_size()
         self.draw_frame_section()
+
         self.draw_rough_table()
 
 

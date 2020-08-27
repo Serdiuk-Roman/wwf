@@ -11,12 +11,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 from config import DevelopmentConfig
 
 
-# app = Flask(__name__)
-
-# app.config.from_object(DevelopmentConfig())
-
-# migrate = Migrate(app, db, render_as_batch=True)
-
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
@@ -37,6 +31,7 @@ def create_app(config_class=DevelopmentConfig):
     # mail.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
+    toolbar.init_app(app)
     # babel.init_app(app)
 
     from app_dir.auth import bp as auth_bp

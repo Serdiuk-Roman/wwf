@@ -74,7 +74,7 @@ def base_rectangle(ctx, start_x, start_y, delta_x, delta_y):
     ctx.stroke()
 
 
-def thin_rectangle(ctx, start_x, start_y, delta_x, delta_y, text=""):
+def thin_rectangle(ctx, start_x, start_y, delta_x, delta_y, text="пусто"):
     ctx.rectangle(start_x * CM, start_y * CM, delta_x * CM, delta_y * CM)
     ctx.set_line_width(Small_line_width)
     ctx.set_source_rgb(*black)

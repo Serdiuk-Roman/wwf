@@ -36,17 +36,34 @@ class Pdf_Generator():
         self.ctx.set_source_rgb(*black)
 
     def get_combined_positions(self):
-        self.base_page_list = [
-            (2000, 600, p.doors_quantity)
+
+        self.base_page_list = []
+
+        base_list = [
+            [
+                p.cw_vendor_code.doors_height,
+                p.cw_vendor_code.doors_width,
+                p.doors_quantity
+            ]
             for p in self.order.cw_positions
         ]
 
-        self.base_page_list
+        rough_list = []
+        for i in base_list:
+            rough_list.extend([[i[0], i[1]]] * i[2])
 
-    def destr(self):
-        # surface.show_page()
-        self.ctx.save()
-        self.ctx.restore()
+        unique_list = []
+        for item in rough_list:
+            if item not in unique_list:
+                unique_list.append(item)
+
+        for i in unique_list:
+            self.base_page_list.append([
+                i[0],
+                i[1],
+                rough_list.count(i)
+            ])
+        self.base_page_list.sort(key=lambda i: (i[1], i[0]), reverse=True)
 
     def run(self):
 
@@ -65,4 +82,5 @@ class Pdf_Generator():
 
             self.ctx.show_page()
 
-        self.destr()
+        self.ctx.save()
+        self.ctx.restore()
