@@ -348,6 +348,7 @@ class Cw_evolushion_03_primer_ww_external():
         # Сечение лутки
         frame = FramePainter()
         frame.draw(self.ctx, sx, sy, frame_type="ww_outside")
+        # frame.draw(self.ctx, sx, sy, frame_type="ww_inside")
 
     def draw_position_casing_count(self):
         # Количество комплектов
@@ -374,7 +375,7 @@ class Cw_evolushion_03_primer_ww_external():
         # self.ctx.restore()
 
         # Сетка сантиметровая(приблизительно)
-        # perymetr(self.ctx)
+        perymetr(self.ctx)
         draw_carcase(self.ctx)
         draw_finishing_cutting(self.ctx)
         draw_table(self.ctx)
@@ -608,6 +609,3 @@ class Evolushion_03_primer_Forte_Paint():
         self.draw_casing_size()
         self.draw_expander_size()
         self.draw_position_casing_count()
-
-        # Сетка сантиметровая(приблизительно)
-        # perymetr(self.ctx)
